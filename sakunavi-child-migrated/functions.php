@@ -1304,6 +1304,13 @@ function sakunavi_the_limit_range($post_id = null)
 // コラムFAQ取得ヘルパー
 // ACFで入力したFAQを配列で返す
 // ============================
+function sakunavi_safe_excerpt($len = 30)
+{
+  $raw  = get_the_content(null, false);
+  $text = wp_strip_all_tags(do_shortcode($raw));
+  return wp_trim_words($text, $len, '…');
+}
+
 function sakunavi_get_column_faq_items($post_id = null)
 {
   $post_id = $post_id ?: get_the_ID();

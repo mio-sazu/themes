@@ -1,5 +1,9 @@
 <?php
-// トップには出さない
+/**
+ * Template Part: 共通ヒーロー帯
+ * CSS: style.css（グローバル）の .hero-global
+ * 使い方: get_template_part('template-parts/hero-global');
+ */
 if (is_front_page()) return;
 
 // 子テーマ画像ディレクトリ（URI と 実パス）

@@ -1,10 +1,3 @@
-.flex{
-    display: flex;
-}
-
-body{
-}
-
 /*////////　全頁 共通　////////*/
 section{
     margin: 30px 0;
@@ -35,108 +28,6 @@ ul,ol{
 @media (max-width: 768px) {
     .sp-only {
         display: block;
-    }
-}
-
-/* ===== footer共通===== */
-/*===== 注意書き背景エリア =====*/
-.footer-note {
-    background-color: #39B167;
-    padding: 30px;
-    font-size: 12px;
-    line-height: 1.2;
-    color: white;
-}
-
-.footer-note p {
-    width: auto;
-    text-align: left;
-}
-
-.footer-inner {
-    display: flex;
-    justify-content: space-between;
-    gap: 50px;
-    padding-top: 20px;
-    padding-bottom: 20px;
-}
-
-/* ===== フッター内側 ===== */
-.footer-container {
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    gap: 40px;
-}
-
-.footer-brand img {
-    width: 100px;
-}
-.footer-about{
-    width: 220px;
-}
-
-.footer-left {
-    display: flex;
-    text-align: center;
-    width: 300px;
-}
-
-.footer-left p {
-    width: 300px;
-}
-
-/* ===== フッターのメニューリスト ===== */
-.footer-nav {
-    display: flex;
-    justify-content: space-between;
-    gap: 40px;
-    font-family: "Noto Sans JP", sans-serif;
-}
-
-.footer-nav ul {
-    list-style: none;
-    padding: 0 0 0 20px;
-    border-left: 1px solid #ccc;
-    min-width: 140px;
-    text-align: left;
-}
-
-.footer-nav ul:first-child {
-    border-left: none;
-    padding-left: 0;
-}
-
-.footer-nav li {
-    font-size: 14px;
-    margin-bottom: 6px;
-}
-
-.footer-nav li a {
-    color: #333;
-    text-decoration: none;
-}
-
-.footer-nav li a:hover {
-    text-decoration: underline;
-}
-
-/* ===== コピーライト ===== */
-.copyright {
-    text-align: center;
-    font-size: 12px;
-    color: #666;
-}
-
-@media screen and (max-width: 768px) {
-    .footer-inner {
-        display: block;
-        padding-left: 20px;
-    }
-
-    .footer-container {
-        justify-content: left;
     }
 }
 
@@ -244,13 +135,6 @@ ul,ol{
     width: 1100px;
     margin: 0 auto;
 }
-.logo img {
-    width: 70px;                /* ロゴのサイズ */
-    max-width: 100%;             /* スマホでも崩れないように */
-    height: auto;
-    display: inline-block;
-}
-
 
 /*////////ヘッダーメニュー////////*/
 .global-nav {
@@ -258,61 +142,7 @@ ul,ol{
     background-color: #39B167;
 }
 
-.menu-bar {
-    background: #39B167;
-}
-
-.main-menu {
-    display: flex;
-    justify-content: center;
-    list-style: none;
-    margin: 0;
-    padding: 0;
-}
-
-.main-menu>li {
-    position: relative;
-    width: 220px;
-}
-
-.main-menu>li>a {
-    display: block;
-    padding: 12px 20px;
-    color: #fff;
-    text-decoration: none;
-    font-weight: bold;
-    background-color: #39B167;
-    text-align: center;
-}
-
-.main-menu>li:hover>a {
-    background-color: #248148;
-}
-
-.sub-menu {
-    display: none;
-    position: absolute;
-    top: 100%;
-    left: 0;
-    background: #f9f9f9;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    z-index: 100;
-    padding: 0;
-    list-style: none;
-    min-width: 220px;
-}
-
-.sub-menu li a {
-    display: block;
-    padding: 12px 20px;
-    color: #333;
-    text-decoration: none;
-    white-space: nowrap;
-}
-
-.sub-menu li a:hover {
-    background-color: #eee;
-}
+/* .menu-bar / .main-menu / .sub-menu → 子テーマ style.css に移管 */
 
 .menu-item-has-children:hover>.sub-menu {
     display: block;
@@ -544,17 +374,7 @@ header {
 100% { transform: translateX(-30%); }
 
 }
-.wrapper {
-    max-width: 1200px;  /* 横幅の最大値*/
-    margin: 0 auto;     /* 中央寄せ */
-}
-
-.layout {
-    display: flex;/*mainとaside横並び*/
-    max-width: 1200px;  /* 横幅の最大値*/
-    margin: 30px auto;     /* 中央寄せ */
-    align-items: flex-start;/*上端で揃える*/
-}
+/* .wrapper / .layout → 子テーマ style.css に移管 */
 article{
     /*max-width: 1200px;*/
 }
@@ -759,6 +579,7 @@ main {
     background-color: #eaffef;
     text-align: center;
 }
+
 /*ランキングtop3の王冠*/
 .crown img{
     width: 50px;
@@ -777,52 +598,7 @@ main {
     letter-spacing: -0.25rem;
     /* text-shadow: 1px 1px 2px rgba(0,0,0,0.1); うっすら立体感 */
 }
-/* 申込ボタン*/
-.apply-btnblue {
-    background: linear-gradient(to bottom, #4d90fe, #6ea9ff);
-    color: white;
-    padding: 20px 50px;
-    margin: auto;
-    border: none;
-    border-radius: 12px;
-    font-size: 20px;
-    font-weight: bold;
-    text-align: center;
-    text-decoration: none;
-    display: block;
-    cursor: pointer;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    max-width: 90%;
-    position: relative;
-    overflow: hidden; /* ← 光がはみ出ないように */
-}
-
-.apply-btnblue::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: -75%;
-    width: 50%;
-    height: 100%;
-    background: linear-gradient(
-        120deg,
-        rgba(255, 255, 255, 0.5) 0%,
-        rgba(255, 255, 255, 0.2) 50%,
-        rgba(255, 255, 255, 0) 100%
-    );
-    transform: skewX(-20deg);
-}
-
-.apply-btnblue:hover::before {
-    left: 125%;
-    transition: left 0.6s ease;
-}
-
-.apply-btnblue:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
-}
+/* .apply-btnblue → 子テーマ style.css に移管 */
 
 .center-flex {
     /*display: flex;*/
@@ -1421,109 +1197,6 @@ main {
     cursor: pointer;
 }
 
-/*//////// aside ////////*/
-aside {
-    width: 200px;
-    padding-right: 30px;
-}
-
-/* ===== カテゴリー/新着/会社一覧のメニュー（左） ===== */
-.column-sidebar {
-    width: 100%;
-    max-width: 300px;
-    margin-bottom: 30px;
-}
-
-.column-sidebar h3 {
-    font-size: 18px;
-    background-color: #39B167;
-    color: #fff;
-    padding: 10px 12px;
-    border-radius: 4px 4px 0 0;
-    -webkit-border-radius: 4px 4px 0 0;
-    -moz-border-radius: 4px 4px 0 0;
-    -ms-border-radius: 4px 4px 0 0;
-    -o-border-radius: 4px 4px 0 0;
-    margin: 0;
-}
-
-.column-sidebar ul {
-    border: 1px solid #ddd;
-    border-top: none;
-    list-style: none;
-    padding: 10px 12px;
-    margin: 0;
-}
-
-.column-sidebar li {
-    margin-bottom: 8px;
-}
-
-.column-sidebar li a {
-    text-decoration: none;
-    color: #333;
-    transition: all 0.2s ease;
-}
-
-.column-sidebar li a:hover {
-    color: #4caf50;
-}
-/* サイドバーのリンクに矢印を追加 */
-.column-sidebar ul li a {
-    position: relative;
-    display: inline-block;
-    padding-right: 15px;
-    transition: all 0.3s ease;
-    color: #333;
-    text-decoration: none;
-}
-
-.column-sidebar ul li a::after {
-    content: '▶';
-    position: absolute;
-    right: 0;
-    top: 50%;
-    transform: translateY(-50%);
-    font-size: 12px;
-    transition: right 0.3s ease;
-    color: #666;
-}
-  /* ホバー時に矢印をスライドさせる */
-.column-sidebar ul li a:hover::after {
-    right: -5px;
-    color: #0ba169;
-}
-  /* ホバー時のリンク本体色も変えるなら */
-.column-sidebar ul li a:hover {
-    color: #0ba169;
-}
-.sidebar-box {
-    /* ボックスの下にも余白があってもいい */
-    margin-bottom: 20px;
-}
-
-.banner-column {
-    gap: 10px;
-    /* バナー同士余白 */
-    align-items: center;
-    padding-bottom: 30px;
-}
-
-.banner-column a img {
-    width: 260px;
-    margin: 15px auto;
-    /*画像サイズ調整可*/display: block;
-    transition: transform 0.2s ease;
-    -webkit-transition: transform 0.2s ease;
-    -moz-transition: transform 0.2s ease;
-    -ms-transition: transform 0.2s ease;
-    -o-transition: transform 0.2s ease;
-}
-
-.banner-column a img:hover {
-    transform: scale(1.02);
-}
-
 /*--------------------
 ハンバーガー内メニュー
 --------------------*/
@@ -1619,29 +1292,6 @@ aside {
 /*//// パンくず ////*/
 
 
-/* 共通ヒーロー帯（半分サイズ） */
-.hero-global {
-    min-height: 38vh;
-    max-height: 360px;
-    background-image: var(--hero-bg);
-    background-size: cover;
-    background-position: center;
-    display: flex;
-    align-items: center;
-}
-
-.hero-global__inner {
-    width: min(1100px, 92%);
-    margin: 0 auto;
-}
-
-.hero-global__title {
-    font-size: clamp(20px, 4vw, 32px);
-    font-weight: 700;
-    line-height: 1.3;
-}
-
-
 /* =================================
     Responsive: style.css 
 ================================= */
@@ -1692,9 +1342,8 @@ aside {
         width: 100%;
     }
 
-    /* 全体を1カラム化 */
-    .wrapper,
-    .layout {
+    /* 全体を1カラム化（.layout は子テーマのgridで制御） */
+    .wrapper {
         display: block;
     }
 

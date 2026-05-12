@@ -1,5 +1,8 @@
 <?php
-/* Template: taxonomy-ranking_year.php */
+/**
+ * Template: ランキング 年度アーカイブ（ranking_year タクソノミー）
+ * CSS: style.css（グローバル）, assets/css/support.css, assets/css/column.css
+ */
 get_header(); ?>
 <div class="wrapper">
     <article>
@@ -100,15 +103,7 @@ get_header(); ?>
                         <?php endwhile; ?>
                     </div>
 
-                    <div class="pagination">
-                        <?php echo paginate_links([
-                            'total'   => $wp_query->max_num_pages,
-                            'current' => max(1, get_query_var('paged')),
-                            'mid_size' => 1,
-                            'prev_text' => '« 前へ',
-                            'next_text' => '次へ »',
-                        ]); ?>
-                    </div>
+                    <?php get_template_part('template-parts/pagination'); ?>
                 <?php else: ?>
                     <p>この年のランキング記事はありません。</p>
                 <?php endif; ?>

@@ -1,4 +1,10 @@
-<?php get_header(); ?>
+<?php
+/**
+ * Template: 個別コラム記事
+ * CPT: column
+ * CSS: style.css（グローバル）, assets/css/support.css, assets/css/column.css
+ */
+get_header(); ?>
 
 <div class="wrapper">
     <article>

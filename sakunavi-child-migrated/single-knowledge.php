@@ -1,4 +1,10 @@
-<?php get_header(); ?>
+<?php
+/**
+ * Template: 個別ナレッジ記事
+ * CPT: knowledge
+ * CSS: style.css（グローバル）, assets/css/support.css, assets/css/knowledge.css
+ */
+get_header(); ?>
 
 <div class="wrapper">
     <article>

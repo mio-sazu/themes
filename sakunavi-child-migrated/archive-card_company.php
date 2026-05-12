@@ -1,4 +1,9 @@
 <?php
+/**
+ * Template: カードローン会社 アーカイブ
+ * CPT: card_company
+ * CSS: style.css（グローバル）, assets/css/company.css
+ */
 get_header(); ?>
 <main id="primary" class="site-main archive-card-company">
   <header class="page-header">

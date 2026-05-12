@@ -1,15 +1,9 @@
 <?php
+/**
+ * Template: コラム カテゴリーアーカイブ（column_category タクソノミー）
+ * CSS: style.css（グローバル）, assets/css/support.css, assets/css/column.css
+ */
 get_header();
-
-// 安全な抜粋（ブロックでも必ず拾える）
-if (!function_exists('sakunavi_safe_excerpt')) {
-    function sakunavi_safe_excerpt($len = 30)
-    {
-        $raw = get_the_content(null, false);
-        $text = wp_strip_all_tags(do_shortcode($raw));
-        return wp_trim_words($text, $len, '…');
-    }
-}
 ?>
 <div class="wrapper">
     <article>
@@ -42,18 +36,7 @@ if (!function_exists('sakunavi_safe_excerpt')) {
                         <?php endwhile; ?>
                     </ul>
 
-                    <div class="pagination">
-                        <?php
-                        global $wp_query;
-                        echo paginate_links([
-                            'total'     => $wp_query->max_num_pages,
-                            'current'   => max(1, get_query_var('paged', 1)),
-                            'mid_size'  => 1,
-                            'prev_text' => '« 前へ',
-                            'next_text' => '次へ »',
-                        ]);
-                        ?>
-                    </div>
+                    <?php get_template_part('template-parts/pagination'); ?>
 
                 <?php else : ?>
                     <p>記事がありません。</p>

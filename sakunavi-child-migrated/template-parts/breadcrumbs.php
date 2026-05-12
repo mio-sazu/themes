@@ -1,5 +1,9 @@
 <?php
-// トップでは非表示（必要なら消してください）
+/**
+ * Template Part: パンくずナビ
+ * CSS: assets/css/breadcrumbs.css（全ページ読み込み済み）
+ * 使い方: get_template_part('template-parts/breadcrumbs');
+ */
 if (is_front_page()) return;
 
 echo '<nav class="breadcrumbs wrapper" aria-label="パンくず">';

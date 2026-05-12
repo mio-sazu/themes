@@ -1,4 +1,10 @@
-<?php get_header(); ?>
+<?php
+/**
+ * Template: フロントページ
+ * CSS: style.css（グローバル）, assets/css/support.css
+ * JS:  assets/js/chat.js（チャット UI）
+ */
+get_header(); ?>
 
 
 <!-- ヒーローセクション -->

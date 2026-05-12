@@ -1,5 +1,9 @@
 <?php
-/* Template: archive-ranking.php */
+/**
+ * Template: ランキング アーカイブ
+ * CPT: ranking
+ * CSS: style.css（グローバル）, assets/css/support.css, assets/css/column.css
+ */
 get_header();
 
 // 便利関数：★表示
@@ -117,15 +121,7 @@ if (!function_exists('sakunavi_ranking_avg_overall')) {
                         <?php endwhile; ?>
                     </div>
 
-                    <div class="pagination">
-                        <?php echo paginate_links([
-                            'total'   => $wp_query->max_num_pages,
-                            'current' => max(1, get_query_var('paged')),
-                            'mid_size' => 1,
-                            'prev_text' => '« 前へ',
-                            'next_text' => '次へ »',
-                        ]); ?>
-                    </div>
+                    <?php get_template_part('template-parts/pagination'); ?>
                 <?php else: ?>
                     <p>ランキング記事がありません。</p>
                 <?php endif; ?>

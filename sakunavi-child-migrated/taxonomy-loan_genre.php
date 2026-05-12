@@ -1,4 +1,8 @@
 <?php
+/**
+ * Template: ローンジャンル タクソノミーアーカイブ（loan_genre）
+ * CSS: style.css（グローバル）, assets/css/company.css
+ */
 get_header(); ?>
 <main id="primary" class="site-main taxonomy-loan-genre">
   <header class="page-header">

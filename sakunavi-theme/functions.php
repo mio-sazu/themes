@@ -68,13 +68,6 @@ function sakunavi_scripts()
     '1.0'
   );
 
-  wp_enqueue_style(
-    'sakunavi-simulator',
-    $theme_uri . '/assets/css/simulator.css',
-    ['sakunavi-style'],
-    '1.0'
-  );
-
   // トップ以外の補助CSS
   if (!is_front_page()) {
     wp_enqueue_style(
@@ -529,11 +522,13 @@ function chat_create_message(WP_REST_Request $req)
 add_action('wp_enqueue_scripts', 'chat_enqueue_scripts');
 function chat_enqueue_scripts()
 {
-  // chat.js は後述の JavaScript
+  if ( ! is_front_page() ) {
+    return;
+  }
   wp_enqueue_script(
     'chat-js',
     get_template_directory_uri() . '/assets/js/chat.js',
-    [], // 依存なし
+    [],
     null,
     true
   );

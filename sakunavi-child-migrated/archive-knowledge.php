@@ -1,4 +1,10 @@
-<?php get_header(); ?>
+<?php
+/**
+ * Template: ナレッジ アーカイブ
+ * CPT: knowledge
+ * CSS: style.css（グローバル）, assets/css/support.css, assets/css/knowledge.css
+ */
+get_header(); ?>
 
 <div class="wrapper">
     <article>
@@ -76,15 +82,7 @@
                     <?php endwhile; ?>
                 </div>
 
-                <div class="pagination">
-                    <?php echo paginate_links([
-                        'total'     => $wp_query->max_num_pages,
-                        'current'   => max(1, get_query_var('paged')),
-                        'mid_size'  => 1,
-                        'prev_text' => '« 前へ',
-                        'next_text' => '次へ »',
-                    ]); ?>
-                </div>
+                <?php get_template_part('template-parts/pagination'); ?>
                 <?php else: ?>
                 <p>ナレッジがまだ登録されていません。</p>
                 <?php endif; ?>

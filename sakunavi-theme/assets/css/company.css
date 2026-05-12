@@ -1,0 +1,213 @@
+body {
+    font-family: "Noto Sans JP", sans-serif;
+    line-height: 1.8;
+    margin: 0;
+}
+body, html {
+    margin: 0;
+    padding: 0;
+}
+img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+
+.hero-inner {
+    background-image: url("../images/index/index_img_03.png");
+    background-size: cover;
+    background-position: center;
+    height: 252px;
+    padding: 60px 20px;
+}
+
+  /* ヒーローイメージ */
+.hero-inner {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 40px;
+    margin: 0 auto;
+    flex-wrap: wrap; /* レスポンシブ対応 */
+}
+.hero-image{
+    width: 200px;
+}
+  /* イラスト画像 */
+.hero-image img {
+    width: 100%;
+}
+  /* テキスト画像 */
+.hero-text img {
+    width: 500px;
+    max-width: 100%;
+}
+.column-hero{
+    background-image: url("../images/index/index_img_03.png");
+    background-size: cover;
+    background-position: center;
+    height: 252px;
+    padding: 60px 20px;
+}
+.column-hero{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 40px;
+    margin: 0 auto;
+    flex-wrap: wrap; /* レスポンシブ対応 */
+}
+
+/*////////パンくず共通(articleの下から)////////*/
+.breadcrumb-001 {
+    display: flex;
+    gap: 0 22px;
+    list-style: none;
+    padding: 0;
+    font-size: .9em;
+}
+
+
+
+/* ===== セクション見出し ===== */
+.section-title{
+    border-bottom: 1px black solid;
+    padding-bottom: 10px;
+}
+
+/* =====メイン中身===== */
+.company-layout > h2{
+    background-color: #8cd0a6;
+    font-size: 22px;
+    font-weight: bold;
+    padding-left: 15px;
+}
+.loan-title{
+    border-bottom: 2px solid #333;
+    margin-bottom: 20px;
+    font-weight: bold;
+    font-size: 24px;
+}
+.loan-image {
+    background: #ddd;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 24px;
+}
+.loan-image img {
+    max-width: 100%;
+    margin: 0 auto;
+    height: 0 auto;
+}
+.info-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 16px;
+}
+.info-table th,
+.info-table td {
+    border: 1px solid #39B167;
+    padding: 8px;
+    text-align: left;
+}
+.info-table th {
+    border-bottom: 1px solid #fff;
+    color: #fff;
+    background: #39B167;
+    border-top: 1px solid #fff;
+}
+.basic-info h3{
+    font-size: 20px;
+    font-weight: bold;
+    text-align: center;
+    background-color: #39B167;
+    color: #fff;
+    padding: 3px;
+}
+/*―――――― おすすめ度＆ボタン ――――――*/
+.btn{
+    text-align: center;
+}
+.rating-and-btn {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.rating {
+    font-size: 30px;
+    color: #f5a623; /* ★色 */
+}
+.rating-and-btn h4{
+    font-size: 18px;
+    font-weight: bold;
+}
+.apply-btn {
+    display: inline-block;
+    padding: 12px 32px;
+    background: linear-gradient(to right, #6a8cff, #5cc1ff);
+    color: #fff;
+    border-radius: 30px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: opacity .2s;
+    margin: 20px;
+}
+.apply-btn:hover {
+    opacity: .8;
+}
+/*―――――― ポイントセクション ――――――*/
+.point{
+    padding-top: 20px;
+    padding-left: 40px;
+}
+.radius{
+    background-color: #39B167;
+    color: #fff;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    text-align:center;
+    line-height: 50px;
+    font-size: 20px;
+}
+.point ul{
+    display: flex;
+    gap: 80px;
+    text-align: center;
+    justify-content: center;
+}
+.point li img{
+    border: 1px solid #39B167;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 10px;
+}
+.point li p{
+    font-weight: bold;
+    line-height: 1.5;
+}
+
+/*―――――― メイン ――――――*/
+.content {
+    flex: 1;
+    padding-left: 30px;
+}
+.breadcrumb {
+    list-style: none;
+    display: flex;
+    font-size: .9em;
+    margin-bottom: 20px;
+}
+.breadcrumb li + li::before {
+    content: "›";
+    margin: 0 8px;
+    color: #666;
+}
+.breadcrumb a {
+    color: #333;
+    text-decoration: none;
+}

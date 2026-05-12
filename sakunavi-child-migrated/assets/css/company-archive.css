@@ -1,0 +1,23 @@
+/* ===== Company Archive ===== */
+.wrapper{max-width:1000px;margin:0 auto;padding:0 20px;}
+.company-archive{padding:20px 0 28px;}
+.archive-title{font-size:22px; margin:8px 0 16px;}
+.company-cards{display:grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap:18px;}
+.company-card{display:grid; grid-template-columns:120px 1fr; gap:14px; background:#fff; border:1px solid #e8e8e8; border-radius:12px; padding:12px;}
+.company-card .thumb img{width:100%; height:auto; border-radius:8px;}
+.company-card .title{font-size:18px; margin:.1rem 0 .4rem;}
+.company-card .title a{text-decoration:none; color:inherit;}
+.company-card .title a:hover{text-decoration:underline;}
+.company-card .spec{display:flex; flex-wrap:wrap; gap:10px 16px; list-style:none; margin:0 0 .75rem; padding:0; color:#555; font-size:.95rem;}
+.company-card .spec span{display:inline-block; background:#f3f3f3; border:1px solid #e8e8e8; border-radius:8px; padding:2px 8px; margin-right:6px; color:#666; font-size:.86rem;}
+.company-card .actions{display:flex; gap:10px; align-items:center;}
+.company-card .btn{display:inline-flex; align-items:center; justify-content:center; padding:8px 12px; border-radius:8px; text-decoration:none; color:#fff; background:#c62828; border:1px solid #c62828;}
+.company-card .btn--ghost{background:#fff; color:#c62828;}
+.pagination{margin:18px 0 0; text-align:center;}
+.pagination .page-numbers{display:inline-block; margin:0 4px; padding:6px 10px; border:1px solid #e8e8e8; border-radius:6px; text-decoration:none; color:inherit;}
+.pagination .page-numbers.current{background:#c62828; border-color:#c62828; color:#fff;}
+
+@media (max-width: 960px){
+  .company-cards{grid-template-columns: 1fr;}
+  .company-card{grid-template-columns: 1fr;}
+}

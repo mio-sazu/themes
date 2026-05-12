@@ -1,0 +1,460 @@
+/*
+ Theme Name: Sakunavi Child (Migrated)
+ Theme URI: https://ooo-mitsumaru.com/
+ Description: Child theme that migrates overrides for Sakunavi
+ Author: Mitsumaru Design
+ Author URI: https://ooo-mitsumaru.com/
+ Template: sakunavi-theme
+ Version: 1.0.0
+ Text Domain: sakunavi-child
+*/
+
+/* =================================
+   フォントと文字組
+================================= */
+
+body {
+    font-family: "Zen Kaku Gothic New", "Noto Sans JP", "Hiragino Sans", "Yu Gothic", Meiryo, sans-serif !important;
+    color: #333;
+    line-height: 1.8;
+    letter-spacing: 0.01em;
+}
+
+p,
+li,
+dt,
+dd,
+th,
+td {
+    line-height: 1.85;
+    color: #444;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family: "Zen Kaku Gothic New", "Noto Sans JP", sans-serif !important;
+    color: #222;
+    letter-spacing: 0.01em;
+}
+
+small,
+.note,
+.Annotation p,
+.rate-note,
+.rate-notes {
+    color: #666;
+    line-height: 1.7;
+}
+
+/* 共通ヒーロー帯（半分サイズ） */
+.hero-global {
+    min-height: 18vh;
+    max-height: 260px;
+    background-image: var(--hero-bg);
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    align-items: center;
+}
+
+.hero-global__inner {
+    width: min(1100px, 92%);
+    margin: 0 auto;
+}
+
+.hero-global__title {
+    font-size: clamp(20px, 4vw, 32px);
+    font-weight: 700;
+    line-height: 1.3;
+}
+
+/* モバイルはさらに薄め */
+@media (max-width:768px) {
+    .hero-global {
+        min-height: 22vh;
+        max-height: 200px;
+    }
+
+    .hero-global__title {
+        font-size: clamp(16px, 4.4vw, 24px);
+    }
+}
+
+/* Footer widgets (inside .footer-inner.wrapper) */
+.footer-widgets {
+    padding: 24px 0;
+}
+
+.footer-columns {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 24px;
+}
+.footer-col{
+    margin: 0 20px 0 0 ;
+}
+.footer-col .widget-title {
+    font-size: .75rem;
+    margin: 0 0 .75rem;
+    background-color: transparent;
+}
+
+.footer-brand img {
+    max-height: 48px;
+    height: auto;
+}
+
+.footer-brand .site-name {
+    font-size: 1.1rem;
+    display: inline-block;
+    margin: 0 0 .25rem;
+    background: none;
+}
+
+.footer-brand .site-tagline {
+    font-size: .75rem;
+    color: #666;
+    margin: .25rem 0 0;
+}
+
+.footer-menu {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.footer-menu>li {
+    margin: 0 0 .5rem;
+}
+
+.footer-menu a {
+    text-decoration: none;
+    color: inherit;
+}
+
+.footer-menu a:hover {
+    text-decoration: underline;
+}
+
+.footer-company {
+    font-style: normal;
+    color: #333;
+}
+
+.footer-company .company-name {
+    font-weight: 700;
+    margin-bottom: .25rem;
+}
+
+.footer-company .company-note {
+    color: #777;
+    font-size: .9rem;
+}
+
+/* responsive */
+@media (max-width: 960px) {
+    .footer-columns {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+@media (max-width: 640px) {
+    .footer-columns {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* =================================
+   共通レイアウト・サイドバー（全ページ共通）
+================================= */
+
+/* 全体幅 */
+.wrapper {
+    width: min(100% - 40px, 100%);
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+    box-sizing: border-box;
+}
+
+/* 2カラムレイアウト */
+.layout {
+    display: grid;
+    grid-template-columns: 280px minmax(0, 1fr);
+    grid-template-areas: "sidebar main";
+    gap: 24px;
+    align-items: start;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+}
+
+.layout > aside,
+.layout > .sidebar,
+.layout > .column-sidebar,
+.layout > .toc-wrapper {
+    grid-area: sidebar;
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+}
+
+.layout > main,
+.layout > .main,
+.layout > .content,
+.layout > .content-area,
+.layout > .column-main,
+.layout > .company-content,
+.layout > .l-main {
+    grid-area: main;
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+}
+
+/* コンテンツの横はみ出し防止 */
+main,
+.main,
+.content,
+.content-area,
+.column-main,
+.company-content,
+.l-main,
+.entry-content,
+.post-content,
+.article-content {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+}
+
+/* 旧指定の残骸対策 */
+aside {
+    width: auto;
+    padding-right: 0;
+}
+
+/* 画像・メディアの安全策 */
+img,
+video,
+iframe {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+/* サイドバー共通 */
+.sidebar-box {
+    margin-bottom: 20px;
+}
+
+.column-sidebar,
+.sidebar,
+.toc-wrapper {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+}
+
+.column-sidebar h3,
+.sidebar h3,
+.toc-title {
+    font-size: 18px;
+    background-color: #39B167;
+    color: #fff;
+    padding: 10px 12px;
+    border-radius: 4px 4px 0 0;
+    margin: 0;
+}
+
+.column-sidebar ul,
+.sidebar ul,
+.toc-box ul {
+    border: 1px solid #ddd;
+    border-top: none;
+    list-style: none;
+    padding: 10px 12px;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+.column-sidebar li,
+.sidebar li,
+.toc-box li {
+    margin-bottom: 8px;
+}
+
+.column-sidebar li a,
+.sidebar li a {
+    word-break: break-word;
+    overflow-wrap: anywhere;
+}
+
+.column-sidebar ul li a {
+    position: relative;
+    display: inline-block;
+    padding-right: 15px;
+    transition: all 0.3s ease;
+    color: #333;
+    text-decoration: none;
+}
+
+.column-sidebar ul li a::after {
+    content: '▶';
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 12px;
+    transition: right 0.3s ease;
+    color: #666;
+}
+
+.column-sidebar ul li a:hover::after {
+    right: -5px;
+    color: #0ba169;
+}
+
+.column-sidebar ul li a:hover {
+    color: #0ba169;
+}
+
+/* サイドバー「一覧を見る」リンク */
+.sidebar-box__more {
+    display: block;
+    border: 1px solid #ddd;
+    border-top: none;
+    padding: 6px 12px 8px;
+    text-align: right;
+    text-decoration: none;
+    font-size: 0.85em;
+    color: #39B167;
+    border-radius: 0 0 4px 4px;
+}
+
+.sidebar-box__more:hover {
+    background: #f9f9f9;
+    color: #2d8a50;
+}
+
+/* バナー共通 */
+.banner-column {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+    padding-bottom: 30px;
+}
+
+.banner-column a,
+.banner-column img {
+    display: block;
+    max-width: 100%;
+}
+
+.banner-column a img {
+    width: 100%;
+    max-width: 260px;
+    height: auto;
+}
+
+/* =================================
+   共通レイアウト responsive
+================================= */
+@media (max-width: 768px) {
+    .wrapper,
+    .layout {
+        width: min(100% - 24px, 100%);
+        max-width: 100%;
+    }
+
+    .layout {
+        grid-template-columns: 1fr;
+        grid-template-areas:
+            "main"
+            "sidebar";
+        gap: 24px;
+    }
+
+    .layout > aside,
+    .layout > .sidebar,
+    .layout > .column-sidebar,
+    .layout > .toc-wrapper,
+    .layout > main,
+    .layout > .main,
+    .layout > .content,
+    .layout > .content-area,
+    .layout > .column-main,
+    .layout > .company-content,
+    .layout > .l-main {
+        width: 100%;
+        max-width: 100%;
+        min-width: 0;
+    }
+
+    .column-sidebar,
+    .sidebar,
+    .toc-wrapper {
+        margin-top: 0;
+    }
+
+    .column-sidebar h3,
+    .sidebar h3,
+    .toc-title {
+        font-size: 16px;
+        padding: 12px 14px;
+    }
+
+    .column-sidebar ul,
+    .sidebar ul,
+    .toc-box ul {
+        padding: 12px 14px;
+    }
+
+    .column-sidebar li,
+    .column-sidebar li a,
+    .sidebar li,
+    .sidebar li a,
+    .toc-box li {
+        font-size: 14px;
+        line-height: 1.7;
+    }
+
+    .banner-column a img {
+        max-width: 220px;
+    }
+}
+
+@media (max-width: 480px) {
+    .wrapper,
+    .layout {
+        width: min(100% - 16px, 100%);
+    }
+
+    .column-sidebar h3,
+    .sidebar h3,
+    .toc-title {
+        font-size: 15px;
+        padding: 10px 12px;
+    }
+
+    .column-sidebar li,
+    .column-sidebar li a,
+    .sidebar li,
+    .sidebar li a,
+    .toc-box li {
+        font-size: 13px;
+    }
+
+    .banner-column a img {
+        max-width: 100%;
+    }
+}

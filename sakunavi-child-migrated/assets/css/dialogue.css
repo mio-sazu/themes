@@ -1,0 +1,133 @@
+.sn-dialogue {
+	margin: 1.5rem 0;
+}
+
+.sn-dialogue--spacing-tight {
+	margin: 0.75rem 0;
+}
+
+.sn-dialogue--spacing-normal {
+	margin: 1.5rem 0;
+}
+
+.sn-dialogue--spacing-wide {
+	margin: 2.25rem 0;
+}
+
+.sn-dialogue__title {
+	margin: 0 0 12px;
+	font-size: 14px;
+	font-weight: 700;
+	color: #333;
+}
+
+.sn-dialogue__items {
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+}
+
+.sn-dialogue__item {
+	display: flex;
+	align-items: flex-start;
+	gap: 10px;
+}
+
+.sn-dialogue__item--right {
+	flex-direction: row-reverse;
+}
+
+.sn-dialogue__icon {
+	flex: 0 0 36px;
+}
+
+.sn-dialogue__icon img {
+	display: block;
+	width: 36px;
+	height: 36px;
+	border-radius: 999px;
+	object-fit: cover;
+}
+
+.sn-dialogue__bubble {
+	max-width: min(88%, 640px);
+	padding: 10px 12px;
+	border: 1px solid #e3ebe4;
+	border-radius: 14px;
+	background: #fff;
+}
+
+.sn-dialogue__name {
+	margin: 0 0 4px;
+	font-size: 12px;
+	font-weight: 700;
+	line-height: 1.4;
+	color: #666;
+}
+
+.sn-dialogue__message {
+	margin: 0;
+	font-size: 14px;
+	line-height: 1.85;
+	color: #2f3430;
+}
+
+.sn-dialogue--chat .sn-dialogue__bubble {
+	background: #f8faf8;
+}
+
+.sn-dialogue--note .sn-dialogue__bubble {
+	background: #fafaf8;
+	border-style: solid;
+}
+
+.sn-dialogue--simple .sn-dialogue__bubble {
+	background: #fff;
+	border-left-width: 3px;
+	border-radius: 8px;
+}
+
+.sn-dialogue.is-emphasis .sn-dialogue__bubble {
+	box-shadow: 0 6px 18px rgba(0,0,0,.05);
+}
+
+.sn-dialogue__item--hinano .sn-dialogue__bubble {
+	background: #fcf8fa;
+	border-color: #eedfe6;
+}
+.sn-dialogue__item--rio .sn-dialogue__bubble {
+	background: #faf9f7;
+	border-color: #e7e3dc;
+}
+.sn-dialogue__item--satomi .sn-dialogue__bubble {
+	background: #f7faf7;
+	border-color: #dfe8df;
+}
+.sn-dialogue__item--takase .sn-dialogue__bubble {
+	background: #f7f8fa;
+	border-color: #dde2e8;
+}
+.sn-dialogue__item--shun .sn-dialogue__bubble {
+	background: #f7fafc;
+	border-color: #dbe6ee;
+}
+.sn-dialogue__item--common .sn-dialogue__bubble {
+	background: #f8f8f8;
+	border-color: #e5e5e5;
+}
+
+.sn-dialogue__item.is-highlight .sn-dialogue__bubble {
+	box-shadow: 0 4px 14px rgba(0,0,0,.06);
+}
+
+@media (max-width: 767px) {
+	.sn-dialogue__bubble {
+		max-width: calc(100% - 46px);
+		padding: 9px 11px;
+	}
+
+	.sn-dialogue__message {
+		font-size: 13px;
+		line-height: 1.8;
+	}
+}

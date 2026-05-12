@@ -1,0 +1,168 @@
+.sn-monologue {
+	display: flex;
+	align-items: flex-start;
+	gap: 12px;
+	margin: 1.25rem 0;
+}
+
+.sn-monologue--spacing-tight {
+	margin: 0.75rem 0;
+}
+
+.sn-monologue--spacing-normal {
+	margin: 1.25rem 0;
+}
+
+.sn-monologue--spacing-wide {
+	margin: 2rem 0;
+}
+
+.sn-monologue__icon {
+	flex: 0 0 40px;
+}
+
+.sn-monologue__icon img {
+	display: block;
+	width: 40px;
+	height: 40px;
+	border-radius: 999px;
+	object-fit: cover;
+}
+
+.sn-monologue__body {
+	flex: 1 1 auto;
+	min-width: 0;
+	padding: 12px 14px;
+	border: 1px solid #e3ebe4;
+	border-radius: 14px;
+	background: #f8faf8;
+}
+
+.sn-monologue__label {
+	margin: 0 0 6px;
+	font-size: 12px;
+	line-height: 1.4;
+	font-weight: 700;
+	color: #67806d;
+}
+
+.sn-monologue__text {
+	margin: 0;
+	font-size: 14px;
+	line-height: 1.9;
+	color: #2f3430;
+}
+
+/* bubble */
+.sn-monologue--bubble .sn-monologue__body {
+	position: relative;
+}
+
+.sn-monologue--bubble .sn-monologue__body::before {
+	content: "";
+	position: absolute;
+	top: 14px;
+	left: -8px;
+	width: 14px;
+	height: 14px;
+	background: inherit;
+	border-left: 1px solid currentColor;
+	border-bottom: 1px solid currentColor;
+	transform: rotate(45deg);
+	opacity: 0.12;
+}
+
+/* simple */
+.sn-monologue--simple .sn-monologue__body {
+	padding: 8px 0 8px 12px;
+	border-top: none;
+	border-right: none;
+	border-bottom: none;
+	border-left: 3px solid #dbe7dc;
+	border-radius: 0;
+	background: #fff;
+}
+
+.sn-monologue.is-emphasis .sn-monologue__body {
+	box-shadow: 0 6px 18px rgba(0, 0, 0, 0.05);
+}
+
+/* ひなの */
+.sn-monologue--hinano .sn-monologue__body {
+	background: #fcf8fa;
+	border-color: #eedfe6;
+}
+.sn-monologue--hinano .sn-monologue__label {
+	color: #9a6e82;
+}
+
+/* りお */
+.sn-monologue--rio .sn-monologue__body {
+	background: #faf9f7;
+	border-color: #e7e3dc;
+}
+.sn-monologue--rio .sn-monologue__label {
+	color: #877a6c;
+}
+
+/* さとみ */
+.sn-monologue--satomi .sn-monologue__body {
+	background: #f7faf7;
+	border-color: #dfe8df;
+}
+.sn-monologue--satomi .sn-monologue__label {
+	color: #5f7c67;
+}
+
+/* 高瀬 */
+.sn-monologue--takase .sn-monologue__body {
+	background: #f7f8fa;
+	border-color: #dde2e8;
+}
+.sn-monologue--takase .sn-monologue__label {
+	color: #5e6f84;
+}
+
+/* しゅん */
+.sn-monologue--shun .sn-monologue__body {
+	background: #f7fafc;
+	border-color: #dbe6ee;
+}
+.sn-monologue--shun .sn-monologue__label {
+	color: #607c97;
+}
+
+/* 共通 */
+.sn-monologue--common .sn-monologue__body {
+	background: #f8f8f8;
+	border-color: #e5e5e5;
+}
+.sn-monologue--common .sn-monologue__label {
+	color: #666666;
+}
+
+@media (max-width: 767px) {
+	.sn-monologue {
+		gap: 10px;
+		margin: 1rem 0;
+	}
+
+	.sn-monologue__icon {
+		flex-basis: 34px;
+	}
+
+	.sn-monologue__icon img {
+		width: 34px;
+		height: 34px;
+	}
+
+	.sn-monologue__body {
+		padding: 10px 12px;
+		border-radius: 12px;
+	}
+
+	.sn-monologue__text {
+		font-size: 13px;
+		line-height: 1.8;
+	}
+}

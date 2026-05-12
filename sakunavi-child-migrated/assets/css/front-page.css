@@ -1,0 +1,242 @@
+/* ==============================================
+   フロントページ専用スタイル
+   ============================================== */
+
+/* ──────────────────────────────────────────
+   タブナビゲーション（上品な再デザイン）
+   ────────────────────────────────────────── */
+.tab-nav {
+  display: flex;
+  gap: 0;
+  border-bottom: 2px solid #2ea05a;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.tab-nav-item {
+  flex: 1;
+  display: block;
+  padding: 10px 8px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  text-align: center;
+  line-height: 1.35;
+  color: #2ea05a;
+  background: #fff;
+  border: 1px solid #d0ead8;
+  border-bottom: none;
+  border-radius: 8px 8px 0 0;
+  cursor: pointer;
+  transition: background 0.18s, color 0.18s;
+  text-decoration: none;
+}
+
+.tab-nav-item:hover {
+  background: #edfaf2;
+  color: #1e7a42;
+}
+
+.tab-nav-item.active {
+  background: #2ea05a;
+  color: #fff;
+  border-color: #2ea05a;
+  position: relative;
+  z-index: 1;
+}
+
+/* ──────────────────────────────────────────
+   タブパネル：内部余白を詰める
+   ────────────────────────────────────────── */
+.tab-panels .tab-panel.active {
+  padding: 12px 12px 16px;
+  border: 1px solid #2ea05a;
+  border-top: none;
+  border-radius: 0 0 8px 8px;
+}
+
+/* ──────────────────────────────────────────
+   ローンカード：余白を縮小
+   ────────────────────────────────────────── */
+.loan-card {
+  padding: 14px 16px 18px !important;
+  background: #f3fdf6 !important;
+  border-radius: 10px;
+  border: 1px solid #c5e8d0;
+}
+
+/* ──────────────────────────────────────────
+   ランキング順位バッジ
+   ────────────────────────────────────────── */
+.rank-card-wrapper {
+  position: relative;
+  margin-bottom: 10px;
+}
+
+.rank-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  line-height: 1;
+  padding: 4px 10px;
+  border-radius: 4px 4px 0 0;
+  position: relative;
+  z-index: 1;
+}
+
+.rank-badge--rank-1 {
+  background: linear-gradient(135deg, #c9960c 0%, #f5c842 50%, #b88300 100%);
+  color: #fff;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.rank-badge--rank-2 {
+  background: linear-gradient(135deg, #7a7a7a 0%, #c0c0c0 50%, #8a8a8a 100%);
+  color: #fff;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+}
+
+.rank-badge--rank-3 {
+  background: linear-gradient(135deg, #8b4513 0%, #cd7f32 50%, #8b4513 100%);
+  color: #fff;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+}
+
+.rank-card-wrapper--rank-1 .loan-card {
+  border-color: #e0c060;
+}
+
+.rank-card-wrapper--rank-2 .loan-card {
+  border-color: #b0b0b0;
+}
+
+.rank-card-wrapper--rank-3 .loan-card {
+  border-color: #b07844;
+}
+
+/* ──────────────────────────────────────────
+   チャットFAQセクション
+   ────────────────────────────────────────── */
+.chat-faq-section {
+  background: #f8fffe;
+  border-radius: 12px;
+  padding: 20px 16px 16px;
+  margin-top: 28px;
+  border: 1px solid #ddf0e6;
+}
+
+.chat-faq-heading {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #1b5e32;
+  margin: 0 0 16px;
+  text-align: center;
+}
+
+/* ──────────────────────────────────────────
+   セクション見出し共通
+   ────────────────────────────────────────── */
+.loan-category h2,
+.loan-table h2 {
+  font-size: 1.05rem;
+  font-weight: 800;
+  text-align: center;
+  color: #1b5e32;
+  margin-bottom: 16px;
+}
+
+/* ──────────────────────────────────────────
+   比較早見表テーブル
+   ────────────────────────────────────────── */
+.loan-table table {
+  border-collapse: collapse;
+  width: 100%;
+  font-size: 0.82rem;
+}
+
+.loan-table th {
+  background: #2ea05a;
+  color: #fff;
+  padding: 8px 10px;
+  white-space: nowrap;
+}
+
+.loan-table td {
+  padding: 7px 10px;
+  border-bottom: 1px solid #dde9e2;
+  vertical-align: middle;
+}
+
+.loan-table tr:nth-child(even) td {
+  background: #f5fdf8;
+}
+
+/* ──────────────────────────────────────────
+   シミュレーターセクション
+   ────────────────────────────────────────── */
+.sim-section {
+  margin-top: 28px;
+}
+
+.sim-box {
+  background: #f8fffe;
+  border: 1px solid #c5e8d0;
+  border-radius: 12px;
+  padding: 20px 16px;
+}
+
+.sim-header {
+  font-size: 1rem;
+  font-weight: 800;
+  color: #fff;
+  background: #2ea05a;
+  text-align: center;
+  padding: 10px;
+  border-radius: 8px;
+  margin-bottom: 16px;
+}
+
+.sim-table th {
+  font-size: 0.83rem;
+  font-weight: 600;
+  color: #2d5a38;
+  padding: 8px 10px;
+  width: 42%;
+  border-bottom: 1px solid #dde9e2;
+}
+
+.sim-table td {
+  padding: 8px 10px;
+  border-bottom: 1px solid #dde9e2;
+}
+
+.sim-table select {
+  width: 100%;
+  padding: 6px 8px;
+  border: 1px solid #b0d8be;
+  border-radius: 6px;
+  font-size: 0.83rem;
+  background: #fff;
+  color: #333;
+}
+
+#calculateBtn {
+  display: block;
+  width: 100%;
+  padding: 12px;
+  background: #2ea05a;
+  color: #fff;
+  font-size: 0.95rem;
+  font-weight: 700;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.18s;
+}
+
+#calculateBtn:hover {
+  background: #237a45;
+}

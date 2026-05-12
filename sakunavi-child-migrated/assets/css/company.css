@@ -1,0 +1,935 @@
+body {
+    font-family: "Noto Sans JP", sans-serif;
+    line-height: 1.8;
+    margin: 0;
+}
+body, html {
+    margin: 0;
+    padding: 0;
+}
+img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+/*////////ヘッダーロゴ共通////////*/
+.logo img {
+    width: 70px;                /* ロゴのサイズ */
+    max-width: 100%;             /* スマホでも崩れないように */
+    height: auto;
+    display: inline-block;
+}
+
+h2{
+    font-family: "corporate-logo-ver2", sans-serif;
+}
+
+.hero-inner {
+    background-image: url("../images/index/index_img_03.png");
+    background-size: cover;
+    background-position: center;
+    height: 252px;
+    padding: 60px 20px;
+}
+
+  /* ヒーローイメージ */
+.hero-inner {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 40px;
+    margin: 0 auto;
+    flex-wrap: wrap; /* レスポンシブ対応 */
+}
+.hero-image{
+    width: 200px;
+}
+  /* イラスト画像 */
+.hero-image img {
+    width: 100%;
+}
+  /* テキスト画像 */
+.hero-text img {
+    width: 500px;
+    max-width: 100%;
+}
+.column-hero{
+    background-image: url("../images/index/index_img_03.png");
+    background-size: cover;
+    background-position: center;
+    height: 252px;
+    padding: 60px 20px;
+}
+.column-hero{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 40px;
+    margin: 0 auto;
+    flex-wrap: wrap; /* レスポンシブ対応 */
+}
+
+/*////////パンくず共通(articleの下から)////////*/
+.breadcrumb-001 {
+    display: flex;
+    gap: 0 22px;
+    list-style: none;
+    padding: 0;
+    font-size: .9em;
+}
+
+/*////////ヘッダーメニュー////////*/
+.menu-bar {
+    background: #39B167;
+    font-family: sans-serif;
+}
+.main-menu {
+    display: flex;
+    justify-content: center;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+.main-menu > li {
+    position: relative;
+}
+.main-menu > li > a {
+    display: block;
+    padding: 12px 20px;
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    background-color: #39B167;
+}
+.main-menu > li:hover > a {
+    background-color: #248148;
+}
+  /* サブメニュー（非表示） */
+.sub-menu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background: #f9f9f9;
+    min-width: 180px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    z-index: 10;
+    padding: 10px 0;
+    list-style: none;
+}
+.sub-menu li a {
+    display: block;
+    padding: 10px 16px;
+    color: #333;
+    text-decoration: none;
+    white-space: nowrap;
+}
+.sub-menu li a:hover {
+    background-color: #eee;
+}
+  /* ホバーで表示 */
+.has-sub:hover .sub-menu {
+    display: block;
+}
+/* ===== セクション見出し ===== */
+.section-title{
+    border-bottom: 1px black solid;
+    padding-bottom: 10px;
+}
+
+/* ===== カテゴリー/新着/会社一覧のメニュー（左） ===== */
+.column-sidebar h3 {
+    font-size: 18px;
+    background-color: #39B167;
+    color: #fff;
+    padding: 10px 12px;
+    border-radius: 4px 4px 0 0;
+
+}
+
+.column-sidebar ul {
+    border: 1px solid #ddd;
+    border-top: none;
+    list-style: none;
+    padding: 10px 12px;
+}
+
+.column-sidebar li {
+    margin-bottom: 8px;
+}
+
+.column-sidebar li a {
+    text-decoration: none;
+    color: #333;
+    transition: all 0.2s ease;
+}
+
+.column-sidebar li a:hover {
+    color: #4caf50;
+}
+/* サイドバーのリンクに矢印を追加 */
+.column-sidebar ul li a {
+    position: relative;
+    display: inline-block;
+    padding-right: 15px;
+    transition: all 0.3s ease;
+    color: #333;
+    text-decoration: none;
+}
+
+.column-sidebar ul li a::after {
+    content: '▶';
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 12px;
+    transition: right 0.3s ease;
+    color: #666;
+}
+  /* ホバー時に矢印をスライドさせる */
+.column-sidebar ul li a:hover::after {
+    right: -5px;
+    color: #0ba169;
+}
+  /* ホバー時のリンク本体色も変えるなら */
+.column-sidebar ul li a:hover {
+    color: #0ba169;
+}
+
+/* =====メイン中身===== */
+h2{
+    background-color: #8cd0a6;
+    font-size: 22px;
+    font-weight: bold;
+    padding-left: 15px;
+}
+.loan-title{
+    margin-bottom: 20px;
+    font-weight: bold;
+    font-size: 24px;
+}
+.loan-image {
+    background: #ddd;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 24px;
+}
+.loan-image img {
+    max-width: 100%;
+    margin: 0 auto;
+    height: 0 auto;
+}
+/*--- 基本情報のテーブル（AFCフィールで生成） ---*/
+.info-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 16px;
+}
+.info-table th,
+.info-table td {
+    border: 1px solid #39B167;
+    padding: 8px;
+    text-align: left;
+}
+.info-table th {
+    border-bottom: 1px solid #fff;
+    color: #fff;
+    background: #39B167;
+    border-top: 1px solid #fff;
+}
+/* 金利の注釈 */
+.rate-note {
+    margin-top: 6px;
+    font-size: 12px;
+    color: #555;
+}
+/* テーブル内の※（上付き＆小さめ） */
+.info-table .rate-asterisk {
+    font-size: 0.7em;
+    vertical-align: super;
+    margin-left: 0.15em;
+}
+
+/* 注釈（1件だけのときの段落） */
+.rate-note {
+    margin-top: 6px;
+    font-size: 12px;
+    color: #555;
+}
+
+/* 複数あるときの注釈リスト */
+.rate-notes {
+    margin-top: 6px;
+    padding-left: 0;
+    list-style: none;
+    font-size: 12px;
+    color: #555;
+}
+
+.rate-notes li {
+    margin-bottom: 2px;
+}
+
+.rate-notes .note-label {
+    font-weight: 600;
+    margin-right: 0.25em;
+}
+
+.basic-info h3{
+    font-size: 20px;
+    font-weight: bold;
+    text-align: center;
+    background-color: #39B167;
+    color: #fff;
+    padding: 3px;
+}
+/*―――――― おすすめ度＆ボタン ――――――*/
+.btn{
+    text-align: center;
+}
+.rating-and-btn {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.rating {
+    font-size: 30px;
+    color: #f5a623; /* ★色 */
+}
+.rating-and-btn h4{
+    font-size: 18px;
+    font-weight: bold;
+}
+.apply-btn {
+    display: inline-block;
+    padding: 12px 32px;
+    background: linear-gradient(to right, #6a8cff, #5cc1ff);
+    color: #fff;
+    border-radius: 30px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: opacity .2s;
+    margin: 20px;
+    box-shadow: none;
+}
+.apply-btn:hover {
+    opacity: .8;
+}
+/*―――――― ポイントセクション ――――――*/
+.point{
+    padding-top: 20px;
+    padding-left: 40px;
+}
+.radius{
+    background-color: #39B167;
+    color: #fff;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    text-align:center;
+    line-height: 50px;
+    font-size: 20px;
+}
+.point ul{
+    display: flex;
+    gap: 80px;
+    text-align: center;
+    justify-content: center;
+}
+.point li img{
+    border: 1px solid #39B167;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 10px;
+}
+.point li p{
+    font-weight: bold;
+    line-height: 1.5;
+}
+
+/*―――――― メイン ――――――*/
+.content {
+    flex: 1;
+}
+.breadcrumb {
+    list-style: none;
+    display: flex;
+    font-size: .9em;
+    margin-bottom: 20px;
+}
+.breadcrumb li + li::before {
+    content: "›";
+    margin: 0 8px;
+    color: #666;
+}
+.breadcrumb a {
+    color: #333;
+    text-decoration: none;
+}
+
+.company_section {
+    margin-top: 1.5em;
+}
+
+/*―――――― 記事部分CSS ――――――*/
+.company_title {
+    font-size: 28px;
+    font-weight: bold;
+    color: #000000;
+    border-left:5px solid #39B167;
+    padding-left: 15px;
+    margin-top: 2px;
+    margin-bottom: 15px;
+}
+
+.company_list {
+    list-style: disc;
+    padding-left: 1.5em;
+    margin-bottom: 2em;
+    color: #333;
+}
+
+.company_list li {
+    margin-bottom: 0.5em;
+    line-height: 1.6;
+}
+
+.company_table_wrapper {
+    overflow-x: auto;
+}
+
+.company_table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #fff;
+    font-size: 0.95em;
+}
+
+.company_table th,
+.company_table td {
+    border: 1px solid #ddd;
+    padding: 0.75em;
+    text-align: center;
+}
+
+.company_table thead th {
+    background-color: #39B167;
+    color: #fff;
+}
+
+.company_table tbody tr:nth-child(even) {
+    background-color: #f3f3f3;
+}
+
+.company_toc {
+    margin-top: 2em;
+    background: #f9f9f9;
+    padding: 1.5em;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.company_toc_list {
+    list-style: none;
+    padding-left: 0;
+    font-size: 0.95em;
+    font-weight: bold;
+}
+
+.company_toc_list > li {
+    margin-bottom: 0.8em;
+    font-size: 16px;
+}
+
+.company_toc_list a {
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+.company_toc_list a:hover {
+    color: #2e8b57;
+}
+
+.company_toc_list ul {
+    margin-top: 0.4em;
+    padding-left: 1.2em;
+    list-style: disc;
+    color: #555;
+    list-style: none;
+}
+
+.company_toc_list ul li {
+    margin-bottom: 0.4em;
+}
+
+.company_paragraph {
+    margin-bottom: 1em;
+    line-height: 1.7;
+    color: #333;
+    font-size: 0.96em;
+}
+
+.company_subtitle {
+    font-size: 1.05em;
+    font-weight: bold;
+    color: #39B167;
+    margin-top: 1.5em;
+    margin-bottom: 0.5em;
+}
+
+.company_flow_container {
+    text-align: center;
+    padding-top: 30px;
+    padding-bottom: 20px;
+}
+
+.company_flow_title {
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+    background-color: white;
+}
+
+.company_flow_steps {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.company_step_box {
+    width: 500px;
+    background-color: #1d8f48;
+    color: white;
+    padding: 15px;
+    font-weight: bold;
+    font-size: 16px;
+    border-radius: 5px;
+    text-align: center;
+    position: relative;
+}
+
+.company_step_box p {
+    margin: 0;
+    font-weight: normal;
+    font-size: 15px;
+    line-height: 1.6;
+}
+
+.company_flow_steps strong {
+    background: linear-gradient(transparent 100%);
+}
+
+.company_step_box_final {
+    width: 500px;
+    background-color: #1d8f48;
+    color: white;
+    padding: 15px;
+    font-weight: bold;
+    font-size: 16px;
+    border-radius: 5px;
+    text-align: center;
+    position: relative;
+}
+
+.company_step_box_final p {
+    margin: 0;
+    font-weight: normal;
+    font-size: 15px;
+    line-height: 1.6;
+}
+
+.company_flow_line {
+    width: 5px;
+    height: 20px;
+    background-color: #39B167;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+/* 必要書類 */
+.company_list {
+    list-style: disc;
+    padding-left: 1.5em;
+    margin-bottom: 2em;
+    color: #333;
+}
+.company_list li {
+    margin-bottom: 0.5em;
+    line-height: 1.6;
+}
+
+/* 利用者のリアルな声 */
+
+.company_voice_item {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 2em;
+}
+
+.company_voice_img img {
+    width: 80px;
+    height: 80px;
+    object-fit: contain;
+    margin-right: 1.2em;
+}
+
+.company_voice_text p {
+    margin: 0 0 0.4em;
+    font-size: 0.95em;
+    line-height: 1.6;
+    color: #444;
+}
+
+.company_faq_box {
+    margin-bottom: 12px;
+}
+
+.company_faq_question {
+    background-color: #bce7ce;
+    border: 2px solid #39B167;
+    padding: 15px 20px;
+    font-weight: bold;
+    font-size: 16px;
+    position: relative;
+    cursor: pointer;
+    width: 100%;
+    text-align: left;
+    transition: 0.3s ease;
+}
+
+.company_faq_question::after {
+    content: "+";
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 20px;
+    color: #39B167;
+}
+
+.company_faq_box.active .company_faq_question::after {
+    content: "-";
+}
+
+.company_faq_answer {
+    display: none;
+    padding: 15px 20px;
+    border-top: 1px solid #ddd;
+    background-color: #d2e9db;
+    color: #000000;
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+/* 申込ボタン*/
+.apply-btnblue {
+    background: linear-gradient(to bottom, #4d90fe, #6ea9ff);
+    color: white;
+    padding: 20px 50px;
+    margin: auto;
+    border: none;
+    border-radius: 12px;
+    font-size: 20px;
+    font-weight: bold;
+    text-align: center;
+    text-decoration: none;
+    display: block;
+    cursor: pointer;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    max-width: 90%;
+    position: relative;
+    overflow: hidden; /* ← 光がはみ出ないように */
+}
+
+.apply-btnblue::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -75%;
+    width: 50%;
+    height: 100%;
+    background: linear-gradient(
+        120deg,
+        rgba(255, 255, 255, 0.5) 0%,
+        rgba(255, 255, 255, 0.2) 50%,
+        rgba(255, 255, 255, 0) 100%
+    );
+    transform: skewX(-20deg);
+}
+
+.apply-btnblue:hover::before {
+    left: 125%;
+    transition: left 0.6s ease;
+}
+
+.apply-btnblue:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.center-flex p{
+    text-align: center;
+    font-weight: bold;
+    font-size: 23px;
+    padding-top: 20px;
+    padding-bottom: 5px;
+}
+
+/***** 監修（expert-supervision） *****/
+.expert-supervision__profile-img {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.expert-supervision__badge {
+    display: inline-block;
+    background-color: #39B167;
+    color: #fff;
+    padding: 1px 16px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.expert-supervision__wrap {
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: 20px;
+}
+
+.expert-supervision__name {
+    font-size: 18px;
+    font-weight: bold;
+    margin: 4px 0;
+}
+
+.expert-supervision__balloon {
+    position: relative;
+    display: inline-block;
+    margin: 0 1.5em 15px;
+    padding: 7px 10px;
+    min-width: 120px;
+    max-width: 440px; /* PCで横に伸びすぎ防止（好みで） */
+    color: #555;
+    font-size: 16px;
+    line-height: 1.7;
+    /* 読みやすく */
+    word-break: break-word;
+    /* 長い単語でも折り返す */
+    background: #d2eedd;
+}
+
+.expert-supervision__balloon:before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: -30px;
+    margin-top: -15px;
+    border: 15px solid transparent;
+    border-right: 15px solid #d2eedd;
+}
+
+.expert-supervision__balloon p {
+    margin: 0;
+    padding: 0;
+}
+
+/* 監修：事務所情報 */
+.expert-supervision__office {
+    margin-top: 12px;
+}
+
+.expert-supervision__office-head {
+    display: flex;
+    gap: 12px;
+    align-items: baseline;
+    flex-wrap: wrap;
+    /* スマホで折り返し */
+}
+
+.expert-supervision__office-name {
+    font-size: 16px;
+    font-weight: bold;
+    margin: 0;
+}
+
+.expert-supervision__office-meta {
+    margin: 0;
+    font-size: 14px;
+    color: #555;
+}
+
+.expert-supervision__office-desc {
+    margin-top: 6px;
+}
+
+/* ===== footer共通===== */
+/*===== 注意書き背景エリア =====*/
+.footer-note {
+    background-color: #39B167;
+    padding: 30px;
+    font-size: 12px;
+    line-height: 1.2;
+    color: white;
+}
+.footer-note p{
+    width: auto;
+    text-align: left;
+}
+.footer-iinner{
+    display: flex;
+    justify-content: space-between;
+    gap: 50px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+
+  /* ===== フッター内側 ===== */
+.footer-container {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 40px;
+}
+.footer-brand img {
+    width: 100px;
+}
+.footer-left {
+    display: flex;
+    text-align: center;
+    width: 300px;
+}
+.footer-left p{
+    width: 300px;
+}
+
+  /* ===== フッターのメニューリスト ===== */
+.footer-nav {
+    display: flex;
+    justify-content: space-between;
+    gap: 40px;
+    font-family: "Noto Sans JP", sans-serif;
+}
+.footer-nav ul {
+    list-style: none;
+    padding: 0 0 0 20px;
+    border-left: 1px solid #ccc;
+    min-width: 140px;
+    text-align: left;
+}
+.footer-nav ul:first-child {
+    border-left: none;
+    padding-left: 0;
+}
+.footer-nav li {
+    font-size: 14px;
+    margin-bottom: 6px;
+}
+.footer-nav li a {
+    color: #333;
+    text-decoration: none;
+}
+.footer-nav li a:hover {
+    text-decoration: underline;
+}
+  /* ===== コピーライト ===== */
+.copyright {
+    text-align: center;
+    font-size: 12px;
+    color: #666;
+}
+@media screen and (max-width: 768px) {
+    .footer-inner{
+        display: block;
+        padding-left: 20px;
+    }
+    .footer-container{
+        justify-content: left;
+    }
+}
+
+/* alias: acom.html の .column-hero 相当 */
+.company-hero-banner {
+    background-size: cover;
+    background-position: center;
+    /*height: 252px;*/
+    padding: 60px 40px;
+}
+
+.compansy-hero-inner {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 40px;
+    flex-wrap: wrap;
+}
+
+.loan-title {
+    margin-bottom: 20px;
+    font-weight: bold;
+    font-size: 24px;
+    color: #1a1a1a;
+}
+/* alias: .rating-and-btn と同等にする */
+.rating-and-cta {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.rating-and-cta h3 {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.rating-and-cta .rating-stars {
+    font-size: 30px;
+    color: #f5a623;
+}
+
+.apply-box .apply-btn {
+    display: inline-block;
+    padding: 12px 32px;
+    background: linear-gradient(to right, #6a8cff, #5cc1ff);
+    color: #fff;
+    border-radius: 30px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: opacity .2s;
+    margin: 20px;
+}
+
+.apply-box .apply-btn:hover {
+    opacity: .8;
+}
+/* acom.css は .basic-info h3 を装飾しているので h2にも同じ見た目を適用 */
+.basic-info h3,
+.basic-info .section-title {
+    font-size: 20px;
+    font-weight: bold;
+    text-align: center;
+    background: #39B167;
+    color: #fff;
+    padding: 3px;
+}
+
+.company_faq_answer[hidden] {
+    display: none;
+}
+
+.company_faq_box.active .company_faq_answer {
+    display: block;
+}
+

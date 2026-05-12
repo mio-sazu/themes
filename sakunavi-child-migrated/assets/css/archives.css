@@ -1,0 +1,361 @@
+/* ============================
+   お金コラム カテゴリー一覧
+============================ */
+
+.column-category-links {
+    margin-top: 24px;
+}
+
+.column-category-links__list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 16px;
+    padding: 0;
+    margin: 24px 0 0;
+    list-style: none;
+}
+
+.column-category-links__item {
+    margin: 0;
+}
+
+.column-category-links__link {
+    display: block;
+    padding: 18px 20px;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    background: #fff;
+    text-decoration: none;
+    color: #222;
+    transition: 0.2s ease;
+}
+
+.column-category-links__link:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+}
+
+.column-category-links__name {
+    display: block;
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 8px;
+}
+
+.column-category-links__desc {
+    display: block;
+    font-size: 13px;
+    line-height: 1.7;
+    color: #666;
+}
+
+
+/*////////コラム一覧ページのUI（archive-column） ////////*/
+/* 対象：column アーカイブ & コラムカテゴリ & お金コラム系のタクソノミー */
+
+.post-type-archive-column .page-header,
+.tax-column_category .page-header,
+.tax-money_column .page-header {
+    margin: 8px 0 24px;
+}
+
+.post-type-archive-column .page-title,
+.tax-column_category .page-title,
+.tax-money_column .page-title {
+    margin: 0;
+    font-size: clamp(22px, 2.4vw, 28px);
+}
+
+.post-type-archive-column .lead,
+.tax-column_category .lead,
+.tax-money_column .lead {
+    margin-top: 6px;
+    color: #666;
+}
+
+/* コラム：カテゴリナビ */
+.post-type-archive-column .genre-nav ul,
+.tax-column_category .genre-nav ul,
+.tax-money_column .genre-nav ul {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    list-style: none;
+    padding: 0;
+    margin: 0 0 16px;
+}
+
+.post-type-archive-column .genre-nav a,
+.tax-column_category .genre-nav a,
+.tax-money_column .genre-nav a {
+    display: inline-block;
+    padding: 6px 12px;
+    border: 1px solid #e5e9ef;
+    border-radius: 999px;
+    background: #fff;
+}
+
+.post-type-archive-column .genre-nav a:hover,
+.tax-column_category .genre-nav a:hover,
+.tax-money_column .genre-nav a:hover {
+    background: #f7f9fc;
+}
+
+/* コラム：カードグリッド */
+.post-type-archive-column .post-list,
+.tax-column_category .post-list,
+.tax-money_column .post-list {
+    --cols: 3;
+    display: grid;
+    grid-template-columns: repeat(var(--cols), minmax(0, 1fr));
+    gap: 16px;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+/* カテゴリバッジ */
+.post-type-archive-column .post-item .post-cat-list,
+.tax-column_category .post-item .post-cat-list,
+.tax-money_column .post-item .post-cat-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    margin: 0 0 6px;
+    padding: 0 10px;
+    list-style: none;
+}
+
+.post-type-archive-column .post-item .post-cat-list li,
+.tax-column_category .post-item .post-cat-list li,
+.tax-money_column .post-item .post-cat-list li {
+    margin: 0;
+    padding: 0;
+}
+
+/* a 自体をバッジにする */
+.post-type-archive-column .post-item .post-cat-list li a,
+.tax-column_category .post-item .post-cat-list li a,
+.tax-money_column .post-item .post-cat-list li a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    padding: 3px 8px;
+    border-radius: 999px;
+    background: rgba(57, 177, 103, .12);
+    /* 薄いグリーン */
+    color: #39B167;
+    text-decoration: none;
+    line-height: 1.4;
+}
+
+/* 万が一、他のCSSで ::before / ::after を付けられていても消す */
+.post-type-archive-column .post-item .post-cat-list li a::before,
+.post-type-archive-column .post-item .post-cat-list li a::after,
+.tax-column_category .post-item .post-cat-list li a::before,
+.tax-column_category .post-item .post-cat-list li a::after,
+.tax-money_column .post-item .post-cat-list li a::before,
+.tax-money_column .post-item .post-cat-list li a::after {
+    content: none !important;
+}
+
+/* カード本体 */
+.post-type-archive-column .post-item,
+.tax-column_category .post-item,
+.tax-money_column .post-item {
+    border: 1px solid #eee;
+    border-radius: 12px;
+    background: #fff;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.post-type-archive-column .post-item a,
+.tax-column_category .post-item a,
+.tax-money_column .post-item a {
+    display: flex;
+    flex-direction: column;
+    /*height: 100%;*/
+    color: inherit;
+    text-decoration: none;
+}
+
+.post-type-archive-column .post-item img,
+.tax-column_category .post-item img,
+.tax-money_column .post-item img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    background: #f5f7fa;
+}
+
+.post-type-archive-column .post-title,
+.tax-column_category .post-title,
+.tax-money_column .post-title {
+    font-size: 1.05rem;
+    margin: 12px 12px 0;
+}
+
+.post-type-archive-column .post-item time,
+.tax-column_category .post-item time,
+.tax-money_column .post-item time {
+    font-size: .85rem;
+    color: #777;
+    margin: 6px 12px 0;
+}
+
+.post-type-archive-column .post-excerpt,
+.tax-column_category .post-excerpt,
+.tax-money_column .post-excerpt {
+    color: #555;
+    margin: 8px 12px 12px;
+}
+
+.post-type-archive-column .post-meta,
+.tax-column_category .post-meta,
+.tax-money_column .post-meta {
+    margin: 8px 12px 12px;
+}
+
+.post-type-archive-column .term-list,
+.tax-column_category .term-list,
+.tax-money_column .term-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.post-type-archive-column .term-list a,
+.tax-column_category .term-list a,
+.tax-money_column .term-list a {
+    display: inline-block;
+    padding: 4px 8px;
+    border: 1px solid #e5e9ef;
+    border-radius: 6px;
+    background: #fafbff;
+    color: #445;
+}
+
+/* レスポンシブ */
+@media (max-width:1024px) {
+
+    .post-type-archive-column .post-list,
+    .tax-column_category .post-list,
+    .tax-money_column .post-list {
+        --cols: 2;
+    }
+}
+
+@media (max-width:640px) {
+
+    .post-type-archive-column .post-list,
+    .tax-column_category .post-list,
+    .tax-money_column .post-list {
+        --cols: 1;
+    }
+}
+
+/* Pagination */
+.pagination {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    margin: 20px 0
+}
+
+.pagination a,
+.pagination span {
+    display: inline-block;
+    padding: 6px 10px;
+    border: 1px solid #e5e9ef;
+    border-radius: 6px;
+    background: #fff
+}
+
+.pagination .current {
+    background: #0b5cff;
+    color: #fff;
+    border-color: #0b5cff
+}
+
+/* ランキング一覧（post type archive / taxonomy） */
+.rank-archive .rank-grid {
+    --cols: 2;
+    display: grid;
+    grid-template-columns: repeat(var(--cols), minmax(0, 1fr));
+    gap: 16px
+}
+
+@media (max-width:900px) {
+    .rank-archive .rank-grid {
+        --cols: 1
+    }
+}
+
+.rank-card {
+    border: 1px solid #eee;
+    border-radius: 12px;
+    background: #fff;
+    padding: 14px;
+    display: grid;
+    grid-template-columns: 96px 1fr;
+    gap: 12px;
+    align-items: center
+}
+
+.rank-card__logo {
+    width: 96px;
+    height: 96px;
+    object-fit: contain;
+    background: #fff;
+    border: 1px solid #eee;
+    border-radius: 8px
+}
+
+.rank-card__title {
+    margin: 0;
+    font-weight: 700
+}
+
+.rank-card__meta {
+    font-size: .9rem;
+    color: #666
+}
+
+.stars {
+    font-size: 14px;
+    letter-spacing: 2px;
+    color: #f5a623
+}
+
+.rank-card__more {
+    margin-left: auto
+}
+
+.post-thumb-link {
+    display: block;
+}
+
+.post-thumb-link img {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+.post-title-link {
+    color: inherit;
+    text-decoration: none;
+}
+
+.post-title-link:hover {
+    text-decoration: underline;
+}
+
+.post-cat-list--bottom {
+    margin-top: 12px;
+}

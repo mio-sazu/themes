@@ -1,0 +1,30 @@
+{
+  "key": "group_slider_banner_fields",
+  "title": "スライダーバナー情報",
+  "fields": [
+    {
+      "key": "field_slider_link",
+      "label": "リンク先URL",
+      "name": "slider_link",
+      "type": "url",
+      "instructions": "バナークリック時のリンク先を入力してください",
+      "required": 0,
+      "default_value": ""
+    }
+  ],
+  "location": [
+    [
+      {
+        "param": "post_type",
+        "operator": "==",
+        "value": "slider_banner"
+      }
+    ]
+  ],
+  "position": "normal",
+  "style": "seamless",
+  "label_placement": "top",
+  "instruction_placement": "label",
+  "active": 1,
+  "description": ""
+}

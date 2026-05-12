@@ -1,0 +1,885 @@
+/*共通文字の幅*/
+.text-width p{
+    margin-bottom: 20px;
+    font-size: 14px;
+    line-height: 1.7;
+    color: #555;
+}
+
+.articleimg > img{
+    width: 700px;
+}
+
+/* ===== footer共通===== */
+/* ===== 注意書き背景エリア ===== */
+.footer-note {
+    background-color: #39B167;
+    padding: 30px;
+    font-size: 12px;
+    line-height: 1.2;
+    color: white;
+}
+.footer-note p{
+    width: auto;
+    text-align: left;
+}
+.footer-iinner{
+    display: flex;
+    justify-content: space-between;
+    gap: 50px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+  /* ===== フッター内側 ===== */
+.footer-container {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 40px;
+}
+.footer-brand img {
+    width: 100px;
+}
+.footer-left {
+    display: flex;
+    text-align: center;
+    width: 300px;
+}
+.footer-left p{
+    width: 300px;
+}
+
+  /* ===== フッターのメニューリスト ===== */
+.footer-nav {
+    display: flex;
+    justify-content: space-between;
+    gap: 40px;
+    font-family: "Noto Sans JP", sans-serif;
+}
+.footer-nav ul {
+    list-style: none;
+    padding: 0 0 0 20px;
+    border-left: 1px solid #ccc;
+    min-width: 140px;
+    text-align: left;
+}
+.footer-nav ul:first-child {
+    border-left: none;
+    padding-left: 0;
+}
+.footer-nav li {
+    font-size: 14px;
+    margin-bottom: 6px;
+}
+.footer-nav li a {
+    color: #333;
+    text-decoration: none;
+}
+.footer-nav li a:hover {
+    text-decoration: underline;
+}
+  /* ===== コピーライト ===== */
+.copyright {
+    text-align: center;
+    font-size: 12px;
+    color: #666;
+}
+
+/*共通黄色い下線*/
+section strong {
+    font-weight: bold;
+    background: linear-gradient(transparent 60%, #fef5b5 60%);
+}
+
+.hero-inner {
+    background-image: url("../images/index/index_img_03.png");
+    background-size: cover;
+    background-position: center;
+    height: 252px;
+    padding: 60px 20px;
+}
+
+  /* 中のレイアウト */
+.hero-inner {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 40px;
+    margin: 0 auto;
+    flex-wrap: wrap; /* レスポンシブ対応 */
+}
+.hero-image{
+    width: 200px;
+}
+  /* イラスト画像 */
+.hero-image img {
+    width: 100%;
+}
+  /* テキスト画像 */
+.hero-text img {
+    width: 500px;
+    max-width: 100%;
+}
+.column-hero{
+    background-image: url("../images/index/index_img_03.png");
+    background-size: cover;
+    background-position: center;
+    height: 252px;
+    padding: 60px 20px;
+}
+.column-hero{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 40px;
+    margin: 0 auto;
+    flex-wrap: wrap; /* レスポンシブ対応 */
+}
+/*リンクを押したときのゆっくりな動き*/
+html { scroll-behavior: smooth;}
+
+/*訪問済みのリンク指定*/
+.lead-box a:hover {
+color:#0000EE;
+text-decoration:underline;
+}
+
+.lead-box a:visited {
+color:#551A8B;
+text-decoration:underline;
+}
+
+/*目次の横の矢印*/
+/*worker ver*/
+.worker-lead-box ul {
+    list-style: none; 
+    padding-left: 1em; /* 必要に応じて調整 */
+}
+.worker-lead-box li{
+    margin-bottom: 10px;
+    color: #555;
+}
+
+.worker-lead-box li::before {
+    content: "";
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    margin-right: 10px;
+    border-top: 2px solid #2c3e50;
+    border-right: 2px solid #2c3e50;
+    transform: rotate(45deg);
+    position: relative;
+    top: -3px;
+}
+/*student ver*/
+.student-lead-box ul {
+    list-style: none;
+    padding-left: 1em; /* 必要に応じて調整 */
+}
+.student-lead-box li{
+    margin-bottom: 10px;
+    color: #555;
+}
+
+.student-lead-box li::before {
+    content: "";
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    margin-right: 10px;
+    border-top: 2px solid #2c5041;
+    border-right: 2px solid #2c5041;
+    transform: rotate(45deg);
+    position: relative;
+    top: -3px;
+}
+/*housewife ver*/
+.housewife-lead-box ul {
+    list-style: none;
+    padding-left: 1em; /* 必要に応じて調整 */
+}
+.housewife-lead-box li{
+    margin-bottom: 10px;
+    color: #555;
+}
+
+.housewife-lead-box li::before {
+    content: "";
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    margin-right: 10px;
+    border-top: 2px solid #50402c;
+    border-right: 2px solid #50402c;
+    transform: rotate(45deg);
+    position: relative;
+    top: -3px;
+}
+
+
+/*////////パンくず共通(articleの下から)////////*/
+.breadcrumb-001 {
+    display: flex;
+    gap: 0 22px;
+    list-style: none;
+    padding: 0;
+    font-size: .9em;
+}
+
+.breadcrumb-001 li {
+    display: flex;
+    align-items: center;
+}
+
+
+
+/*////////まとめ共通////////*/
+.loan-summary-box {
+    background-color: #f4f4f4;
+    padding: 25px 20px;
+    border-left: 5px solid;
+    border-radius: 4px;
+    margin-top: 40px;
+    margin-bottom: 40px;
+}
+.loan-summary-box p {
+    font-size: 15px;
+    line-height: 1.7;
+}
+.loan-summary-box.orange { border-left-color: #ff9900; }
+.loan-summary-box.green { border-left-color: #0ba169; }
+.loan-summary-box.blue  { border-left-color: #87b5ff; }
+
+.breadcrumb-001 li:first-child::before {
+    display: inline-block;
+    width: 1em;
+    height: 1em;
+    margin-right: 4px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M20 20C20 20.5523 19.5523 21 19 21H5C4.44772 21 4 20.5523 4 20V11L1 11L11.3273 1.6115C11.7087 1.26475 12.2913 1.26475 12.6727 1.6115L23 11L20 11V20ZM11 13V19H13V13H11Z' fill='%23333333'%3E%3C/path%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    content: '';
+}
+
+.breadcrumb-001 li:not(:last-child)::after {
+    display: inline-block;
+    transform: rotate(45deg);
+    width: .3em;
+    height: .3em;
+    margin-left: 10px;
+    border-top: 1px solid #333333;
+    border-right: 1px solid #333333;
+    content: '';
+}
+
+.page-student h3{
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.page-housewife h3{
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.page-worker h3{
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.breadcrumb-001 a {
+    color: black;
+    text-decoration: none;
+}
+
+.page-student h1 {
+    font-size: 42px;
+    font-weight: bold;
+    text-align: center;
+}
+.page-housewife h1 {
+    font-size: 42px;
+    font-weight: bold;
+    text-align: center;
+}
+.page-worker h1 {
+    font-size: 42px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.page-student h2 {
+    font-size: 31px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    border-left: 5px solid #0a7d61;
+    padding-left: 10px;
+    margin-top: 30px;
+}
+.page-housewife h2 {
+    font-size: 31px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    border-left: 5px solid #f2a444;
+    padding-left: 10px;
+}
+.page-worker h2 {
+    font-size: 31px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    border-left: 5px solid #b3d4ff;
+    padding-left: 10px;
+}
+/*////////btn共通////////*/
+/* 各ページに設置予定、現段階では全然追加できてないです！ */
+.btn {
+    background: linear-gradient(to bottom, #5cd67e, #38b000); /* 明るめ→濃い緑 */
+    color: #fff;
+    padding: 20px 50px;
+    font-size: 18px;
+    font-weight: bold;
+    border: none;
+    border-radius: 50px;
+    text-decoration: none;
+    display: inline-block;
+    cursor: pointer;
+    box-shadow: 0 8px 20px rgba(56, 176, 0, 0.4), inset 0 2px 4px rgba(255, 255, 255, 0.5); /* 外＆内側の光沢 */
+    transition: all 0.3s ease;
+}
+.btn:hover {
+    transform: scale(1.05); 
+}
+.btn-box {
+    text-align: center;
+    margin: 30px 0;
+}
+/*//////// aside共通 ////////*/
+.toc-wrapper {
+    width: 200px;
+}
+.toc-box {
+    margin-bottom: 20px;
+    border: 1px solid #39B167;
+    }
+.toc-title {
+    background-color: #39B167;
+    color: white;
+    text-align: center;
+    padding: 8px;
+    font-weight: bold;
+}
+.toc-box ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+.toc-box li {
+    border-top: 1px solid #39B167;
+    padding: 10px;
+    text-align: center;
+}
+.toc-box li:first-child {
+    border-top: none; /* 最初のliの線は消す */
+}
+
+
+
+/*題名下線共通*/
+.highlight .green {
+    text-decoration: underline;
+    text-decoration-color: #0ba169;
+}
+.highlight .orange {
+    text-decoration: underline;
+    text-decoration-color: #f2a444;
+}
+.highlight .blue {
+    text-decoration: underline;
+    text-decoration-color: #87b5ff;
+}
+
+/*h1下の空白共通*/
+.top-flex {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 30px;
+    flex-wrap: wrap;
+    margin: 30px 0 0px 0;
+    padding-bottom: 50px;
+}
+
+.page-student .student-intro-box {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    background-color: #fff;
+    border: 2px solid #86d6af;
+    border-radius: 8px;
+    padding: 30px;
+}
+
+/*h4文字共通　色だけ変える*/
+.page-worker h4 {
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #2c3e50;
+    margin-top: 5px;
+}
+.page-housewife  h4 {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #50402c;
+    margin-top: 5px;
+}
+.page-student  h4 {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #2c5041;
+    margin-top: 5px;
+}
+
+/* ===== パート主婦向けページＣＳＳ ===== */
+
+/* 共通セクションラッパー */
+.page-housewife {
+    background-color: #fff;
+    color: #333;
+    line-height: 1.8;
+}
+  /* ===== リードセクション ===== */
+.page-housewife .lead-section h1 {
+    font-size: 40px;
+    text-align: center;
+    font-weight: bold;
+}
+
+.page-housewife .lead-img img {
+    width: 90px;
+}
+
+.page-housewife .lead-box {
+    background: #fff;
+    border: 2px solid #f2a444;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+}
+
+  /* ===== はじめにの説明 ===== */
+.page-housewife .intro-section {
+    font-size: 16px;
+}
+
+  /* =====収入が少なくても借りれる？ ===== */
+.page-housewife .point-section {
+    margin-top: 50px;
+}
+.reason-section strong{
+    font-weight: bold;
+    background: linear-gradient(transparent 60%, #fef5b5 60%);
+}
+.page-housewife .underline {
+    text-decoration: underline;
+    color: #e94e3c;
+    font-weight: bold;
+}
+/* ▼ 審査に通りやすくなるポイント */
+.page-housewife .housewife-point-box {
+    margin: 40px 0;
+}
+.page-housewife .point-content {
+    border: 2px solid #ffa647;
+    border-radius: 6px;
+    background: #fff;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+.page-housewife .point-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    flex: 1;
+}
+.page-housewife .point-list li {
+    margin-bottom: 16px;
+    line-height: 1.7;
+}
+.page-housewife .point-illust {
+    width: 30px;
+    height: auto;
+    flex-shrink: 0;
+    transform: scale(-1, 1);
+    margin-top: 30px;
+}
+  /* ▼ 家族にバレずに使用できるの？ */
+.page-housewife .housewife-safe-box {
+    margin-top: 60px;
+    margin-bottom: 60px;
+}
+.page-housewife .housewife-heading.orange {
+    font-size: 22px;
+    font-weight: bold;
+    border-left: 4px solid #ff8800;
+    padding-left: 8px;
+    margin-bottom: 16px;
+}
+.page-housewife .housewife-safe-point {
+    background: #ffe6cc;
+    border: 2px solid #ffa647;
+    padding: 20px;
+    margin-top: 20px;
+    border-radius: 6px;
+}
+.page-housewife .housewife-safe-point ul {
+    padding-left: 1em;
+    line-height: 1.6;
+}
+/* ▼ 家族にばれにくいカードローンの特徴 */
+.page-housewife .housewife-card-feature {
+    padding-top: 60px;
+    background: #fff;
+    text-align: center;
+}
+.page-housewife .housewife-card-feature .sub-title {
+    font-size: 16px;
+    color: #333;
+    margin-bottom: 30px;
+}
+  /* 上部小カード群 */
+.page-housewife .feature-top-cards {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin: 40px 0 40px 0;
+}
+.page-housewife .feature-top-card {
+    background: #fff;
+    border: 1px solid #ddd;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.06);
+    border-radius: 8px;
+    padding: 16px 20px;
+    font-weight: bold;
+    width: 200px;
+    font-size: 15px;
+}
+.page-housewife .feature-top-card .note {
+    font-size: 13px;
+    color: #777;
+}
+  /* メインの3カードレイアウト */
+.page-housewife .feature-cards {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    padding: 30px 0 30px 0;
+}
+.page-housewife .feature-card {
+    background: #fcc793;
+    border-radius: 16px;
+    padding: 24px;
+    width: 260px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    box-sizing: border-box;
+}
+.page-housewife .feature-card img {
+    width: 150px;
+    height: 100px; /* 高さを強制統一！ */
+    object-fit: contain;
+    margin-bottom: 14px;
+}
+.page-housewife .feature-card:last-of-type img {
+    width: 120px;
+    height: 100px; /* 高さだけは同じにする */
+}
+.card-text {
+    display: block; /* ← これ重要。flex外す */
+}
+.page-housewife .feature-card p {
+    font-size: 14px;
+    line-height: 1.7;
+    color: black;
+}
+  /* 審査が通りやすいカードローンは？ */
+.page-housewife .loan-tip-box {
+    border: 2px solid #ff9900;
+    background-color: #fffaf3;
+    padding: 20px;
+    border-radius: 10px;
+    margin: 30px 0 30px 0;
+}
+.page-housewife .loan-tip-box p {
+    font-size: 15px;
+    line-height: 1.7;
+}
+.loan-tip-box strong{
+    font-weight: bold;
+    background: linear-gradient(transparent 60%, #fef5b5 60%);
+}
+/* ===== 学生・20代向けページ専用CSS===== */
+
+.page-student{
+    background-color: #fff;
+    color: black;
+    line-height: 1.8;
+}
+.page-student .student-section {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 40px 20px;
+}
+.page-student h1 {
+    font-size: 42px;
+    font-weight: bold;
+    text-align: center;
+}
+.student-image img{
+    width: 150px;
+}
+.page-student .student-intro-box img {
+    width: 80px;
+    height: auto;
+    flex-shrink: 0;
+}
+.page-student .student-intro-box li {
+    font-size: 16px;
+    margin-bottom: 10px;
+}
+/* 希望額を低めに設定しよう */
+.student-point-section img{
+    width: 250px;
+}
+/* 初めての方でも安心して使えるカードローンのポイント */
+.page-student .student-point-box {
+    margin-top: 40px;
+}
+.page-student .point-heading {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    border: none;
+    padding-left: 0;
+}
+.page-student .point-box {
+    border: 2px solid #0ba169;
+    padding: 20px;
+    border-radius: 10px;
+    background-color: #fff;
+}
+.page-student .point-box p{
+    font-size: 15px;
+}
+.page-student .point-box strong{
+    font-weight: bold;
+}
+.page-student .point-box ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+.page-student .point-box li {
+    margin-bottom: 20px;
+    line-height: 1.8;
+    font-size: 15px;
+}
+.page-student .point-box li strong {
+    display: block;
+    font-size: 16px;
+    margin-bottom: 5px;
+    background: none;
+}
+
+.page-student .student-plan-box,
+.page-student .student-urgent-box,
+.page-student .student-summary {
+    margin-top: 50px;
+    line-height: 1.8;
+    font-size: 15px;
+}
+.page-student .student-plan-box img,
+.page-student .student-summary img {
+    max-width: 400px;
+    margin-top: 20px;
+    display: block;
+}
+/* まとめ */
+.loan-summary-box img{
+    width: 120px;
+}
+.loan-summary-box h4{
+    font-weight: bold;
+    font-size: 20px;
+}
+/* ===== 社会人向けページ専用CSS ===== */
+
+.page-worker {
+    background-color: #fff;
+    color: black;
+    line-height: 1.8;
+}
+
+.page-worker .page-last h3{
+    color: #2c3e50;
+}
+
+.page-worker .worker-title {
+    text-align: center;
+    font-size: 40px;
+    font-weight: bold;
+    margin-bottom: 30px;
+}
+.page-worker .worker-intro-box {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 40px;
+    flex-wrap: wrap;
+    margin-bottom: 30px;
+}
+.page-worker .worker-intro-box img {
+    width: 150px;
+}
+.page-worker .worker-intro-box ul {
+    border: 2px solid #7fbfff;
+    padding: 30px;
+    border-radius: 8px;
+    background: #fff;
+    font-size: 16px;
+    line-height: 1.8;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+}
+/* === 限度額が高いカードローンセクション === */
+.page-worker .worker-limit-section {
+    margin-top: 60px;
+}
+
+.page-worker .worker-lead {
+    font-weight: bold;
+    border-bottom: 2px solid #b3d4ff;
+    display: inline-block;
+    margin-bottom: 30px;
+}
+.page-worker .worker-limit-image {
+    text-align: center;
+    margin: 40px 0;
+}
+.page-worker .worker-limit-image img {
+    width: 300px;
+}
+.page-worker .worker-reason-title {
+    font-weight: bold;
+    font-size: 20px;
+    margin-bottom: 30px;
+    text-align: center;
+}
+.page-worker .worker-reasons {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+.page-worker .reason-circle {
+    border: 2px solid #b3d4ff;
+    border-radius: 50%;
+    width: 160px;
+    height: 160px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 20px;
+    font-size: 14px;
+    background-color: #fff;
+    line-height: 1.6;
+}
+
+/* === 審査に通りやすくするポイント === */
+.page-worker .worker-review-section {
+    margin-top: 60px;
+    padding: 0 20px;
+}
+.page-worker .worker-review-heading {
+    font-weight: bold;
+    font-size: 18px;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+}
+.page-worker .worker-review-box {
+    border: 2px solid #87b5ff;
+    padding: 20px;
+    background-color: #fff;
+}
+/* ===== 金利を抑えたいセクション ===== */
+.page-worker .worker-rate-section {
+    background-color: #fff;
+    margin-top: 30px;
+}
+.page-worker .worker-rate-lead {
+    font-size: 15px;
+    line-height: 1.8;
+    margin-bottom: 30px;
+}
+.page-worker .worker-rate-image img {
+    width: 100%;
+    display: block;
+    margin: 20px 0 20px 0;
+}
+.page-worker .worker-rate-block {
+    margin-bottom: 40px;
+}
+.page-worker .worker-speedloan-lead {
+    font-size: 14px;
+    line-height: 1.8;
+    margin-bottom: 20px;
+}
+.page-worker .worker-speedloan-flow {
+    text-align: center;
+    margin: 30px 0;
+}
+.page-worker .worker-speedloan-flow img {
+    width: 50px;
+    height: auto;
+}
+.page-worker .worker-speedloan-point {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    margin-bottom: 40px;
+    padding-top: 50px;
+}
+.page-worker .worker-speedloan-point{
+    font-size: 14px;
+}
+.page-worker .point-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+    flex-wrap: nowrap;
+}
+.page-worker .point-icon img {
+    width: 80px;
+    height: auto;
+    flex-shrink: 0;
+}
+
+.point-item:last-child .point-icon img {
+    margin-top: 50px;
+    width: 85px;
+}
+.point-item:first-child .point-icon img {
+    width: 80px;
+}
+

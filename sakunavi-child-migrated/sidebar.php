@@ -16,6 +16,106 @@
     ?>
 
     <!-- ============================
+         最新の記事
+    ============================ -->
+    <?php
+    $sb_latest = get_posts([
+      'post_type'      => 'column',
+      'posts_per_page' => 5,
+      'post_status'    => 'publish',
+      'orderby'        => 'date',
+      'order'          => 'DESC',
+    ]);
+    if (! empty($sb_latest)) :
+      $column_archive = get_post_type_archive_link('column') ?: home_url('/column/');
+    ?>
+    <div class="sidebar-box">
+      <h3>最新の記事</h3>
+      <ul class="sb-article-list">
+        <?php foreach ($sb_latest as $col) :
+          $thumb = get_the_post_thumbnail_url($col->ID, 'thumbnail');
+          $date  = get_the_modified_date('Y.m.d', $col->ID);
+          $terms = get_the_terms($col->ID, 'column_category');
+          $cats  = ($terms && ! is_wp_error($terms)) ? $terms : [];
+        ?>
+          <li class="sb-article-list__item">
+            <a href="<?php echo esc_url(get_permalink($col->ID)); ?>" class="sb-article-list__link">
+              <span class="sb-article-list__thumb<?php echo $thumb ? '' : ' sb-article-list__thumb--noimg'; ?>">
+                <?php if ($thumb) : ?>
+                  <img src="<?php echo esc_url($thumb); ?>" alt="" loading="lazy">
+                <?php endif; ?>
+              </span>
+              <span class="sb-article-list__body">
+                <span class="sb-article-list__date"><?php echo esc_html($date); ?></span>
+                <span class="sb-article-list__title"><?php echo esc_html($col->post_title); ?></span>
+              </span>
+            </a>
+            <?php if (! empty($cats)) : ?>
+              <div class="sb-article-list__cats">
+                <?php foreach ($cats as $cat) : ?>
+                  <a href="<?php echo esc_url(get_term_link($cat)); ?>" class="sb-article-list__cat">#<?php echo esc_html($cat->name); ?></a>
+                <?php endforeach; ?>
+              </div>
+            <?php endif; ?>
+          </li>
+        <?php endforeach; ?>
+      </ul>
+      <a href="<?php echo esc_url($column_archive); ?>" class="sidebar-box__more">一覧を見る &rsaquo;</a>
+    </div>
+    <?php endif; ?>
+
+    <!-- ============================
+         編集者おすすめの記事
+    ============================ -->
+    <?php
+    $sb_picks = get_posts([
+      'post_type'      => 'column',
+      'posts_per_page' => 5,
+      'post_status'    => 'publish',
+      'orderby'        => 'date',
+      'order'          => 'DESC',
+      'meta_query'     => [[
+        'key'   => 'is_editor_pick',
+        'value' => '1',
+      ]],
+    ]);
+    if (! empty($sb_picks)) :
+    ?>
+    <div class="sidebar-box">
+      <h3>編集者おすすめ</h3>
+      <ul class="sb-article-list">
+        <?php foreach ($sb_picks as $col) :
+          $thumb = get_the_post_thumbnail_url($col->ID, 'thumbnail');
+          $date  = get_the_modified_date('Y.m.d', $col->ID);
+          $terms = get_the_terms($col->ID, 'column_category');
+          $cats  = ($terms && ! is_wp_error($terms)) ? $terms : [];
+        ?>
+          <li class="sb-article-list__item">
+            <a href="<?php echo esc_url(get_permalink($col->ID)); ?>" class="sb-article-list__link">
+              <span class="sb-article-list__thumb<?php echo $thumb ? '' : ' sb-article-list__thumb--noimg'; ?>">
+                <?php if ($thumb) : ?>
+                  <img src="<?php echo esc_url($thumb); ?>" alt="" loading="lazy">
+                <?php endif; ?>
+              </span>
+              <span class="sb-article-list__body">
+                <span class="sb-article-list__date"><?php echo esc_html($date); ?></span>
+                <span class="sb-article-list__title"><?php echo esc_html($col->post_title); ?></span>
+              </span>
+            </a>
+            <?php if (! empty($cats)) : ?>
+              <div class="sb-article-list__cats">
+                <?php foreach ($cats as $cat) : ?>
+                  <a href="<?php echo esc_url(get_term_link($cat)); ?>" class="sb-article-list__cat">#<?php echo esc_html($cat->name); ?></a>
+                <?php endforeach; ?>
+              </div>
+            <?php endif; ?>
+          </li>
+        <?php endforeach; ?>
+      </ul>
+    </div>
+    <?php endif; ?>
+
+    <!-- ============================
          カテゴリー一覧
          ※ お金コラム用カテゴリを表示
          ※ 条件検索の親カテゴリ conditional は除外

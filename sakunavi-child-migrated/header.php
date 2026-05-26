@@ -54,7 +54,7 @@
         <div class="header-logo-menu">
           <div class="logo">
             <a href="<?php echo esc_url(home_url('/')); ?>">
-              <img src="<?php echo get_template_directory_uri(); ?>/images/index/index_logo.png" alt="<?php bloginfo('name'); ?> ロゴ">
+              <img src="<?php echo get_template_directory_uri(); ?>/images/index/logo.png" alt="<?php bloginfo('name'); ?> ロゴ">
             </a>
           </div>
 

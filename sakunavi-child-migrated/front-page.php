@@ -7,7 +7,23 @@
 get_header(); ?>
 
 
-<!-- ヒーローセクション -->
+<!-- ヒーローセクション
+     切替: 外観 > カスタマイズ > ヒーロービュー設定 -->
+<?php
+// 管理者向けデバッグ（確認後に削除）
+if (current_user_can('manage_options')) {
+    $debug_val = get_theme_mod('sakunavi_hero_type', 'original');
+    echo '<!-- [HERO DEBUG] sakunavi_hero_type = "' . esc_html($debug_val) . '" -->';
+}
+// URL パラメータ ?hero=column で管理者のみ強制テスト可能
+$hero_type = get_theme_mod('sakunavi_hero_type', 'original');
+if (current_user_can('manage_options') && isset($_GET['hero'])) {
+    $hero_type = sanitize_key($_GET['hero']);
+}
+?>
+<?php if ($hero_type === 'column'): ?>
+    <?php get_template_part('template-parts/hero-column-view'); ?>
+<?php else: ?>
 <div class="hero-inner">
     <div class="hero-image">
         <img src="/wp-content/themes/sakunavi-theme/images/index/index_img_01.png" alt="貯金を積み上げている人">
@@ -16,7 +32,8 @@ get_header(); ?>
         <img src="/wp-content/themes/sakunavi-theme/images/index/index_img_02.png" alt="金融のプロが厳選したカードローンランキング">
     </div>
 </div>
-<!-- ヒーローセクション -->
+<?php endif; ?>
+<!-- /ヒーローセクション -->
 <?php
 // スライダー
 get_template_part('template-parts/slider');
@@ -129,76 +146,9 @@ get_template_part('template-parts/slider');
                     </div>
                 </section>
                 <!--カードローン一覧↓-->
-                <section class="loan-table">
-                    <h2>カードローン<br class="sp-only">比較早見表</h2>
 
-                    <div class="table-scroll-wrap js-scroll-hint">
-                        <p class="table-scroll-note" aria-hidden="true">
-                            <span class="table-scroll-note__text">横にスクロールできます</span>
-                            <span class="table-scroll-note__arrow">→</span>
-                        </p>
+                <?php get_template_part( 'template-parts/loan-comparison-table' ); ?>
 
-                        <div class="table-scroll-area">
-                            <table>
-                                <thead>
-                                    <tr>
-                                        <th>カード</th>
-                                        <th>限度額</th>
-                                        <th>最短審査</th>
-                                        <th></th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td><a href="">SMBCモビット</a></td>
-                                        <td>最大800万円まで※1</td>
-                                        <td>審査は最短15分<br>10秒で簡易審査※3</td>
-                                        <td><a href="#" class="apply-btnred">今すぐ詳細を見る</a></td>
-                                    </tr>
-                                    <tr>
-                                        <td><a href="">プロミス</a></td>
-                                        <td>最大500万円まで※1</td>
-                                        <td>審査は最短3分※3</td>
-                                        <td><a href="#" class="apply-btnred">今すぐ詳細を見る</a></td>
-                                    </tr>
-                                    <tr>
-                                        <td><a href="">アイフル</a></td>
-                                        <td>最大800万円まで※2</td>
-                                        <td>審査最短18分※3</td>
-                                        <td><a href="#" class="apply-btnred">今すぐ詳細を見る</a></td>
-                                    </tr>
-                                    <tr>
-                                        <td><a href="">アコム</a></td>
-                                        <td>1万～800万</td>
-                                        <td>最短20分※3</td>
-                                        <td><a href="#" class="apply-btnred">今すぐ詳細を見る</a></td>
-                                    </tr>
-                                    <tr>
-                                        <td><a href="">三井住友銀行</a></td>
-                                        <td>10万円～800万円まで</td>
-                                        <td>最短当日</td>
-                                        <td><a href="#" class="apply-btnred">今すぐ詳細を見る</a></td>
-                                    </tr>
-                                    <tr>
-                                        <td><a href="">住信SBIネット銀行</a></td>
-                                        <td>10万円～1000万円</td>
-                                        <td>記載なし</td>
-                                        <td><a href="#" class="apply-btnred">今すぐ詳細を見る</a></td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-
-                    <div class="Annotation">
-                        <p>※1借入限度額は審査によって決定致します。</p>
-                        <p>※2申込の曜日、時間帯によっては翌日以降の取扱となる場合があります。</p>
-                        <p>※3お申込み時間や審査状況によりご希望にそえない場合があります。</p>
-                        <p>※3お申込み時間や審査状況によりご希望にそえない場合があります。</p>
-                        <p>※4審査の結果、ご希望の限度額を減額させていただく場合もあります。</p>
-                        <p>※5新規ご契約の方ご利用可能金額50万円まで</p>
-                    </div>
-                </section><!-- /.loan-table -->
                 <section class="sim-section">
                     <div class="sim-box">
                         <div class="sim-header">返済シミュレーション</div>
@@ -394,14 +344,14 @@ get_template_part('template-parts/slider');
 
                     <!-- 3つ目の質問 -->
                     <div class="chat-faq chat-faq-question">
-                        <div class="chat-faq-bubble">審査に必要な書類は何ですか？</div>
+                        <div class="chat-faq-bubble">郵送物が発生することはありますか？</div>
                         <span class="chat-faq-icon" style="background-image:url('<?php echo esc_url($user_icon); ?>');"></span>
                     </div>
 
                     <!-- 3つ目の回答 -->
                     <div class="chat-faq chat-faq-answer">
                         <span class="chat-faq-icon" style="background-image:url('<?php echo esc_url($op_icon); ?>');"></span>
-                        <div class="chat-faq-bubble">本人確認書類（運転免許証など）と、収入証明書（必要な場合のみ）が必要です。</div>
+                        <div class="chat-faq-bubble">通常、契約書や明細書が郵送されることがあります。申し込み方法によって、郵送物が発生しない場合もあります。</div>
                     </div>
                 </section><!-- /.chat-faq-section -->
 

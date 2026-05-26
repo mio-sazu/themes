@@ -13,6 +13,11 @@
    フォントと文字組
 ================================= */
 
+html,
+body {
+    overflow-x: hidden;
+}
+
 html {
     scroll-behavior: smooth;
 }
@@ -26,7 +31,7 @@ body {
     font-family: "Zen Kaku Gothic New", "Noto Sans JP", "Hiragino Sans", "Yu Gothic", Meiryo, sans-serif !important;
     color: #333;
     line-height: 1.8;
-    letter-spacing: 0.01em;
+    letter-spacing: 0.04em;
 }
 
 p,
@@ -47,7 +52,7 @@ h5,
 h6 {
     font-family: "Zen Kaku Gothic New", "Noto Sans JP", sans-serif !important;
     color: #222;
-    letter-spacing: 0.01em;
+    letter-spacing: 0.05em;
 }
 
 small,
@@ -73,6 +78,132 @@ small,
 .hero-global__inner {
     width: min(1100px, 92%);
     margin: 0 auto;
+}
+
+/* =================================
+   サイドバー記事リスト（最新 / おすすめ）
+   ※ .column-sidebar ul / li a の干渉を上書き
+================================= */
+
+/* ul のボーダーをリセット・パディングを追加 */
+.column-sidebar .sb-article-list {
+    list-style: none;
+    margin: 0;
+    padding: 6px 10px;
+    border: none;
+}
+
+.column-sidebar .sb-article-list__item {
+    padding: 8px 0;
+    margin-bottom: 0;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.column-sidebar .sb-article-list__item:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+/* display:inline-block / padding-right を flex に戻す */
+.column-sidebar ul li .sb-article-list__link {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding-right: 0;
+    text-decoration: none;
+    color: inherit;
+}
+
+/* 矢印を消す */
+.column-sidebar ul li .sb-article-list__link::after {
+    content: none !important;
+}
+
+.column-sidebar ul li .sb-article-list__link:hover .sb-article-list__title {
+    color: #2ea05a;
+}
+
+/* 正方形アイキャッチ */
+.sb-article-list__thumb {
+    width: 56px;
+    height: 56px;
+    min-width: 56px;
+    border-radius: 6px;
+    overflow: hidden;
+    flex-shrink: 0;
+    display: block;
+    background: linear-gradient(135deg, #e0f7ea, #c8f0d8);
+}
+
+.sb-article-list__thumb img {
+    width: 56px;
+    height: 56px;
+    object-fit: cover;
+    display: block;
+}
+
+.sb-article-list__body {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+/* 更新日: 薄グレー */
+.sb-article-list__date {
+    font-size: 0.75rem;
+    color: #bbb;
+    line-height: 1;
+}
+
+.sb-article-list__title {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    line-clamp: 2;
+    overflow: hidden;
+    font-size: 0.875rem;
+    font-weight: 600;
+    line-height: 1.5;
+    color: #1a1a1a;
+}
+
+/* カテゴリタグ（リンク外・下部） */
+.sb-article-list__cats {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    margin-top: 8px;
+    padding-left: 66px; /* thumb(56) + gap(10) */
+}
+
+/* カテゴリタグ内リンクにも矢印が出ないよう打ち消す */
+.column-sidebar ul li .sb-article-list__cat::after {
+    content: none !important;
+}
+
+.sb-article-list__cat {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #2ea05a;
+    background: #edfaf2;
+    border-radius: 3px;
+    padding: 1px 6px;
+    text-decoration: none;
+    white-space: nowrap;
+    line-height: 1.6;
+    display: inline-block;
+    padding-right: 6px; /* 矢印のための padding-right を明示的に上書き */
+}
+
+.column-sidebar ul li .sb-article-list__cat {
+    padding-right: 6px; /* .column-sidebar ul li a の padding-right:15px を打ち消す */
+}
+
+.sb-article-list__cat:hover {
+    background: #d0f0e0;
+    color: #1e7a42;
 }
 
 .hero-global__title {
@@ -178,6 +309,73 @@ small,
 }
 
 /* =================================
+   目次（TOC）統一スタイル
+   ※ 親テーマ support.css / column.css の干渉を上書き
+================================= */
+.toc-wrapper {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+}
+
+.toc-box {
+    margin-bottom: 24px;
+    border: 1px solid #39B167;
+    border-radius: 0 0 4px 4px;
+}
+
+.toc-title {
+    background-color: #39B167;
+    color: #fff;
+    text-align: center;
+    padding: 10px 12px;
+    font-size: 1rem;
+    font-weight: 700;
+    border-radius: 4px 4px 0 0;
+    margin: 0;
+}
+
+.toc-box ul {
+    list-style: none;
+    padding: 0 !important;
+    margin: 0;
+    border: none !important;
+    box-sizing: border-box;
+}
+
+.toc-box li {
+    border-top: 1px solid #39B167;
+    padding: 10px 12px;
+    text-align: left;
+    margin-bottom: 0;
+    line-height: 1.6;
+}
+
+.toc-box li:first-child {
+    border-top: none;
+}
+
+/* TOCリンクに矢印・右padding が付かないよう打ち消す */
+.column-sidebar .toc-box li a,
+.toc-box li a {
+    display: block;
+    color: #333;
+    text-decoration: none;
+    padding-right: 0;
+}
+
+.column-sidebar .toc-box li a::after,
+.toc-box li a::after {
+    content: none !important;
+}
+
+.toc-box li a:hover {
+    color: #2ea05a;
+    text-decoration: underline;
+}
+
+/* =================================
    共通レイアウト・サイドバー（全ページ共通）
 ================================= */
 
@@ -261,7 +459,7 @@ iframe {
 
 /* サイドバー共通 */
 .sidebar-box {
-    margin-bottom: 20px;
+    margin-bottom: 24px;
 }
 
 .column-sidebar,
@@ -274,8 +472,7 @@ iframe {
 }
 
 .column-sidebar h3,
-.sidebar h3,
-.toc-title {
+.sidebar h3 {
     font-size: 18px;
     background-color: #39B167;
     color: #fff;
@@ -285,8 +482,7 @@ iframe {
 }
 
 .column-sidebar ul,
-.sidebar ul,
-.toc-box ul {
+.sidebar ul {
     border: 1px solid #ddd;
     border-top: none;
     list-style: none;
@@ -339,19 +535,17 @@ iframe {
 /* サイドバー「一覧を見る」リンク */
 .sidebar-box__more {
     display: block;
-    border: 1px solid #ddd;
-    border-top: none;
+    border: none;
     padding: 6px 12px 8px;
     text-align: right;
     text-decoration: none;
     font-size: 0.85em;
     color: #39B167;
-    border-radius: 0 0 4px 4px;
 }
 
 .sidebar-box__more:hover {
-    background: #f9f9f9;
     color: #2d8a50;
+    text-decoration: underline;
 }
 
 /* バナー共通 */
@@ -461,7 +655,7 @@ iframe {
     .sidebar li,
     .sidebar li a,
     .toc-box li {
-        font-size: 13px;
+        font-size: 14px;
     }
 
     .banner-column a img {
@@ -480,7 +674,7 @@ iframe {
 }
 
 .logo img {
-    width: 70px;
+    width: 120px;
     max-width: 100%;
     height: auto;
     display: inline-block;

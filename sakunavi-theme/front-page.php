@@ -447,14 +447,14 @@ get_template_part('template-parts/slider');
 
                     <!-- 3つ目の質問 -->
                     <div class="faq-chat faq-question">
-                        <div class="faq-bubble">審査に必要な書類は何ですか？</div>
+                        <div class="faq-bubble">郵送物が発生することはありますか？</div>
                         <span class="faq-icon" style="background-image: url('user-icon.png');"></span>
                     </div>
 
                     <!-- 3つ目の回答 -->
                     <div class="faq-chat faq-answer">
                         <span class="faq-icon" style="background-image: url('operator-icon.png');"></span>
-                        <div class="faq-bubble">本人確認書類（運転免許証など）と、収入証明書（必要な場合のみ）が必要です。</div>
+                        <div class="faq-bubble">通常、契約書や明細書が郵送されることがあります。申し込み方法によって、郵送物が発生しない場合もあります。</div>
                     </div>
                 </section>
             </main>

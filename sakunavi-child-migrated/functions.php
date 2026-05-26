@@ -8,6 +8,11 @@ require_once get_stylesheet_directory() . '/inc/cpt-knowledge.php';
 require_once get_stylesheet_directory() . '/inc/acf-knowledge.php';
 require_once get_stylesheet_directory() . '/inc/acf-column-knowledge.php';
 
+// ============================
+// カードローン比較早見表 CPT & ACF
+// ============================
+require_once get_stylesheet_directory() . '/inc/cpt-loan-comparison.php';
+
 /**
  * =====================================================
  * サクナビ 子テーマ functions.php（整理版）
@@ -998,6 +1003,35 @@ add_action('acf/init', function () {
   ]);
 });
 
+// ============================
+// ACF：コラム 編集部設定（おすすめフラグ）
+// ============================
+add_action('acf/init', function () {
+  if (! function_exists('acf_add_local_field_group')) return;
+
+  acf_add_local_field_group([
+    'key'   => 'group_column_editorial',
+    'title' => '編集部設定',
+    'fields' => [
+      [
+        'key'           => 'field_is_editor_pick',
+        'label'         => '編集者おすすめ',
+        'name'          => 'is_editor_pick',
+        'type'          => 'true_false',
+        'ui'            => 1,
+        'ui_on_text'    => 'おすすめに表示',
+        'ui_off_text'   => '通常',
+        'default_value' => 0,
+        'instructions'  => 'ONにするとサイドバーの「編集者おすすめ」に表示されます。',
+      ],
+    ],
+    'location'        => [[['param' => 'post_type', 'operator' => '==', 'value' => 'column']]],
+    'position'        => 'side',
+    'style'           => 'default',
+    'label_placement' => 'top',
+    'active'          => true,
+  ]);
+});
 
 
 // ============================
@@ -2015,6 +2049,66 @@ add_action('wp_enqueue_scripts', function () {
 /**
  * 親テーマの競合CSSを停止
  */
+// ============================
+// 14. ヒーロービュー切替（Customizer）
+// ============================
+
+/**
+ * 外観 > カスタマイズ > ヒーロービュー設定 に切替ラジオを追加。
+ * 「original」= 既存の画像ヒーロー  /  「column」= 新コラムビュー
+ */
+add_action('customize_register', function ($wp_customize) {
+    $wp_customize->add_section('sakunavi_hero_section', [
+        'title'    => 'ヒーロービュー設定',
+        'priority' => 30,
+    ]);
+
+    $wp_customize->add_setting('sakunavi_hero_type', [
+        'default'           => 'original',
+        'sanitize_callback' => function ($val) {
+            return in_array($val, ['original', 'column'], true) ? $val : 'original';
+        },
+    ]);
+
+    $wp_customize->add_control('sakunavi_hero_type', [
+        'label'   => 'ファーストビューの種類',
+        'section' => 'sakunavi_hero_section',
+        'type'    => 'radio',
+        'choices' => [
+            'original' => '既存のヒーロー（現在の画像ビュー）',
+            'column'   => '新ヒーロー（コラムビュー）',
+        ],
+    ]);
+});
+
+// コラムビュー専用 CSS / JS（コラムビュー選択時のみ読み込む）
+add_action('wp_enqueue_scripts', function () {
+    if (! is_front_page()) return;
+    if (get_theme_mod('sakunavi_hero_type', 'original') !== 'column') return;
+
+    $css = get_stylesheet_directory() . '/assets/css/hero-column.css';
+    if (file_exists($css)) {
+        wp_enqueue_style(
+            'sakunavi-hero-column-css',
+            get_stylesheet_directory_uri() . '/assets/css/hero-column.css',
+            ['sakunavi-child-style'],
+            filemtime($css)
+        );
+    }
+
+    $js = get_stylesheet_directory() . '/assets/js/hero-column.js';
+    if (file_exists($js)) {
+        wp_enqueue_script(
+            'sakunavi-hero-column-js',
+            get_stylesheet_directory_uri() . '/assets/js/hero-column.js',
+            [],
+            filemtime($js),
+            true
+        );
+    }
+}, 32);
+
+
 add_action('wp_enqueue_scripts', function () {
 
   // まずはよくありそうなハンドル名を止める
@@ -2043,3 +2137,9 @@ add_action('wp_enqueue_scripts', function () {
     wp_deregister_style($handle);
   }
 }, 999);
+
+
+// ============================
+// SEO writer 設定※消さないで
+// ============================
+add_filter('wp_is_application_passwords_available', '__return_true');

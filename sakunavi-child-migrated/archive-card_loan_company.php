@@ -15,6 +15,7 @@ get_header(); ?>
   <?php if ( have_posts() ) : ?>
     <div class="company-cards">
       <?php while ( have_posts() ) : the_post();
+        $rate_prefix = function_exists('get_field') ? get_field('rate_prefix') : get_post_meta(get_the_ID(),'rate_prefix',true);
         $rate_min = function_exists('get_field') ? get_field('rate_min') : get_post_meta(get_the_ID(),'rate_min',true);
         $rate_max = function_exists('get_field') ? get_field('rate_max') : get_post_meta(get_the_ID(),'rate_max',true);
         $limit_amt = function_exists('get_field') ? get_field('limit_amount') : get_post_meta(get_the_ID(),'limit_amount',true);
@@ -34,11 +35,12 @@ get_header(); ?>
             <?php if ($rate_min !== '' || $rate_max !== ''): ?>
               <li><span>金利</span>
                 <?php
+                  $pfx = $rate_prefix ? esc_html($rate_prefix) : '';
                   $min = $rate_min !== '' ? floatval($rate_min) : null;
                   $max = $rate_max !== '' ? floatval($rate_max) : null;
-                  if (!is_null($min) && !is_null($max))      echo esc_html($min) . '% ～ ' . esc_html($max) . '%';
-                  elseif (!is_null($min) && is_null($max))   echo esc_html($min) . '%';
-                  elseif (is_null($min) && !is_null($max))   echo '～ ' . esc_html($max) . '%';
+                  if (!is_null($min) && !is_null($max))      echo $pfx . esc_html($min) . '% ～ ' . $pfx . esc_html($max) . '%';
+                  elseif (!is_null($min) && is_null($max))   echo $pfx . esc_html($min) . '%';
+                  elseif (is_null($min) && !is_null($max))   echo '～ ' . $pfx . esc_html($max) . '%';
                 ?>
               </li>
             <?php endif; ?>

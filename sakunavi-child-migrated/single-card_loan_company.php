@@ -57,6 +57,7 @@ if (!$hero_url) {
 $inline_image_id = get_post_thumbnail_id();
 
 
+$rate_prefix = function_exists('get_field') ? get_field('rate_prefix') : get_post_meta(get_the_ID(), 'rate_prefix', true);
 $rate_min  = function_exists('get_field') ? get_field('rate_min') : get_post_meta(get_the_ID(), 'rate_min', true);
 $rate_max  = function_exists('get_field') ? get_field('rate_max') : get_post_meta(get_the_ID(), 'rate_max', true);
 $rate_has_note  = function_exists('get_field') ? get_field('rate_has_note') : '';
@@ -71,7 +72,6 @@ $web_only  = function_exists('get_field') ? get_field('web_only') : get_post_met
 $cta_label = function_exists('get_field') ? get_field('cta_label') : get_post_meta(get_the_ID(), 'cta_label', true);
 $cta_url   = function_exists('get_field') ? get_field('cta_url')   : get_post_meta(get_the_ID(), 'cta_url', true);
 if (!$cta_label) $cta_label = '申し込む';
-if (!$cta_url)   $cta_url = '#';
 
 $rank_score = floatval(function_exists('get_field') ? get_field('rank_score') : get_post_meta(get_the_ID(), 'rank_score', true));
 
@@ -109,6 +109,7 @@ if (!function_exists('sakunavi_star')) {
           <h2 class="section-title">基本情報</h2>
           <?php
             // 既存
+            $rate_prefix = function_exists('get_field') ? get_field('rate_prefix') : get_post_meta(get_the_ID(), 'rate_prefix', true);
             $rate_min  = function_exists('get_field') ? get_field('rate_min') : get_post_meta(get_the_ID(), 'rate_min', true);
             $rate_max  = function_exists('get_field') ? get_field('rate_max') : get_post_meta(get_the_ID(), 'rate_max', true);
             $exam_fast = function_exists('get_field') ? get_field('exam_fast') : get_post_meta(get_the_ID(), 'exam_fast', true);
@@ -193,23 +194,18 @@ if (!function_exists('sakunavi_star')) {
                   <th>金利</th>
                   <td>
                     <?php
-                    // 小数第1位で揃える（1 → 1.0 / 18.5 → 18.5）
-                    $min = ($rate_min !== '' && $rate_min !== null)
-                      ? sprintf('%.1f', (float) $rate_min)
-                      : '';
-
-                    $max = ($rate_max !== '' && $rate_max !== null)
-                      ? sprintf('%.1f', (float) $rate_max)
-                      : '';
+                    $min = ($rate_min !== '' && $rate_min !== null) ? $rate_min : '';
+                    $max = ($rate_max !== '' && $rate_max !== null) ? $rate_max : '';
 
                     $rate_label = '';
+                    $pfx = $rate_prefix ? esc_html($rate_prefix) : '';
 
                     if ($min !== '' && $max !== '') {
-                      $rate_label = $min . '% ～ ' . $max . '%';
+                      $rate_label = $pfx . $min . '% ～ ' . $pfx . $max . '%';
                     } elseif ($min !== '') {
-                      $rate_label = $min . '%';
+                      $rate_label = $pfx . $min . '%';
                     } elseif ($max !== '') {
-                      $rate_label = '～ ' . $max . '%';
+                      $rate_label = '～ ' . $pfx . $max . '%';
                     }
 
                     if ($rate_label !== '') {
@@ -275,9 +271,11 @@ if (!function_exists('sakunavi_star')) {
             <div class="rating-stars" aria-label="おすすめ度"><?php echo sakunavi_star($rank_score); ?></div>
             <?php if ($rank_score): ?><div class="rating-note"><?php echo esc_html($rank_score); ?> / 5</div><?php endif; ?>
           </div>
+          <?php if ($cta_url): ?>
           <div class="apply-box">
             <a class="btn btn--primary apply-btn" href="<?php echo esc_url($cta_url); ?>"><?php echo esc_html($cta_label); ?></a>
           </div>
+          <?php endif; ?>
         </section>
 
         <section class="company-points">

@@ -142,7 +142,7 @@ function sakunavi_scripts()
   // JS
   wp_enqueue_script(
     'sakunavi-main',
-    $theme_uri . '/js/main.js',
+    $theme_uri . '/assets/js/main.js',
     ['jquery'],
     '1.0',
     true
@@ -542,22 +542,106 @@ function chat_enqueue_scripts()
 }
 
 
+// ============================
 // 返済シミュレーション
+// ============================
+
+// card_loan_company の中から、シミュレーターに出す会社データを組み立てる
+// （金利・無利息日数・限度額・注釈は会社ページの既存ACFフィールドをそのまま再利用）
+function sakunavi_simulator_companies()
+{
+  $query = new WP_Query([
+    'post_type'      => 'card_loan_company',
+    'post_status'    => 'publish',
+    'posts_per_page' => -1,
+    'orderby'        => ['menu_order' => 'ASC', 'title' => 'ASC'],
+    'meta_query'     => [
+      [
+        'key'     => 'sim_show',
+        'value'   => '1',
+        'compare' => '=',
+      ],
+    ],
+  ]);
+
+  $companies = [];
+  foreach ($query->posts as $post) {
+    $id = $post->ID;
+
+    $rate_min  = function_exists('get_field') ? get_field('rate_min', $id) : get_post_meta($id, 'rate_min', true);
+    $rate_max  = function_exists('get_field') ? get_field('rate_max', $id) : get_post_meta($id, 'rate_max', true);
+    $free_days = function_exists('get_field') ? get_field('no_interest_days', $id) : get_post_meta($id, 'no_interest_days', true);
+    $free_note = function_exists('get_field') ? get_field('no_interest_note_text', $id) : get_post_meta($id, 'no_interest_note_text', true);
+    $limit_min = function_exists('get_field') ? get_field('limit_amount_min', $id) : get_post_meta($id, 'limit_amount_min', true);
+    $limit_max = function_exists('get_field') ? get_field('limit_amount_max', $id) : get_post_meta($id, 'limit_amount_max', true);
+    $cta_url   = function_exists('get_field') ? get_field('cta_url', $id) : get_post_meta($id, 'cta_url', true);
+    $featured  = function_exists('get_field') ? (bool) get_field('sim_featured', $id) : false;
+
+    $rate_min  = ($rate_min !== '' && $rate_min !== null) ? floatval($rate_min) : null;
+    $rate_max  = ($rate_max !== '' && $rate_max !== null) ? floatval($rate_max) : null;
+    $free_days = ($free_days !== '' && $free_days !== null) ? intval($free_days) : 0;
+
+    // 実質年率の上限が未入力の会社は返済計算ができないため一覧から除外
+    if ($rate_max === null) continue;
+
+    $companies[] = [
+      'id'       => (string) $id,
+      'name'     => get_the_title($id),
+      'minRate'  => $rate_min !== null ? $rate_min : $rate_max,
+      'maxRate'  => $rate_max,
+      'freeDays' => $free_days,
+      'freeNote' => $free_note ? wp_strip_all_tags($free_note) : '無利息期間の適用には各社所定の条件があります。詳細は公式サイトでご確認ください。',
+      'limit'    => sakunavi_simulator_limit_label($limit_min, $limit_max),
+      'featured' => $featured,
+      'ctaUrl'   => $cta_url ? esc_url_raw($cta_url) : get_permalink($id),
+    ];
+  }
+
+  return $companies;
+}
+
+// 融資限度額の表示ラベルを組み立てる（シミュレーター専用の簡易フォーマッタ）
+function sakunavi_simulator_limit_label($min, $max)
+{
+  $min = ($min !== '' && $min !== null) ? floatval($min) : null;
+  $max = ($max !== '' && $max !== null) ? floatval($max) : null;
+
+  if ($min !== null && $max !== null) {
+    return number_format($min) . '万円〜' . number_format($max) . '万円';
+  }
+  if ($max !== null) {
+    return '最大' . number_format($max) . '万円';
+  }
+  if ($min !== null) {
+    return number_format($min) . '万円〜';
+  }
+  return '要確認';
+}
+
 add_action('wp_enqueue_scripts', 'simulator_enqueue_assets');
 function simulator_enqueue_assets()
 {
+  $js_path  = get_template_directory() . '/assets/js/simulator.js';
+  $css_path = get_template_directory() . '/assets/css/simulator.css';
+
   // 計算用JS
   wp_register_script(
     'simulator-js',
     get_template_directory_uri() . '/assets/js/simulator.js',
     [], // 依存なし
-    null,
+    file_exists($js_path) ? filemtime($js_path) : null,
     true
   );
-  // オプションでCSS
   wp_register_style(
     'simulator-css',
     get_template_directory_uri() . '/assets/css/simulator.css',
+    [],
+    file_exists($css_path) ? filemtime($css_path) : null
+  );
+  // デザイン用フォント（ショートコードが呼ばれたページのみ読み込む）
+  wp_register_style(
+    'simulator-fonts',
+    'https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Work+Sans:wght@400;500;600;700&family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,0..200&display=swap',
     [],
     null
   );
@@ -567,121 +651,180 @@ add_shortcode('repayment_simulator', 'simulator_shortcode');
 function simulator_shortcode($atts)
 {
   // ショートコードが呼ばれたら資産をキューに積む
-  wp_enqueue_script('simulator-js');
+  wp_enqueue_style('simulator-fonts');
   wp_enqueue_style('simulator-css');
+  wp_enqueue_script('simulator-js');
 
-  // フォームの HTML を返す
-  return <<<HTML
-<div class="simulator-wrapper">
-  <table class="sim-table">
-    <tr>
-      <th>借り入れ予定額</th>
-      <td>
-        <select id="sim-amount">
-          <option value="">選択してください</option>
-          <option value="100000">10万円</option>
-          <option value="300000">30万円</option>
-          <option value="500000">50万円</option>
-          <option value="1000000">100万円</option>
-          <option value="2000000">200万円</option>
-        </select>
-      </td>
-    </tr>
-    <tr>
-      <th>希望返済期間</th>
-      <td>
-        <select id="sim-term">
-          <option value="">選択してください</option>
-          <option value="3">3ヶ月</option>
-          <option value="6">6ヶ月</option>
-          <option value="12">1年</option>
-          <option value="24">2年</option>
-          <option value="36">3年</option>
-          <option value="60">5年</option>
-        </select>
-      </td>
-    </tr>
-    <tr>
-      <th>金利</th>
-      <td>
-        <select id="sim-rate">
-          <option value="">選択してください</option>
-          <option value="3">3%</option>
-          <option value="10">10%</option>
-          <option value="15">15%</option>
-          <option value="18">18%</option>
-        </select>
-      </td>
-    </tr>
-    <tr>
-      <th>目的</th>
-      <td>
-        <select id="sim-purpose">
-          <option value="">選択してください</option>
-          <option value="生活費">生活費</option>
-          <option value="学費">学費</option>
-          <option value="旅行・趣味">旅行・趣味</option>
-          <option value="その他">その他</option>
-        </select>
-      </td>
-    </tr>
-  </table>
-  <div class="sim-button">
-    <button id="calculateBtn" type="button">シミュレーションする</button>
+  $companies = sakunavi_simulator_companies();
+
+  wp_localize_script('simulator-js', 'snvSimulatorData', [
+    'companies' => $companies,
+  ]);
+
+  // ページ下部の注釈（貸金業法上の表示義務事項・免責事項など、管理画面で編集）
+  $notice = '';
+  if (function_exists('get_field')) {
+    $page_id = get_queried_object_id() ?: get_the_ID();
+    $notice  = get_field('simulator_notice', $page_id);
+  }
+
+  ob_start();
+?>
+  <div id="snv">
+    <div style="display:flex; flex-wrap:wrap; align-items:flex-end; justify-content:space-between; gap:16px; margin-bottom:20px;">
+      <div>
+        <div style="display:flex; align-items:center; gap:8px; margin-bottom:8px;">
+          <span style="font-size:12px; font-weight:700; letter-spacing:0.08em; color:#39B167; background:rgba(57,177,103,0.1); padding:4px 10px; border-radius:999px;">返済シミュレーター</span>
+        </div>
+        <h1 id="snv-company" style="font-weight:800; font-size:34px; line-height:1.15; letter-spacing:-0.02em; margin:0 0 6px;">カードローン返済シミュレーション</h1>
+        <p style="margin:0; color:#5b6459; font-size:15px;">申し込む前に、あなたの返済プランを正確に見積もりましょう。</p>
+      </div>
+      <div style="display:flex; gap:8px;">
+        <span id="snv-maxrate" style="display:none; background:#fff; border:1px solid #E5E9EF; color:#1e7a42; padding:8px 14px; border-radius:999px; font-size:13px; font-weight:700;"></span>
+        <span id="snv-freedays" style="display:none; background:#EDFAF2; border:1px solid #C5E8D0; color:#1a5e34; padding:8px 14px; border-radius:999px; font-size:13px; font-weight:700;"></span>
+      </div>
+    </div>
+
+    <details class="snv-noprint" style="background:#fff; border:1px solid #E5E9EF; border-radius:16px; margin-bottom:24px; padding:0 20px;">
+      <summary style="cursor:pointer; padding:16px 0; font-weight:700; font-size:14px; color:#39B167; display:flex; align-items:center; gap:8px;"><span class="msr" style="font-size:20px;">help</span>使い方（初めての方はこちら）</summary>
+      <div style="padding:0 0 20px; font-size:13px; line-height:1.9; color:#5b6459;">
+        <ul style="margin:0; padding:0; list-style:none; display:flex; flex-direction:column; gap:8px;">
+          <li><b style="color:#3f4a3e;">① 会社を選ぶ</b>：気になるカードローン会社をタップすると、その会社の金利・無利息期間が自動で入力されます。会社を決めていない場合は「会社を選ばずに入力」から自分で数値を入力できます。</li>
+          <li><b style="color:#3f4a3e;">② 条件を入力する</b>：借入希望額・毎月の返済希望額・借入利率を入力してください。</li>
+          <li><b style="color:#3f4a3e;">③ 結果を確認する</b>：総返済額・利息・返済期間が自動で計算されます。返済額を増やした場合の節約額や、無利息期間のメリットもあわせて確認できます。</li>
+          <li><b style="color:#3f4a3e;">④ 保存・お申し込み</b>：結果はPDF・CSV・LINEなどで保存・共有でき、納得できたら公式サイトからお申し込みいただけます。</li>
+        </ul>
+      </div>
+    </details>
+
+    <div id="snv-picker" style="margin-bottom:24px;">
+      <div style="display:flex; align-items:center; gap:8px; margin-bottom:12px; flex-wrap:wrap;">
+        <span class="msr" style="color:#39B167; font-size:20px;">account_balance</span>
+        <span style="font-size:14px; font-weight:700; color:#3f4a3e;">カードローン会社を選択</span>
+        <span style="font-size:12px; color:#8a9187;">→ 金利・無利息期間が自動でセットされます</span>
+      </div>
+      <div id="snv-companies"></div>
+    </div>
+
+    <div id="snv-main"><!-- 動的に描画 --></div>
+
+    <?php if ($notice) : ?>
+      <div class="snv-noprint" style="margin-top:24px; background:#fff; border:1px solid #E5E9EF; border-radius:16px; padding:20px 24px; font-size:12px; line-height:1.9; color:#6b6b60;">
+        <?php echo wp_kses_post($notice); ?>
+      </div>
+    <?php endif; ?>
+
+    <section class="snv-noprint" style="margin-top:40px; background:linear-gradient(135deg,#39B167,#1e7a42); border-radius:28px; padding:56px 32px; text-align:center; color:#fff; box-shadow:0 12px 40px rgba(30,122,66,0.25);">
+      <h2 class="snv-h-white" style="font-weight:800; font-size:28px; margin:0 0 16px;">シミュレーション結果はいかがでしたか？</h2>
+      <p style="margin:0 auto 32px; max-width:520px; font-size:16px; line-height:1.7; opacity:.92;">返済計画が固まったら、公式サイトからお申し込みいただけます。審査は最短20分、当日中のお借入れも可能です。</p>
+      <div style="display:flex; flex-wrap:wrap; gap:14px; justify-content:center;">
+        <a id="snv-cta-apply" href="#" target="_blank" rel="noopener sponsored" style="background:#fff; color:#1e7a42; padding:18px 36px; border-radius:14px; font-weight:800; font-size:17px; text-decoration:none; box-shadow:0 6px 18px rgba(0,0,0,0.18); display:inline-flex; align-items:center; gap:8px;">公式サイトでお申し込み<span class="msr" style="font-size:20px;">open_in_new</span></a>
+        <a href="<?php echo esc_url(get_post_type_archive_link('card_loan_company') ?: home_url('/')); ?>" style="border:1.5px solid rgba(255,255,255,0.6); color:#fff; padding:18px 32px; border-radius:14px; font-weight:700; font-size:16px; text-decoration:none;">他のプランを見る</a>
+      </div>
+      <p style="margin:28px 0 0; font-size:12px; opacity:.7; font-style:italic;">※お申し込みには審査があります。結果によりご希望に沿わない場合があります。</p>
+    </section>
   </div>
-  <div id="simResult" class="sim-result" style="display:none;"></div>
-</div>
-HTML;
+<?php
+  return ob_get_clean();
 }
-// 2. Settings API の登録
-add_action('admin_init', 'simulator_settings_init');
-function simulator_settings_init()
+
+// ============================
+// 返済シミュレーション（簡易版・トップページ用）
+// ============================
+
+// 本格版（返済シミュレーターページ）のURLを取得
+function sakunavi_simulator_page_url()
 {
-  // 設定項目を登録
-  register_setting('simulator_settings_group', 'simulator_amounts');
-  register_setting('simulator_settings_group', 'simulator_terms');
-  register_setting('simulator_settings_group', 'simulator_rates');
-  register_setting('simulator_settings_group', 'simulator_purposes');
+  $pages = get_posts([
+    'post_type'      => 'page',
+    'posts_per_page' => 1,
+    'post_status'    => 'publish',
+    'fields'         => 'ids',
+    'meta_key'       => '_wp_page_template',
+    'meta_value'     => 'template-parts/page-simulator.php',
+  ]);
+  return $pages ? get_permalink($pages[0]) : home_url('/');
+}
 
-  // ■ アロー関数を通常の無名関数に書き換え
-  add_settings_section(
-    'simulator_main_section',
-    '返済シミュレーターの項目（カンマ区切り）',
-    function () {
-      echo '各リストを「値,値,値」のようにカンマ区切りで入力してください。';
-    },
-    'simulator-settings'
+add_action('wp_enqueue_scripts', 'simulator_mini_enqueue_assets');
+function simulator_mini_enqueue_assets()
+{
+  $js_path = get_template_directory() . '/assets/js/simulator-mini.js';
+  wp_register_script(
+    'simulator-mini-js',
+    get_template_directory_uri() . '/assets/js/simulator-mini.js',
+    [],
+    file_exists($js_path) ? filemtime($js_path) : null,
+    true
   );
+}
 
-  // フィールド追加はそのまま…
-  add_settings_field(
-    'field_sim_amounts',
-    '借入額リスト（円）',
-    'simulator_field_amounts_render',
-    'simulator-settings',
-    'simulator_main_section'
-  );
-  add_settings_field(
-    'field_sim_terms',
-    '返済期間リスト（月）',
-    'simulator_field_terms_render',
-    'simulator-settings',
-    'simulator_main_section'
-  );
-  add_settings_field(
-    'field_sim_rates',
-    '金利リスト（%）',
-    'simulator_field_rates_render',
-    'simulator-settings',
-    'simulator_main_section'
-  );
-  add_settings_field(
-    'field_sim_purposes',
-    '目的リスト',
-    'simulator_field_purposes_render',
-    'simulator-settings',
-    'simulator_main_section'
-  );
+add_shortcode('repayment_simulator_mini', 'simulator_mini_shortcode');
+function simulator_mini_shortcode($atts)
+{
+  wp_enqueue_script('simulator-mini-js');
+
+  $simulator_url = sakunavi_simulator_page_url();
+
+  ob_start();
+?>
+  <style>
+    #snvm-card { position: relative; width: 100%; box-sizing: border-box; background: linear-gradient(165deg,#ffffff,#f3faf6); border: 1px solid #dde9e2; border-radius: 24px; padding: 28px 26px; box-shadow: 0 10px 32px rgba(30,122,66,0.10); overflow: hidden; }
+    #snvm-card::before { content:""; position:absolute; top:-60px; right:-60px; width:160px; height:160px; border-radius:50%; background:radial-gradient(circle, rgba(57,177,103,0.14), rgba(57,177,103,0) 70%); }
+    #snvm-card .snvm-input:focus { border-color:#39B167 !important; box-shadow:0 0 0 3px rgba(57,177,103,0.15); }
+    #snvm-card .snvm-input::placeholder { color:#a3ada6; font-weight:500; }
+    #snvm-cta:hover { transform: translateY(-1px); box-shadow: 0 10px 24px rgba(30,122,66,0.30) !important; }
+    #snvm-card input[type=number]::-webkit-inner-spin-button { -webkit-appearance:none; margin:0; }
+    #snvm-grid { display:grid; grid-template-columns: 1fr; gap: 22px; }
+    #snvm-outputs { display:flex; flex-direction:column; }
+    @media (min-width: 680px) {
+      #snvm-grid { grid-template-columns: 1fr 1fr; align-items:stretch; }
+      #snvm-outputs { justify-content:center; }
+    }
+  </style>
+  <div id="snvm" style="width:100%;">
+  <div id="snvm-card">
+    <div style="margin-bottom:20px;">
+      <p style="margin:0; font-weight:800; font-size:18px; color:#20291f; letter-spacing:-0.01em;">返済シミュレーション</p>
+      <p style="margin:4px 0 0; font-size:12px; color:#8a9187;">3つ入力するだけで、今すぐ目安が分かります</p>
+    </div>
+
+    <div id="snvm-grid">
+      <div style="display:flex; flex-direction:column; gap:12px;">
+        <div>
+          <label style="display:block; font-size:12px; font-weight:700; color:#5b6459; margin-bottom:5px;">借入希望額</label>
+          <div style="position:relative;">
+            <input id="snvm-principal" class="snvm-input" type="text" inputmode="numeric" pattern="[0-9]*" placeholder="借入希望額を入力" style="width:100%; box-sizing:border-box; border:1.5px solid #dde9e2; border-radius:12px; padding:13px 44px 13px 14px; font-size:16px; font-weight:700; outline:none; background:#fff; transition:box-shadow .15s, border-color .15s;">
+            <span style="position:absolute; right:14px; top:50%; transform:translateY(-50%); color:#8a9187; font-size:13px; font-weight:600;">円</span>
+          </div>
+        </div>
+        <div>
+          <label style="display:block; font-size:12px; font-weight:700; color:#5b6459; margin-bottom:5px;">毎月の返済希望額</label>
+          <div style="position:relative;">
+            <input id="snvm-monthly" class="snvm-input" type="text" inputmode="numeric" pattern="[0-9]*" placeholder="毎月の返済希望額を入力" style="width:100%; box-sizing:border-box; border:1.5px solid #dde9e2; border-radius:12px; padding:13px 44px 13px 14px; font-size:16px; font-weight:700; outline:none; background:#fff; transition:box-shadow .15s, border-color .15s;">
+            <span style="position:absolute; right:14px; top:50%; transform:translateY(-50%); color:#8a9187; font-size:13px; font-weight:600;">円</span>
+          </div>
+        </div>
+        <div>
+          <label style="display:block; font-size:12px; font-weight:700; color:#5b6459; margin-bottom:5px;">借入利率（実質年率）</label>
+          <div style="position:relative;">
+            <input id="snvm-rate" class="snvm-input" type="text" inputmode="decimal" value="18.0" style="width:100%; box-sizing:border-box; border:1.5px solid #dde9e2; border-radius:12px; padding:13px 44px 13px 14px; font-size:16px; font-weight:700; outline:none; background:#fff; transition:box-shadow .15s, border-color .15s;">
+            <span style="position:absolute; right:14px; top:50%; transform:translateY(-50%); color:#8a9187; font-size:13px; font-weight:600;">％</span>
+          </div>
+        </div>
+      </div>
+
+      <div id="snvm-outputs">
+        <div id="snvm-result"></div>
+
+        <a id="snvm-cta" href="<?php echo esc_url($simulator_url); ?>" style="margin-top:16px; display:flex; align-items:center; justify-content:center; gap:8px; width:100%; box-sizing:border-box; background:linear-gradient(135deg,#39B167,#1e7a42); color:#fff; padding:15px 24px; border-radius:14px; font-weight:800; font-size:15px; text-decoration:none; box-shadow:0 6px 16px rgba(30,122,66,0.22); transition:transform .15s, box-shadow .15s;">条件を詳しく設定してシミュレーション<span style="font-size:16px;">→</span></a>
+        <p style="margin:10px 0 0; font-size:11px; color:#a3ada6; text-align:center;">会社を選ぶだけで金利も自動セット。入力は1分もかかりません。</p>
+      </div>
+    </div>
+  </div>
+  </div>
+<?php
+  return ob_get_clean();
 }
 
 function sakunavi_customize_register($wp_customize)

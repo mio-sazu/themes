@@ -7,6 +7,7 @@ $title   = get_the_title();
 $perma   = get_permalink();
 
 $logo            = function_exists('get_field') ? get_field('logo', $post_id) : null;
+$rate_prefix     = function_exists('get_field') ? get_field('rate_prefix', $post_id) : '';
 $rate_min        = function_exists('get_field') ? get_field('rate_min', $post_id) : '';
 $rate_max        = function_exists('get_field') ? get_field('rate_max', $post_id) : '';
 $limit_amount    = function_exists('get_field') ? get_field('limit_amount', $post_id) : '';
@@ -26,10 +27,11 @@ if (is_array($logo)) {
 
 $rate_txt = '';
 if ($rate_min !== '' || $rate_max !== '') {
+  $pfx = $rate_prefix ? esc_html($rate_prefix) : '';
   if ($rate_min !== '' && $rate_max !== '') {
-    $rate_txt = esc_html($rate_min) . '% – ' . esc_html($rate_max) . '%';
+    $rate_txt = $pfx . esc_html($rate_min) . '% – ' . $pfx . esc_html($rate_max) . '%';
   } else {
-    $rate_txt = esc_html($rate_min ?: $rate_max) . '%';
+    $rate_txt = $pfx . esc_html($rate_min ?: $rate_max) . '%';
   }
 }
 $limit_txt = $limit_amount !== '' ? esc_html(number_format_i18n((float)$limit_amount)) . '万円' : '';

@@ -43,7 +43,7 @@
                 <option value="sameday">即日融資希望</option>
                 <option value="nointerest">無利息期間あり</option>
                 <option value="web">WEB完結希望</option>
-                <option value="noverify">在籍確認なし</option>
+                <option value="noverify">原則在籍確認なし</option>
             </select>
         </div>
         <button type="button" id="diagnosisBtn">探す</button>

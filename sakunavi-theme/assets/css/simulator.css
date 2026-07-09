@@ -1,105 +1,53 @@
-.simulator-wrapper {
-    max-width: 600px;
-    margin: 2rem auto;
-    padding: 1rem;
-    background: #f9f9f9;
-    border-radius: 8px;
-    border: 1px solid #ddd;
+/* 返済シミュレーター（すべて #snv 配下にスコープ。テーマ本体のCSSと干渉しないようにする） */
+#snv, #snv * { box-sizing: border-box; }
+#snv {
+  font-family: 'Work Sans', 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif;
+  color: #1a1c1c;
+  background: #F7FAF8;
+  line-height: 1.5;
+  padding: 24px;
+  border-radius: 20px;
 }
 
-.sim-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-bottom: 1rem;
+/* サイト共通CSS（h1〜h6にフォント/色を !important で強制している）を、
+   シミュレーター内だけ元デザインの配色・書体に戻す */
+#snv h1, #snv h2, #snv h3, #snv h4 {
+  font-family: 'Plus Jakarta Sans', sans-serif !important;
+  color: #1a1c1c !important;
+  letter-spacing: normal !important;
 }
+#snv .snv-h-white { color: #fff !important; }
+#snv .snv-h-info { color: #14528f !important; }
 
-.sim-table th,
-.sim-table td {
-    padding: 0.8rem;
-    border: 1px solid #ccc;
-    text-align: left;
-    vertical-align: middle;
+#snv p, #snv li, #snv span, #snv label, #snv td, #snv th, #snv button, #snv input {
+  color: inherit;
+  line-height: inherit;
 }
+#snv a { color: #39B167; }
 
-.sim-table th {
-    background-color: #f9f9f9;
-    width: 40%;
-    font-weight: normal;
-    font-size: 15px;
-}
+#snv .msr { font-family: 'Material Symbols Rounded'; font-weight: normal; font-style: normal; line-height: 1; letter-spacing: normal; text-transform: none; display: inline-block; white-space: nowrap; direction: ltr; font-variation-settings: 'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24; }
+#snv .msr.fill { font-variation-settings: 'FILL' 1,'wght' 500,'GRAD' 0,'opsz' 24; }
 
-.sim-table td select,
-.sim-table td input {
-    width: 100%;
-    padding: 8px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    box-sizing: border-box;
-}
+#snv input[type=number]::-webkit-inner-spin-button, #snv input[type=number]::-webkit-outer-spin-button { -webkit-appearance:none; margin:0; }
+#snv input[type=number]{ -moz-appearance:textfield; }
+#snv .simInput:focus { border-color:#39B167 !important; box-shadow:0 0 0 3px rgba(57,177,103,0.15); }
+/* 入力欄自体は18px/太字だが、プレースホルダーはそれを継承すると大きすぎるため個別に指定 */
+#snv .simInput::placeholder { font-size:14px; font-weight:500; color:#9aa39d; opacity:1; }
+#snv .schedRow:hover { background:#F8FAF8; }
+/* 使い方ガイド（<details>）のデフォルトの三角マーカーを消し、独自アイコンに統一 */
+#snv summary { list-style: none; }
+#snv summary::-webkit-details-marker { display: none; }
+#snv summary::marker { content: ""; }
 
-.sim-button {
-    text-align: center;
-    margin-top: 1.5rem;
-}
+@keyframes snvBarGrow { from { transform: scaleX(0); } to { transform: scaleX(1); } }
 
-.sim-button button,
-.sim-button .sim-button__btn {
-    width: 100%;
-    display: block;
-    padding: 0.8rem 1.4rem;
-    background: #39B167;
-    color: #fff;
-    border: none;
-    cursor: pointer;
-    font-weight: bold;
-    font-size: 16px;
-    transition: background-color 0.3s ease;
-    box-sizing: border-box;
-}
+#snv .layoutGrid { display:grid; grid-template-columns:360px minmax(0,1fr); gap:24px; }
+@media (max-width:900px){ #snv .layoutGrid { grid-template-columns:minmax(0,1fr); } }
+@media (max-width:560px){ #snv .bentoGrid, #snv .chartsGrid, #snv .prepayGrid { grid-template-columns:minmax(0,1fr) !important; } }
 
-.sim-button button:hover,
-.sim-button .sim-button__btn:hover {
-    background: #2e9e63;
-}
-
-.sim-result {
-    margin-top: 1rem;
-    padding: 1rem;
-    background: #e6f7ff;
-    border: 1px solid #91d5ff;
-    border-radius: 4px;
-    color: #333;
-    font-weight: bold;
-    line-height: 1.7;
-}
-
-@media (max-width: 768px) {
-    .sim-table,
-    .sim-table tbody,
-    .sim-table tr,
-    .sim-table th,
-    .sim-table td {
-        display: block;
-        width: 100%;
-        box-sizing: border-box;
-    }
-
-    .sim-table tr {
-        margin-bottom: 12px;
-    }
-
-    .sim-table th {
-        border-bottom: none;
-        padding: 10px 12px 6px;
-    }
-
-    .sim-table td {
-        padding: 0 12px 12px;
-        border-top: none;
-    }
-
-    .sim-button button,
-    .sim-button .sim-button__btn {
-        width: 100%;
-    }
+@media print {
+  body * { visibility: hidden; }
+  #snv, #snv * { visibility: visible; }
+  #snv { position: absolute; left: 0; top: 0; width: 100%; background:#fff !important; box-shadow:none; }
+  #snv .snv-noprint { display: none !important; }
 }

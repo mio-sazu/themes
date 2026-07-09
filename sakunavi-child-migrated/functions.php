@@ -13,6 +13,20 @@ require_once get_stylesheet_directory() . '/inc/acf-column-knowledge.php';
 // ============================
 require_once get_stylesheet_directory() . '/inc/cpt-loan-comparison.php';
 
+// ============================
+// 返済シミュレーター用 ACF（会社の表示設定・ページ注釈）
+// ============================
+require_once get_stylesheet_directory() . '/inc/acf-simulator.php';
+
+// ============================
+// 記事内埋め込みショートコード [post_embed]
+// ============================
+$_post_embed_file = get_stylesheet_directory() . '/inc/shortcodes/post-embed-shortcode.php';
+if ( file_exists( $_post_embed_file ) ) {
+    require_once $_post_embed_file;
+}
+unset( $_post_embed_file );
+
 /**
  * =====================================================
  * サクナビ 子テーマ functions.php（整理版）
@@ -670,8 +684,9 @@ add_action('acf/init', function () {
     'location'        => [[['param' => 'post_type', 'operator' => '==', 'value' => 'card_loan_company']]],
     'fields'          => [
       ['key' => 'field_logo', 'label' => 'ロゴ', 'name' => 'logo', 'type' => 'image', 'return_format' => 'array', 'preview_size' => 'medium', 'library' => 'all'],
-      ['key' => 'field_rate_min', 'label' => '金利（最小）', 'name' => 'rate_min', 'type' => 'number', 'append' => '%', 'step' => '0.01'],
-      ['key' => 'field_rate_max', 'label' => '金利（最大）', 'name' => 'rate_max', 'type' => 'number', 'append' => '%', 'step' => '0.01'],
+      ['key' => 'field_rate_prefix', 'label' => '金利 前テキスト', 'name' => 'rate_prefix', 'type' => 'text', 'placeholder' => '例：年'],
+      ['key' => 'field_rate_min', 'label' => '金利（最小）', 'name' => 'rate_min', 'type' => 'text', 'append' => '%', 'placeholder' => '例：1.500'],
+      ['key' => 'field_rate_max', 'label' => '金利（最大）', 'name' => 'rate_max', 'type' => 'text', 'append' => '%', 'placeholder' => '例：18.000'],
       ['key' => 'field_limit_amount_min', 'label' => '融資限度額（最小・万円）', 'name' => 'limit_amount_min', 'type' => 'number', 'append' => '万円', 'step' => '1'],
       ['key' => 'field_limit_amount_max', 'label' => '融資限度額（最大・万円）', 'name' => 'limit_amount_max', 'type' => 'number', 'append' => '万円', 'step' => '1'],
       ['key' => 'field_exam_fast', 'label' => '最短審査時間', 'name' => 'exam_fast', 'type' => 'text', 'placeholder' => '最短30分 など'],
@@ -832,7 +847,53 @@ add_action('acf/include_fields', function () {
   ]);
 });
 
+// ============================
+// ランキング 調査・評価基準フィールド
+// ============================
+add_action('acf/include_fields', function () {
+  if (! function_exists('acf_add_local_field_group')) return;
 
+  acf_add_local_field_group([
+    'key'      => 'group_ranking_survey_info',
+    'title'    => '調査・評価基準',
+    'position' => 'normal',
+    'style'    => 'default',
+    'location' => [[['param' => 'post_type', 'operator' => '==', 'value' => 'ranking']]],
+    'fields'   => [
+      [
+        'key'     => 'field_ranking_survey_note',
+        'label'   => '入力ルール',
+        'name'    => '',
+        'type'    => 'message',
+        'message' => '<strong>【調査日】</strong>各社公式サイトの金利・条件等を実際に確認した日付を入力してください。記事を更新したタイミングで最新の調査日に変更してください。<br><br><strong>【申込実績集計期間】</strong>当サイト経由の申込データを集計した期間を入力してください。開始日・終了日ともに「2026年1月1日」のような形式で入力してください。<br><br>※ いずれも未入力の場合、その行はページに表示されません。',
+      ],
+      [
+        'key'          => 'field_ranking_survey_date',
+        'label'        => '調査日',
+        'name'         => 'ranking_survey_date',
+        'type'         => 'text',
+        'placeholder'  => '例：2026年7月1日',
+        'instructions' => '各社公式サイトを確認した日付。記事更新のたびに最新日付へ変更してください。調査期間は前年の4月1日から本年の4月1日に設定',
+      ],
+      [
+        'key'          => 'field_ranking_period_start',
+        'label'        => '申込実績集計期間（開始）',
+        'name'         => 'ranking_period_start',
+        'type'         => 'text',
+        'placeholder'  => '例：2026年1月1日',
+        'instructions' => '申込データの集計開始日。「○年○月○日」形式で入力してください。',
+      ],
+      [
+        'key'          => 'field_ranking_period_end',
+        'label'        => '申込実績集計期間（終了）',
+        'name'         => 'ranking_period_end',
+        'type'         => 'text',
+        'placeholder'  => '例：2026年6月30日',
+        'instructions' => '申込データの集計終了日。「○年○月○日」形式で入力してください。',
+      ],
+    ],
+  ]);
+});
 
 // ============================
 // ACF：SEO設定
@@ -890,6 +951,7 @@ add_action('acf/init', function () {
       [['param' => 'post_type', 'operator' => '==', 'value' => 'card_loan_company']],
       [['param' => 'post_type', 'operator' => '==', 'value' => 'ranking']],
       [['param' => 'post_type', 'operator' => '==', 'value' => 'slider_banner']],
+      [['param' => 'post_type', 'operator' => '==', 'value' => 'knowledge']],
     ],
     'position' => 'normal',
     'style' => 'default',

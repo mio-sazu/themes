@@ -83,6 +83,7 @@ $keywords_raw     = get_field('related_keywords', $ranking_id);
 ?>
 <div class="wrapper">
     <article>
+        <?php get_template_part('template-parts/breadcrumbs'); ?>
         <div class="layout">
             <?php get_sidebar(); ?>
             <main>
@@ -99,6 +100,32 @@ $keywords_raw     = get_field('related_keywords', $ranking_id);
                     </div>
                 </section>
                 <?php endif; ?>
+
+                <?php
+                $survey_date  = get_field('ranking_survey_date',  $ranking_id);
+                $period_start = get_field('ranking_period_start', $ranking_id);
+                $period_end   = get_field('ranking_period_end',   $ranking_id);
+                ?>
+                <aside class="ranking-survey-info">
+                    <p class="ranking-survey-info__heading">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                        調査・評価基準について
+                    </p>
+                    <p class="ranking-survey-info__lead">各社公式サイトの公開情報および当サイト経由の申込実績に基づく独自評価（サクッとお金ナビ編集部調べ）</p>
+                    <ul class="ranking-survey-info__list">
+                        <?php if ($survey_date): ?>
+                        <li>調査日：<?php echo esc_html($survey_date); ?></li>
+                        <?php endif; ?>
+                        <?php if ($period_start || $period_end): ?>
+                        <li>申込実績集計期間：<?php echo esc_html($period_start); ?>〜<?php echo esc_html($period_end); ?></li>
+                        <?php endif; ?>
+                        <li>評価項目：金利、手数料、申込方法、利用条件、キャンペーン、当サイト経由の申込件数等</li>
+                    </ul>
+                    <p class="ranking-survey-info__notes">
+                        ※申込実績は審査通過率・契約率・借入可能性を示すものではありません。<br>
+                        ※本記事には広告・アフィリエイトリンクを含みます。
+                    </p>
+                </aside>
 
                 <?php for ($i = 1; $i <= 10; $i++):
                     $t   = get_field("rank_{$i}_title");

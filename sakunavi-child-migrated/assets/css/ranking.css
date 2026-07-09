@@ -248,6 +248,57 @@
 }
 
 /* ------------------------------------------------
+   調査・評価基準ボックス
+   ------------------------------------------------ */
+.ranking-survey-info {
+  margin: 16px 0 28px;
+  padding: 14px 18px;
+  background: #f7f8f7;
+  border: 1px solid #dde3de;
+  border-radius: 8px;
+  font-size: 12px;
+  line-height: 1.8;
+  color: #555;
+}
+
+.ranking-survey-info__heading {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin: 0 0 6px;
+  font-size: 13px;
+  font-weight: 700;
+  color: #333;
+}
+
+.ranking-survey-info__heading svg {
+  flex-shrink: 0;
+  width: 15px;
+  height: 15px;
+  color: #6a897c;
+}
+
+.ranking-survey-info__lead {
+  margin: 0 0 8px;
+}
+
+.ranking-survey-info__list {
+  margin: 0 0 8px;
+  padding: 0;
+  list-style: none;
+}
+
+.ranking-survey-info__list li::before {
+  content: '・';
+}
+
+.ranking-survey-info__notes {
+  margin: 0;
+  font-size: 11px;
+  color: #888;
+}
+
+/* ------------------------------------------------
    レスポンシブ
    ------------------------------------------------ */
 @media (max-width: 768px) {

@@ -16,7 +16,7 @@
     </div>
 
     <div class="expert-supervision__body">
-      <p class="expert-supervision__badge">肩書</p>
+      <p class="expert-supervision__badge">弁護士</p>
       <p class="expert-supervision__name">藤井　夏樹</p>
 
       <?php

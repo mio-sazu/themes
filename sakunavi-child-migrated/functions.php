@@ -99,49 +99,7 @@ function render_smartnews_xml() {
     get_template_part('feed', 'smartnews');
 }
 
-// JSON-LD構造化
-function add_json_ld_metadata() {
-    // 投稿ページ、または固定ページの場合に実行
-    if (is_singular()) { 
-        global $post;
-        
-        // アイキャッチ画像のURLを取得
-        $img_url = get_the_post_thumbnail_url($post->ID, 'full');
-        
-        // 画像がない場合の予備（サイトロゴなどがあればそのURL、なければ空）
-        if (!$img_url) {
-            $img_url = ""; 
-        }
-
-        $json_ld = [
-            "@context" => "https://schema.org",
-            "@type" => "Article",
-            "headline" => get_the_title(), // 実際のタイトルを自動取得
-            "image" => [ $img_url ],       // 実際の画像URLを自動取得
-            "datePublished" => get_the_date('c'),
-            "dateModified" => get_the_modified_date('c'),
-            "author" => [
-                "@type" => "Person",
-                "name" => get_the_author(), // 実際の投稿者名を自動取得
-                "url"  => get_author_posts_url(get_the_author_meta('ID')) // 著者ページURL
-            ],
-            "publisher" => [
-                "@type" => "Organization",
-                "name" => get_bloginfo('name'),
-                "logo" => [
-                    "@type" => "ImageObject",
-                    "url" => "" // もしロゴがあればここにURLを入れる
-                ]
-            ]
-        ];
-        
-        // 画像がある場合のみ出力（画像URLが無効だとエラーになるため）
-        if (!empty($img_url)) {
-            echo "\n" . '<script type="application/ld+json">' . json_encode($json_ld, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) . '</script>' . "\n";
-        }
-    }
-}
-add_action('wp_head', 'add_json_ld_metadata');
+// JSON-LD構造化データの出力は sakunavi_output_article_structured_data() / sakunavi_output_faq_structured_data()（本ファイル内・SEOセクション）に一本化しています
 
 // ============================
 // 02. 基本設定・テーマセットアップ
@@ -1243,6 +1201,13 @@ function sakunavi_output_meta_tags()
     $description = 'カードローン会社の特徴や金利、限度額、選び方を比較しやすくまとめています。';
   } elseif (is_post_type_archive('ranking')) {
     $description = '目的別・条件別にカードローンを比較しやすいランキング一覧ページです。';
+  }
+
+  // ----------------------------
+  // トップページ
+  // ----------------------------
+  elseif (is_front_page() || is_home()) {
+    $description = '金融のプロが厳選したカードローンを比較・ランキング形式でご紹介するウェブサービスです。';
   }
 
   if (! empty($description)) {

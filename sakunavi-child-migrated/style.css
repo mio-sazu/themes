@@ -27,6 +27,19 @@ strong {
     background: linear-gradient(transparent 60%, #fef5b5 60%);
 }
 
+/* スクリーンリーダー専用（視覚的には非表示、見た目を変えずにSEO/アクセシビリティ用の見出し等を配置する時に使用） */
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
 body {
     font-family: "Zen Kaku Gothic New", "Noto Sans JP", "Hiragino Sans", "Yu Gothic", Meiryo, sans-serif !important;
     color: #333;

@@ -4,11 +4,8 @@
 <head>
   <meta charset="<?php bloginfo('charset'); ?>">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>サクっとお金ナビ｜生活に役立つお金の情報サイト</title>
-  <!-- キーワードは複数形×content -->
-  <meta name="keywords" content="お金,カードローン,比較,金融">
-  <!-- 欠落しがちなディスクリプションも追加 -->
-  <meta name="description" content="金融のプロが厳選したカードローンを比 較・ランキング形式でご紹介するウェブサービスです">
+  <title><?php echo esc_html(wp_get_document_title()); ?></title>
+  <!-- title / meta description / 構造化データは functions.php 側で記事ごとに動的出力しています。ここに固定値を書かないでください -->
   <!-- Google Tag Manager 
   <script>
     (function(w, d, s, l, i) {
@@ -27,21 +24,7 @@
     })(window, document, 'script', 'dataLayer', 'GTM-PVPSZSD5');
   </script>-->
   <!-- End Google Tag Manager -->
-  <script type="application/ld+json">
-      {
-        "@context": "https://schema.org",
-        "@type": "Article",
-        "headline": "記事のタイトル",
-        "image": [
-          "アイキャッチ画像のURL"
-        ],
-        "author": {
-          "@type": "Person",
-          "name": "著者名"
-        }
-      }
-  </script>
-  
+
   <?php wp_head(); ?>
 </head>
 

@@ -6,6 +6,7 @@
  */
 get_header(); ?>
 
+<h1 class="sr-only">サクッとお金ナビ｜金融のプロが厳選したカードローン比較・ランキングサイト</h1>
 
 <!-- ヒーローセクション
      切替: 外観 > カスタマイズ > ヒーロービュー設定 -->
@@ -26,10 +27,10 @@ if (current_user_can('manage_options') && isset($_GET['hero'])) {
 <?php else: ?>
 <div class="hero-inner">
     <div class="hero-image">
-        <img src="/wp-content/themes/sakunavi-theme/images/index/index_img_01.png" alt="貯金を積み上げている人">
+        <img src="<?php echo esc_url(get_template_directory_uri()); ?>/images/index/index_img_01.png" width="822" height="1038" alt="貯金を積み上げている人" fetchpriority="high">
     </div>
     <div class="hero-text">
-        <img src="/wp-content/themes/sakunavi-theme/images/index/index_img_02.png" alt="金融のプロが厳選したカードローンランキング">
+        <img src="<?php echo esc_url(get_template_directory_uri()); ?>/images/index/index_img_02.png" width="839" height="419" alt="金融のプロが厳選したカードローンランキング">
     </div>
 </div>
 <?php endif; ?>
@@ -157,27 +158,57 @@ get_template_part('template-parts/slider');
                 <section class="sim-section">
                     <?php echo do_shortcode('[repayment_simulator_mini]'); ?>
                 </section><!-- /.sim-section -->
+
+                <!-- ▼▼ 【仮】ポップアップバナー：中身（訴求文・画像・リンク先）は差し替え予定のプレースホルダーです ▼▼ -->
+                <div id="popupOverlay" class="popup-overlay"></div>
+                <div id="popupBanner" class="popup-banner" role="dialog" aria-modal="true" aria-labelledby="popupBannerTitle" aria-hidden="true">
+                    <button type="button" class="popup-close" aria-label="閉じる">&times;</button>
+                    <div class="popup-content">
+                        <p id="popupBannerTitle">【仮】ここにお知らせ・キャンペーン文言が入ります</p>
+                        <a href="#" class="popup-btn">【仮】詳しく見る</a>
+                    </div>
+                </div>
+                <!-- ▲▲ 【仮】ポップアップバナー ▲▲ -->
+
                 <script>
                     document.addEventListener("DOMContentLoaded", () => {
                         const popup = document.getElementById("popupBanner");
                         const overlay = document.getElementById("popupOverlay");
-                        const closeBtn = document.querySelector(".popup-close");
+                        const closeBtn = popup ? popup.querySelector(".popup-close") : null;
+                        if (!popup || !overlay || !closeBtn) return;
+
+                        let lastFocused = null;
+
+                        const openPopup = () => {
+                            lastFocused = document.activeElement;
+                            popup.style.display = "block";
+                            overlay.style.display = "block";
+                            popup.setAttribute("aria-hidden", "false");
+                            closeBtn.focus();
+                        };
+
+                        const closePopup = () => {
+                            popup.style.display = "none";
+                            overlay.style.display = "none";
+                            popup.setAttribute("aria-hidden", "true");
+                            if (lastFocused) lastFocused.focus();
+                        };
 
                         // 表示ロジック
                         window.addEventListener("scroll", () => {
                             if (sessionStorage.getItem("popupDisplayed")) return;
                             const scrollRatio = window.scrollY / (document.body.scrollHeight - window.innerHeight);
                             if (scrollRatio > 0.5) {
-                                popup.style.display = "block";
-                                overlay.style.display = "block";
+                                openPopup();
                                 sessionStorage.setItem("popupDisplayed", "true");
                             }
                         });
 
-                        // 閉じる処理
-                        closeBtn.addEventListener("click", () => {
-                            popup.style.display = "none";
-                            overlay.style.display = "none";
+                        // 閉じる処理（×ボタン／オーバーレイクリック／Escキー）
+                        closeBtn.addEventListener("click", closePopup);
+                        overlay.addEventListener("click", closePopup);
+                        document.addEventListener("keydown", (e) => {
+                            if (e.key === "Escape" && popup.style.display === "block") closePopup();
                         });
                     });
                 </script>

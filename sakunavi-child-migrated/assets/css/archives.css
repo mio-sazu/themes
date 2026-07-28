@@ -1,4 +1,40 @@
 /* ============================
+   お金コラム 並び替えタブ
+============================ */
+
+.column-sort-tabs {
+    display: flex;
+    gap: 8px;
+    margin: 20px 0 16px;
+    padding: 0;
+    list-style: none;
+}
+
+.column-sort-tabs__item {
+    display: inline-block;
+    padding: 7px 16px;
+    border: 1px solid #dde7e0;
+    border-radius: 999px;
+    background: #fff;
+    color: #4c6459;
+    font-size: 13px;
+    font-weight: 700;
+    text-decoration: none;
+    transition: 0.2s ease;
+}
+
+.column-sort-tabs__item:hover {
+    border-color: #39B167;
+    color: #39B167;
+}
+
+.column-sort-tabs__item.is-active {
+    background: #39B167;
+    border-color: #39B167;
+    color: #fff;
+}
+
+/* ============================
    お金コラム カテゴリー一覧
 ============================ */
 
@@ -55,12 +91,14 @@
 
 .post-type-archive-column .page-header,
 .tax-column_category .page-header,
+.tax-column_keyword .page-header,
 .tax-money_column .page-header {
     margin: 8px 0 24px;
 }
 
 .post-type-archive-column .page-title,
 .tax-column_category .page-title,
+.tax-column_keyword .page-title,
 .tax-money_column .page-title {
     margin: 0;
     font-size: clamp(22px, 2.4vw, 28px);
@@ -68,6 +106,7 @@
 
 .post-type-archive-column .lead,
 .tax-column_category .lead,
+.tax-column_keyword .lead,
 .tax-money_column .lead {
     margin-top: 6px;
     color: #666;
@@ -76,6 +115,7 @@
 /* コラム：カテゴリナビ */
 .post-type-archive-column .genre-nav ul,
 .tax-column_category .genre-nav ul,
+.tax-column_keyword .genre-nav ul,
 .tax-money_column .genre-nav ul {
     display: flex;
     gap: 8px;
@@ -87,6 +127,7 @@
 
 .post-type-archive-column .genre-nav a,
 .tax-column_category .genre-nav a,
+.tax-column_keyword .genre-nav a,
 .tax-money_column .genre-nav a {
     display: inline-block;
     padding: 6px 12px;
@@ -97,6 +138,7 @@
 
 .post-type-archive-column .genre-nav a:hover,
 .tax-column_category .genre-nav a:hover,
+.tax-column_keyword .genre-nav a:hover,
 .tax-money_column .genre-nav a:hover {
     background: #f7f9fc;
 }
@@ -104,6 +146,7 @@
 /* コラム：カードグリッド */
 .post-type-archive-column .post-list,
 .tax-column_category .post-list,
+.tax-column_keyword .post-list,
 .tax-money_column .post-list {
     --cols: 3;
     display: grid;
@@ -117,6 +160,7 @@
 /* カテゴリバッジ */
 .post-type-archive-column .post-item .post-cat-list,
 .tax-column_category .post-item .post-cat-list,
+.tax-column_keyword .post-item .post-cat-list,
 .tax-money_column .post-item .post-cat-list {
     display: flex;
     flex-wrap: wrap;
@@ -128,6 +172,7 @@
 
 .post-type-archive-column .post-item .post-cat-list li,
 .tax-column_category .post-item .post-cat-list li,
+.tax-column_keyword .post-item .post-cat-list li,
 .tax-money_column .post-item .post-cat-list li {
     margin: 0;
     padding: 0;
@@ -136,6 +181,7 @@
 /* a 自体をバッジにする */
 .post-type-archive-column .post-item .post-cat-list li a,
 .tax-column_category .post-item .post-cat-list li a,
+.tax-column_keyword .post-item .post-cat-list li a,
 .tax-money_column .post-item .post-cat-list li a {
     display: inline-flex;
     align-items: center;
@@ -154,7 +200,9 @@
 .post-type-archive-column .post-item .post-cat-list li a::before,
 .post-type-archive-column .post-item .post-cat-list li a::after,
 .tax-column_category .post-item .post-cat-list li a::before,
+.tax-column_keyword .post-item .post-cat-list li a::before,
 .tax-column_category .post-item .post-cat-list li a::after,
+.tax-column_keyword .post-item .post-cat-list li a::after,
 .tax-money_column .post-item .post-cat-list li a::before,
 .tax-money_column .post-item .post-cat-list li a::after {
     content: none !important;
@@ -163,6 +211,7 @@
 /* カード本体 */
 .post-type-archive-column .post-item,
 .tax-column_category .post-item,
+.tax-column_keyword .post-item,
 .tax-money_column .post-item {
     border: 1px solid #eee;
     border-radius: 12px;
@@ -174,6 +223,7 @@
 
 .post-type-archive-column .post-item a,
 .tax-column_category .post-item a,
+.tax-column_keyword .post-item a,
 .tax-money_column .post-item a {
     display: flex;
     flex-direction: column;
@@ -184,6 +234,7 @@
 
 .post-type-archive-column .post-item img,
 .tax-column_category .post-item img,
+.tax-column_keyword .post-item img,
 .tax-money_column .post-item img {
     width: 100%;
     height: 180px;
@@ -193,34 +244,61 @@
 
 .post-type-archive-column .post-title,
 .tax-column_category .post-title,
+.tax-column_keyword .post-title,
 .tax-money_column .post-title {
     font-size: 1.05rem;
+    line-height: 1.4;
     margin: 12px 12px 0;
 }
 
 .post-type-archive-column .post-item time,
 .tax-column_category .post-item time,
+.tax-column_keyword .post-item time,
 .tax-money_column .post-item time {
     font-size: .85rem;
     color: #777;
     margin: 6px 12px 0;
 }
 
-.post-type-archive-column .post-excerpt,
-.tax-column_category .post-excerpt,
-.tax-money_column .post-excerpt {
-    color: #555;
+.post-type-archive-column .post-keyword-list,
+.tax-column_category .post-keyword-list,
+.tax-column_keyword .post-keyword-list,
+.tax-money_column .post-keyword-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 8px;
+    list-style: none;
     margin: 8px 12px 12px;
+    padding: 0;
+}
+
+.post-type-archive-column .post-keyword-list a,
+.tax-column_category .post-keyword-list a,
+.tax-column_keyword .post-keyword-list a,
+.tax-money_column .post-keyword-list a {
+    font-size: .78rem;
+    color: #6a897c;
+    text-decoration: none;
+}
+
+.post-type-archive-column .post-keyword-list a:hover,
+.tax-column_category .post-keyword-list a:hover,
+.tax-column_keyword .post-keyword-list a:hover,
+.tax-money_column .post-keyword-list a:hover {
+    color: #39B167;
+    text-decoration: underline;
 }
 
 .post-type-archive-column .post-meta,
 .tax-column_category .post-meta,
+.tax-column_keyword .post-meta,
 .tax-money_column .post-meta {
     margin: 8px 12px 12px;
 }
 
 .post-type-archive-column .term-list,
 .tax-column_category .term-list,
+.tax-column_keyword .term-list,
 .tax-money_column .term-list {
     display: flex;
     flex-wrap: wrap;
@@ -232,6 +310,7 @@
 
 .post-type-archive-column .term-list a,
 .tax-column_category .term-list a,
+.tax-column_keyword .term-list a,
 .tax-money_column .term-list a {
     display: inline-block;
     padding: 4px 8px;
@@ -246,6 +325,7 @@
 
     .post-type-archive-column .post-list,
     .tax-column_category .post-list,
+    .tax-column_keyword .post-list,
     .tax-money_column .post-list {
         --cols: 2;
     }
@@ -255,6 +335,7 @@
 
     .post-type-archive-column .post-list,
     .tax-column_category .post-list,
+    .tax-column_keyword .post-list,
     .tax-money_column .post-list {
         --cols: 1;
     }

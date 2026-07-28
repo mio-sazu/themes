@@ -116,6 +116,13 @@
     <?php endif; ?>
 
     <!-- ============================
+         人気のキーワード
+    ============================ -->
+    <div class="sidebar-box">
+      <?php get_template_part('template-parts/popular-keywords'); ?>
+    </div>
+
+    <!-- ============================
          カテゴリー一覧
          ※ お金コラム用カテゴリを表示
          ※ 条件検索の親カテゴリ conditional は除外

@@ -24,14 +24,37 @@ get_header();
                     <ul class="post-list">
                         <?php while (have_posts()) : the_post(); ?>
                             <li <?php post_class('post-item'); ?>>
-                                <a href="<?php the_permalink(); ?>">
-                                    <?php if (has_post_thumbnail()) the_post_thumbnail('medium'); ?>
-                                    <h2 class="post-title"><?php the_title(); ?></h2>
-                                    <time datetime="<?php echo esc_attr(get_the_date('c')); ?>">
-                                        <?php echo esc_html(get_the_date()); ?>
-                                    </time>
-                                    <div class="post-excerpt"><?php echo esc_html(sakunavi_safe_excerpt()); ?></div>
-                                </a>
+                                <?php md_the_coming_soon_badge(); ?>
+
+                                <?php if (has_post_thumbnail()) : ?>
+                                    <a href="<?php the_permalink(); ?>" class="post-thumb-link">
+                                        <?php the_post_thumbnail('medium'); ?>
+                                    </a>
+                                <?php endif; ?>
+
+                                <h2 class="post-title">
+                                    <a href="<?php the_permalink(); ?>" class="post-title-link">
+                                        <?php the_title(); ?>
+                                    </a>
+                                </h2>
+
+                                <time datetime="<?php echo esc_attr(get_the_date('c')); ?>">
+                                    <?php echo esc_html(get_the_date()); ?>
+                                </time>
+
+                                <?php
+                                $kw_terms = get_the_terms(get_the_ID(), 'column_keyword');
+                                if ($kw_terms && !is_wp_error($kw_terms)) : ?>
+                                    <ul class="post-keyword-list">
+                                        <?php foreach (array_slice($kw_terms, 0, 4) as $kw) : ?>
+                                            <li>
+                                                <a href="<?php echo esc_url(get_term_link($kw)); ?>">
+                                                    #<?php echo esc_html($kw->name); ?>
+                                                </a>
+                                            </li>
+                                        <?php endforeach; ?>
+                                    </ul>
+                                <?php endif; ?>
                             </li>
                         <?php endwhile; ?>
                     </ul>

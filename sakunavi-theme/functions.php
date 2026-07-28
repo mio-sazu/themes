@@ -78,19 +78,6 @@ function sakunavi_scripts()
     );
   }
 
-  // お金コラム系
-  if (
-    is_page_template('page-money-column.php') ||
-    is_tax('money_column')
-  ) {
-    wp_enqueue_style(
-      'sakunavi-column',
-      $theme_uri . '/assets/css/column.css',
-      ['sakunavi-style'],
-      '1.0'
-    );
-  }
-
   // 記事一覧ページ
   if (is_page_template('page-post-list.php')) {
     wp_enqueue_style(
@@ -102,9 +89,12 @@ function sakunavi_scripts()
   }
 
   // カードローン会社一覧・詳細
+  // ※ 子テーマ側（functions.php）も同じハンドル名 'sakunavi-company' で
+  //   別内容の company.css を読み込んでいる。先に登録した方のURLが勝ち
+  //   後発は無視されるため、子テーマ有効時はここをスキップして子テーマ側に譲る。
   if (
-    is_post_type_archive('card_loan_company') ||
-    is_singular('card_loan_company')
+    ! is_child_theme() &&
+    (is_post_type_archive('card_loan_company') || is_singular('card_loan_company'))
   ) {
     wp_enqueue_style(
       'sakunavi-company',
@@ -116,9 +106,6 @@ function sakunavi_scripts()
 
   // ガイド系・カードローン記事系
   if (
-    is_page_template('page-condition.php') ||
-    is_page_template('page-purpose.php') ||
-    is_page_template('page-cardloan-list.php') ||
     is_singular('cardloan') ||
     is_post_type_archive('cardloan') ||
     is_tax(['purpose', 'condition'])
@@ -132,12 +119,17 @@ function sakunavi_scripts()
   }
 
   // テーマ直下の style.css は1回だけ
-  wp_enqueue_style(
-    'theme-style',
-    get_stylesheet_uri(),
-    ['sakunavi-style'],
-    '1.0'
-  );
+  // ※ 子テーマ有効時は get_stylesheet_uri() が子テーマの style.css を指すため、
+  //   子テーマ側（functions.php の 'sakunavi-child-style'）と二重読み込みになってしまう。
+  //   子テーマ有効時はそちらに任せ、親テーマ単体で動く場合のみここで読み込む。
+  if (! is_child_theme()) {
+    wp_enqueue_style(
+      'theme-style',
+      get_stylesheet_uri(),
+      ['sakunavi-style'],
+      '1.0'
+    );
+  }
 
   // JS
   wp_enqueue_script(
@@ -180,60 +172,6 @@ add_action('init', 'sakunavi_cpt_slider');
 
 // テーマ全体でアイキャッチを使う宣言
 add_theme_support('post-thumbnails');
-
-// + ---メニュー--- +
-
-// header nav ドロップダウンの設定
-class Walker_Nav_Taxonomy_Posts extends Walker_Nav_Menu
-{
-  // 親<li> に子ありクラスを付与しつつ出力
-  public function start_el(&$output, $item, $depth = 0, $args = [], $id = 0)
-  {
-    // taxonomy リンクなら .menu-item-has-children を追加
-    if ($depth === 0 && $item->object === 'taxonomy') {
-      $item->classes[] = 'menu-item-has-children';
-    }
-
-    // まずは通常の<li><a>…を出力
-    parent::start_el($output, $item, $depth, $args, $id);
-
-    // taxonomy の場合だけ sub-menu を自前で出力
-    if ($depth === 0 && $item->object === 'taxonomy') {
-      // 開始タグ
-      $output .= "\n<ul class=\"sub-menu\">\n";
-
-      $term = get_term($item->object_id, $item->object);
-      $posts = get_posts([
-        'post_type'      => 'cardloan',
-        'tax_query'      => [[
-          'taxonomy' => $term->taxonomy,
-          'field'    => 'term_id',
-          'terms'    => $term->term_id,
-        ]],
-        'posts_per_page' => 5,
-      ]);
-
-      foreach ($posts as $p) {
-        $output .= '<li class="menu-item-sub">';
-        $output .= '<a href="' . get_permalink($p->ID) . '">'
-          . esc_html(get_the_title($p->ID))
-          . '</a>';
-        $output .= "</li>\n";
-      }
-
-      // 終了タグ
-      $output .= "</ul>\n";
-    }
-  }
-
-  // 親の end_el で </li> を閉じてもらう
-  public function end_el(&$output, $item, $depth = 0, $args = [])
-  {
-    parent::end_el($output, $item, $depth, $args);
-  }
-
-  // start_lvl / end_lvl は不要なのでオミットしてOK
-}
 
 add_action('init', function () {
   register_post_type('cardloan', [
@@ -555,11 +493,13 @@ function sakunavi_simulator_companies()
     'post_status'    => 'publish',
     'posts_per_page' => -1,
     'orderby'        => ['menu_order' => 'ASC', 'title' => 'ASC'],
+    // sim_show はデフォルトON扱い：未設定（値が保存されていない）会社は表示し、
+    // 明示的に「表示しない」を選んだ会社（値 '0'）だけ除外する。
     'meta_query'     => [
       [
         'key'     => 'sim_show',
-        'value'   => '1',
-        'compare' => '=',
+        'value'   => '0',
+        'compare' => '!=',
       ],
     ],
   ]);
@@ -570,13 +510,20 @@ function sakunavi_simulator_companies()
 
     $rate_min  = function_exists('get_field') ? get_field('rate_min', $id) : get_post_meta($id, 'rate_min', true);
     $rate_max  = function_exists('get_field') ? get_field('rate_max', $id) : get_post_meta($id, 'rate_max', true);
-    $free_days = function_exists('get_field') ? get_field('no_interest_days', $id) : get_post_meta($id, 'no_interest_days', true);
-    $free_note = function_exists('get_field') ? get_field('no_interest_note_text', $id) : get_post_meta($id, 'no_interest_note_text', true);
+    $free_days  = function_exists('get_field') ? get_field('no_interest_days', $id) : get_post_meta($id, 'no_interest_days', true);
+    $free_note  = function_exists('get_field') ? get_field('no_interest_note_text', $id) : get_post_meta($id, 'no_interest_note_text', true);
+    $free_label = function_exists('get_field') ? get_field('no_interest_label', $id) : get_post_meta($id, 'no_interest_label', true);
     $limit_min = function_exists('get_field') ? get_field('limit_amount_min', $id) : get_post_meta($id, 'limit_amount_min', true);
     $limit_max = function_exists('get_field') ? get_field('limit_amount_max', $id) : get_post_meta($id, 'limit_amount_max', true);
     $cta_url   = function_exists('get_field') ? get_field('cta_url', $id) : get_post_meta($id, 'cta_url', true);
     $featured  = function_exists('get_field') ? (bool) get_field('sim_featured', $id) : false;
+    $name_kana = function_exists('get_field') ? get_field('name_kana', $id) : get_post_meta($id, 'name_kana', true);
 
+    // 表示用：ACFに入力された文字列をそのまま使う（丸めない）
+    $rate_min_label = ($rate_min !== '' && $rate_min !== null) ? trim($rate_min) : null;
+    $rate_max_label = ($rate_max !== '' && $rate_max !== null) ? trim($rate_max) : null;
+
+    // 計算用：金利入力欄の初期値などに使う数値
     $rate_min  = ($rate_min !== '' && $rate_min !== null) ? floatval($rate_min) : null;
     $rate_max  = ($rate_max !== '' && $rate_max !== null) ? floatval($rate_max) : null;
     $free_days = ($free_days !== '' && $free_days !== null) ? intval($free_days) : 0;
@@ -587,9 +534,13 @@ function sakunavi_simulator_companies()
     $companies[] = [
       'id'       => (string) $id,
       'name'     => get_the_title($id),
+      'kana'     => $name_kana ? wp_strip_all_tags($name_kana) : '',
       'minRate'  => $rate_min !== null ? $rate_min : $rate_max,
       'maxRate'  => $rate_max,
-      'freeDays' => $free_days,
+      'minRateLabel' => $rate_min_label !== null ? $rate_min_label : (string) $rate_max_label,
+      'maxRateLabel' => $rate_max_label !== null ? $rate_max_label : (string) $rate_max,
+      'freeDays'  => $free_days,
+      'freeLabel' => $free_days > 0 ? ($free_label ? wp_strip_all_tags($free_label) : ('無利息 ' . $free_days . '日間')) : '',
       'freeNote' => $free_note ? wp_strip_all_tags($free_note) : '無利息期間の適用には各社所定の条件があります。詳細は公式サイトでご確認ください。',
       'limit'    => sakunavi_simulator_limit_label($limit_min, $limit_max),
       'featured' => $featured,
@@ -676,7 +627,7 @@ function simulator_shortcode($atts)
         <div style="display:flex; align-items:center; gap:8px; margin-bottom:8px;">
           <span style="font-size:12px; font-weight:700; letter-spacing:0.08em; color:#39B167; background:rgba(57,177,103,0.1); padding:4px 10px; border-radius:999px;">返済シミュレーター</span>
         </div>
-        <h1 id="snv-company" style="font-weight:800; font-size:34px; line-height:1.15; letter-spacing:-0.02em; margin:0 0 6px;">カードローン返済シミュレーション</h1>
+        <h1 id="snv-company" style="font-weight:800; font-size:34px; line-height:1.15; letter-spacing:-0.02em; margin:0 0 6px;">返済シミュレーター</h1>
         <p style="margin:0; color:#5b6459; font-size:15px;">申し込む前に、あなたの返済プランを正確に見積もりましょう。</p>
       </div>
       <div style="display:flex; gap:8px;">
@@ -785,7 +736,7 @@ function simulator_mini_shortcode($atts)
   <div id="snvm" style="width:100%;">
   <div id="snvm-card">
     <div style="margin-bottom:20px;">
-      <p style="margin:0; font-weight:800; font-size:18px; color:#20291f; letter-spacing:-0.01em;">返済シミュレーション</p>
+      <h2 style="margin:0; font-weight:800; font-size:18px; color:#20291f; letter-spacing:-0.01em;">返済シミュレーション</h2>
       <p style="margin:4px 0 0; font-size:12px; color:#8a9187;">3つ入力するだけで、今すぐ目安が分かります</p>
     </div>
 
@@ -825,6 +776,114 @@ function simulator_mini_shortcode($atts)
   </div>
 <?php
   return ob_get_clean();
+}
+
+// ============================
+// カードローン診断（トップページ「カードローンを探す」タブ）
+// ============================
+
+// card_loan_company の中から、診断に出す会社データを組み立てる
+function sakunavi_loan_diagnosis_companies()
+{
+  $query = new WP_Query([
+    'post_type'      => 'card_loan_company',
+    'post_status'    => 'publish',
+    'posts_per_page' => -1,
+    'orderby'        => ['menu_order' => 'ASC', 'title' => 'ASC'],
+    // diag_show はデフォルトON扱い：未設定（値が保存されていない）会社は表示し、
+    // 明示的に「表示しない」を選んだ会社（値 '0'）だけ除外する。
+    'meta_query'     => [
+      [
+        'key'     => 'diag_show',
+        'value'   => '0',
+        'compare' => '!=',
+      ],
+    ],
+  ]);
+
+  $companies = [];
+  foreach ($query->posts as $post) {
+    $id = $post->ID;
+
+    $rate_min   = function_exists('get_field') ? get_field('rate_min', $id) : get_post_meta($id, 'rate_min', true);
+    $rate_max   = function_exists('get_field') ? get_field('rate_max', $id) : get_post_meta($id, 'rate_max', true);
+    $limit_min  = function_exists('get_field') ? get_field('limit_amount_min', $id) : get_post_meta($id, 'limit_amount_min', true);
+    $limit_max  = function_exists('get_field') ? get_field('limit_amount_max', $id) : get_post_meta($id, 'limit_amount_max', true);
+    $free_days  = function_exists('get_field') ? get_field('no_interest_days', $id) : get_post_meta($id, 'no_interest_days', true);
+    $free_label = function_exists('get_field') ? get_field('no_interest_label', $id) : get_post_meta($id, 'no_interest_label', true);
+    $exam_fast  = function_exists('get_field') ? get_field('exam_fast', $id) : get_post_meta($id, 'exam_fast', true);
+    $web_only   = function_exists('get_field') ? get_field('web_only', $id) : get_post_meta($id, 'web_only', true);
+    $rank_score = function_exists('get_field') ? get_field('rank_score', $id) : get_post_meta($id, 'rank_score', true);
+    $cta_url    = function_exists('get_field') ? get_field('cta_url', $id) : get_post_meta($id, 'cta_url', true);
+    $cta_label  = function_exists('get_field') ? get_field('cta_label', $id) : get_post_meta($id, 'cta_label', true);
+
+    $student_ok   = function_exists('get_field') ? (bool) get_field('diag_student_ok', $id) : false;
+    $parttime_ok  = function_exists('get_field') ? (bool) get_field('diag_parttime_ok', $id) : false;
+    $sameday_ok   = function_exists('get_field') ? (bool) get_field('diag_sameday_ok', $id) : false;
+    $no_verify    = function_exists('get_field') ? (bool) get_field('diag_no_verify', $id) : false;
+    $housewife_ok = function_exists('get_field') ? (bool) get_field('diag_housewife_ok', $id) : false;
+    $cardless_ok  = function_exists('get_field') ? (bool) get_field('diag_cardless_ok', $id) : false;
+    $refinance_ok = function_exists('get_field') ? (bool) get_field('diag_refinance_ok', $id) : false;
+    $weekend_ok   = function_exists('get_field') ? (bool) get_field('diag_weekend_ok', $id) : false;
+
+    // 表示用：ACFに入力された文字列をそのまま使う（丸めない）
+    $rate_min_label = ($rate_min !== '' && $rate_min !== null) ? trim($rate_min) : null;
+    $rate_max_label = ($rate_max !== '' && $rate_max !== null) ? trim($rate_max) : null;
+
+    $rate_max  = ($rate_max !== '' && $rate_max !== null) ? floatval($rate_max) : null;
+
+    // 実質年率の上限が未入力の会社は比較の見せ場がないため一覧から除外
+    if ($rate_max === null) continue;
+
+    $companies[] = [
+      'id'         => (string) $id,
+      'name'       => get_the_title($id),
+      'rateMin'    => ($rate_min !== '' && $rate_min !== null) ? floatval($rate_min) : $rate_max,
+      'rateMax'    => $rate_max,
+      'rateMinLabel' => $rate_min_label !== null ? $rate_min_label : (string) $rate_max_label,
+      'rateMaxLabel' => $rate_max_label !== null ? $rate_max_label : (string) $rate_max,
+      'limitMin'   => ($limit_min !== '' && $limit_min !== null) ? floatval($limit_min) : null,
+      'limitMax'   => ($limit_max !== '' && $limit_max !== null) ? floatval($limit_max) : null,
+      'freeDays'   => ($free_days !== '' && $free_days !== null) ? intval($free_days) : 0,
+      'freeLabel'  => ($free_days !== '' && $free_days !== null && intval($free_days) > 0) ? ($free_label ? wp_strip_all_tags($free_label) : ('無利息 ' . intval($free_days) . '日間')) : '',
+      'examFast'   => $exam_fast ? esc_html($exam_fast) : '',
+      'webOnly'    => (bool) $web_only,
+      'rankScore'  => $rank_score !== '' ? floatval($rank_score) : 0,
+      'studentOk'   => $student_ok,
+      'parttimeOk'  => $parttime_ok,
+      'samedayOk'   => $sameday_ok,
+      'noVerify'    => $no_verify,
+      'housewifeOk' => $housewife_ok,
+      'cardlessOk'  => $cardless_ok,
+      'refinanceOk' => $refinance_ok,
+      'weekendOk'   => $weekend_ok,
+      'ctaUrl'     => $cta_url ? esc_url_raw($cta_url) : get_permalink($id),
+      'ctaLabel'   => $cta_label ? esc_html($cta_label) : '公式サイトを見る',
+    ];
+  }
+
+  return $companies;
+}
+
+add_action('wp_enqueue_scripts', 'loan_diagnosis_enqueue_assets');
+function loan_diagnosis_enqueue_assets()
+{
+  $js_path  = get_template_directory() . '/assets/js/loan-diagnosis.js';
+  $css_path = get_template_directory() . '/assets/css/loan-diagnosis.css';
+
+  wp_register_script(
+    'loan-diagnosis-js',
+    get_template_directory_uri() . '/assets/js/loan-diagnosis.js',
+    [],
+    file_exists($js_path) ? filemtime($js_path) : null,
+    true
+  );
+  wp_register_style(
+    'loan-diagnosis-css',
+    get_template_directory_uri() . '/assets/css/loan-diagnosis.css',
+    [],
+    file_exists($css_path) ? filemtime($css_path) : null
+  );
 }
 
 function sakunavi_customize_register($wp_customize)

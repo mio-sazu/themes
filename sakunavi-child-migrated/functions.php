@@ -19,6 +19,11 @@ require_once get_stylesheet_directory() . '/inc/cpt-loan-comparison.php';
 require_once get_stylesheet_directory() . '/inc/acf-simulator.php';
 
 // ============================
+// カードローン診断用 ACF（会社の表示設定）
+// ============================
+require_once get_stylesheet_directory() . '/inc/acf-loan-diagnosis.php';
+
+// ============================
 // 記事内埋め込みショートコード [post_embed]
 // ============================
 $_post_embed_file = get_stylesheet_directory() . '/inc/shortcodes/post-embed-shortcode.php';
@@ -198,6 +203,26 @@ add_action('init', function () {
     'hierarchical' => true,
     'show_in_rest' => true,
     'rewrite'      => ['slug' => 'column-category', 'with_front' => false],
+  ]);
+
+  // 人気のキーワード（サイト構造用の column_category とは別に、記事の話題タグとして使う）
+  register_taxonomy('column_keyword', ['column'], [
+    'label'        => 'コラムキーワード',
+    'labels'       => [
+      'name'          => 'キーワード',
+      'singular_name' => 'キーワード',
+      'search_items'  => 'キーワードを検索',
+      'all_items'     => 'すべてのキーワード',
+      'edit_item'     => 'キーワードを編集',
+      'update_item'   => 'キーワードを更新',
+      'add_new_item'  => '新規キーワードを追加',
+      'new_item_name' => '新規キーワード名',
+    ],
+    'public'             => true,
+    'hierarchical'       => false,
+    'show_in_rest'       => true,
+    'show_admin_column'  => true,
+    'rewrite'            => ['slug' => 'column-keyword', 'with_front' => false],
   ]);
 
   // ----------------------------
@@ -496,7 +521,7 @@ if (! function_exists('sakunavi_enqueue_shared_and_column_assets')) {
     $needs_support =
       is_singular('column') ||
       is_post_type_archive('column') ||
-      is_tax(['column_category', 'column_persona']) ||
+      is_tax(['column_category', 'column_persona', 'column_keyword']) ||
       is_singular('ranking') ||
       is_post_type_archive('ranking') ||
       is_tax(['ranking_year', 'ranking_category']) ||
@@ -641,7 +666,7 @@ if (! function_exists('sakunavi_enqueue_archives_and_breadcrumbs')) {
     $base = 'sakunavi-child-style';
 
     $is_archive_like =
-      is_post_type_archive('column') || is_tax(['column_category', 'column_persona']) ||
+      is_post_type_archive('column') || is_tax(['column_category', 'column_persona', 'column_keyword']) ||
       is_post_type_archive('ranking') || is_tax(['ranking_year', 'ranking_category']);
 
     $arch = get_stylesheet_directory() . '/assets/css/archives.css';
@@ -684,6 +709,7 @@ add_action('acf/init', function () {
     'location'        => [[['param' => 'post_type', 'operator' => '==', 'value' => 'card_loan_company']]],
     'fields'          => [
       ['key' => 'field_logo', 'label' => 'ロゴ', 'name' => 'logo', 'type' => 'image', 'return_format' => 'array', 'preview_size' => 'medium', 'library' => 'all'],
+      ['key' => 'field_name_kana', 'label' => 'フリガナ（任意）', 'name' => 'name_kana', 'type' => 'text', 'placeholder' => '例：ラクテンギンコウスーパーローン', 'instructions' => '返済シミュレーターの会社検索で、読み仮名からもヒットさせたい場合に入力してください。カタカナ・ひらがなどちらでも構いません。社名がカタカナのみの会社（アコム・プロミス 等）は未入力でも、ひらがな入力で自動的に検索対象になります。'],
       ['key' => 'field_rate_prefix', 'label' => '金利 前テキスト', 'name' => 'rate_prefix', 'type' => 'text', 'placeholder' => '例：年'],
       ['key' => 'field_rate_min', 'label' => '金利（最小）', 'name' => 'rate_min', 'type' => 'text', 'append' => '%', 'placeholder' => '例：1.500'],
       ['key' => 'field_rate_max', 'label' => '金利（最大）', 'name' => 'rate_max', 'type' => 'text', 'append' => '%', 'placeholder' => '例：18.000'],
@@ -691,6 +717,7 @@ add_action('acf/init', function () {
       ['key' => 'field_limit_amount_max', 'label' => '融資限度額（最大・万円）', 'name' => 'limit_amount_max', 'type' => 'number', 'append' => '万円', 'step' => '1'],
       ['key' => 'field_exam_fast', 'label' => '最短審査時間', 'name' => 'exam_fast', 'type' => 'text', 'placeholder' => '最短30分 など'],
       ['key' => 'field_no_interest_days', 'label' => '無利息期間（日）', 'name' => 'no_interest_days', 'type' => 'number', 'append' => '日', 'step' => '1'],
+      ['key' => 'field_no_interest_label', 'label' => '無利息 表示文言（任意）', 'name' => 'no_interest_label', 'type' => 'text', 'placeholder' => '例：初めてなら最大30日間利息0円／無利息初回最大30日間', 'instructions' => '一覧・記事・診断・シミュレーターで「無利息期間（日）」の代わりに、この文言をそのまま表示します（日数は自動で追記されません）。空欄の場合は今まで通り「無利息 ○日間」の自動表示になります。「無利息期間（日）」の数値は、返済シミュレーターの無利息計算に引き続き使われるため、文言を入力した場合も日数の入力は消さないでください。'],
       ['key' => 'field_web_only', 'label' => 'Web完結', 'name' => 'web_only', 'type' => 'true_false', 'ui' => 1, 'ui_on_text' => '対応', 'ui_off_text' => '―'],
       ['key' => 'field_rank_score', 'label' => 'おすすめ度（0〜5）', 'name' => 'rank_score', 'type' => 'number', 'min' => '0', 'max' => '5', 'step' => '0.5'],
       ['key' => 'field_cta_label', 'label' => '申込ボタン文言', 'name' => 'cta_label', 'type' => 'text', 'placeholder' => '申し込む'],
@@ -1638,6 +1665,34 @@ add_action('pre_get_posts', function ($q) {
     $q->set('posts_per_page', 10);
     $q->set('orderby', 'date');
     $q->set('order', 'DESC');
+
+    // 並び替えタブ（?sort=popular / ?sort=featured）
+    $sort = isset($_GET['sort']) ? sanitize_key($_GET['sort']) : '';
+
+    if ($sort === 'popular') {
+      // PV数（md_post_views）順。未計測（0PV）の記事もEXISTS/NOT EXISTSのOR結合で除外せず末尾に含める
+      $q->set('meta_query', [
+        'relation'     => 'OR',
+        'views_clause' => [
+          'key'     => 'md_post_views',
+          'compare' => 'EXISTS',
+          'type'    => 'NUMERIC',
+        ],
+        'no_views_clause' => [
+          'key'     => 'md_post_views',
+          'compare' => 'NOT EXISTS',
+        ],
+      ]);
+      $q->set('orderby', ['views_clause' => 'DESC']);
+    } elseif ($sort === 'featured') {
+      // 注目記事（is_editor_pick）のみに絞り込み
+      $q->set('meta_query', [[
+        'key'   => 'is_editor_pick',
+        'value' => '1',
+      ]]);
+      $q->set('orderby', 'date');
+      $q->set('order', 'DESC');
+    }
   }
 
   if ($q->is_post_type_archive('ranking') || $q->is_tax('ranking_year') || $q->is_tax('ranking_category')) {
@@ -1737,6 +1792,11 @@ add_filter('taxonomy_template', function ($template) {
 
   if (is_tax('column_category')) {
     $child = $path . '/taxonomy-column_category.php';
+    if (file_exists($child)) return $child;
+  }
+
+  if (is_tax('column_keyword')) {
+    $child = $path . '/taxonomy-column_keyword.php';
     if (file_exists($child)) return $child;
   }
 

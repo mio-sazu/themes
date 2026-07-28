@@ -1,0 +1,125 @@
+/* カードローン診断（トップページ「カードローンを探す」タブ） */
+#ldx, #ldx * { box-sizing: border-box; }
+
+#ldx {
+  background: linear-gradient(165deg, #ffffff, #F7FAF8);
+  border: 1px solid #E5E9EF;
+  border-radius: 24px;
+  padding: 32px 28px;
+}
+
+#ldx .ldx-head {
+  margin-bottom: 24px;
+}
+
+#ldx .ldx-eyebrow {
+  display: inline-block;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: #39B167;
+  background: rgba(57, 177, 103, 0.1);
+  padding: 4px 12px;
+  border-radius: 999px;
+  margin-bottom: 10px;
+}
+
+#ldx .ldx-title {
+  margin: 0 0 8px;
+  font-size: clamp(20px, 3vw, 26px);
+  font-weight: 800;
+  letter-spacing: -0.01em;
+}
+
+#ldx .ldx-lead {
+  margin: 0;
+  font-size: 14px;
+  color: #5b6459;
+  line-height: 1.7;
+}
+
+#ldx .ldx-q {
+  margin-bottom: 20px;
+}
+
+#ldx .ldx-q__label {
+  margin: 0 0 10px;
+  font-size: 13px;
+  font-weight: 700;
+  color: #2f3b33;
+}
+
+#ldx .ldx-q__hint {
+  margin-left: 6px;
+  font-size: 11px;
+  font-weight: 600;
+  color: #8a9187;
+}
+
+#ldx .ldx-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+#ldx .ldx-pill {
+  padding: 10px 18px;
+  border-radius: 999px;
+  border: 1.5px solid #dde9e2;
+  background: #fff;
+  color: #3f4a3e;
+  font-size: 13px;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  transition: background .15s ease, border-color .15s ease, color .15s ease;
+}
+
+#ldx .ldx-pill:hover {
+  border-color: #39B167;
+}
+
+#ldx .ldx-pill.is-selected {
+  background: #39B167;
+  border-color: #39B167;
+  color: #fff;
+}
+
+#ldx .ldx-submit {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  margin-top: 8px;
+  padding: 15px 24px;
+  background: linear-gradient(135deg, #39B167, #1e7a42);
+  color: #fff;
+  font-size: 15px;
+  font-weight: 800;
+  font-family: inherit;
+  border: none;
+  border-radius: 14px;
+  cursor: pointer;
+  box-shadow: 0 6px 16px rgba(30, 122, 66, 0.22);
+  transition: transform .15s ease, box-shadow .15s ease;
+}
+
+#ldx .ldx-submit:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 24px rgba(30, 122, 66, 0.3);
+}
+
+#ldx .ldx-submit__arrow {
+  font-size: 16px;
+}
+
+#ldx .ldx-result {
+  margin-top: 24px;
+}
+
+@media (max-width: 560px) {
+  #ldx {
+    padding: 24px 18px;
+  }
+}

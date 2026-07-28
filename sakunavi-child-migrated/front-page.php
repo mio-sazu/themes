@@ -116,6 +116,11 @@ get_template_part('template-parts/slider');
                 </section>
 
                 <!-- ここまでタブ表示 -->
+
+                <section class="popular-keywords-section">
+                    <?php get_template_part('template-parts/popular-keywords'); ?>
+                </section>
+
                 <!--自分に合ったカードローンの選び方↓-->
                 <section class="loan-category">
                     <h2>

@@ -184,6 +184,25 @@ body {
     margin: 30px 0;
 }
 
+/* コラム記事内の .btn-box CTAは他ボタン（apply-btnblue等）とトーンを揃えた緑デザインに上書き */
+.single-column .entry-content .btn-box .btn {
+    background: linear-gradient(135deg, #2fa25a 0%, #39B167 60%, #2fa25a 100%);
+    padding: 14px 36px;
+    font-size: 16px;
+    letter-spacing: 0.05em;
+    border-radius: 50px;
+    text-decoration: none;
+    box-shadow: 0 4px 14px rgba(30, 120, 70, 0.35);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.single-column .entry-content .btn-box .btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(30, 120, 70, 0.45);
+    color: #fff;
+    text-decoration: none;
+}
+
 /* ===== セクション見出し ===== */
 .section-title{
     border-bottom: 1px black solid;
@@ -246,6 +265,20 @@ body {
 }
 
 /*////////コラムFAQ共通////////*/
+.single-column .faq-section {
+    margin: 44px 0;
+}
+
+.single-column .faq-section > h2 {
+    margin: 0 0 18px;
+    padding: 0 0 0.75em 0.75em;
+    font-size: clamp(22px, 3vw, 28px);
+    line-height: 1.5;
+    font-weight: 700;
+    color: #222;
+    border-bottom: 1px solid #d9e5dc;
+}
+
 .faq-box {
     display: flex;
     flex-direction: column;
@@ -253,8 +286,10 @@ body {
 }
 
 .faq-item {
-    border: 1px solid #b85d00;
-    background: #f8f1e7;
+    border: 1px solid #dde7e0;
+    background: #fff;
+    border-radius: 10px;
+    overflow: hidden;
 }
 
 .faq-question {
@@ -264,12 +299,19 @@ body {
     align-items: center;
     gap: 16px;
     padding: 18px 20px;
-    background: #e9dcae;
+    background: #f7faf8;
     border: none;
     cursor: pointer;
     text-align: left;
     font-size: 18px;
     font-weight: 700;
+    color: #2f3b33;
+    transition: background .15s ease;
+}
+
+.faq-question:hover,
+.faq-question[aria-expanded="true"] {
+    background: #edfaf2;
 }
 
 .faq-question__text {
@@ -280,17 +322,19 @@ body {
     flex: 0 0 auto;
     font-size: 24px;
     line-height: 1;
-    color: #d97a00;
+    color: #39B167;
 }
 
 .faq-answer {
     padding: 16px 20px;
-    background: #f8f1e7;
-    border-top: 1px solid #d7c5ad;
+    background: #fafafa;
+    border-top: 1px solid #dde7e0;
+    line-height: 1.9;
+    color: #3a3a3a;
 }
 
 .faq-answer[hidden] {
-    display: none;   
+    display: none;
 }
 
 /* support.css の共通FAQ疑似要素をコラムだけ無効化 */
@@ -1095,6 +1139,7 @@ body {
 
 .post-type-archive-column main,
 .tax-column_category main,
+.tax-column_keyword main,
 .tax-money_column main,
 .single-column main {
     min-width: 0;
@@ -1102,15 +1147,18 @@ body {
 
 .post-type-archive-column .post-list,
 .tax-column_category .post-list,
+.tax-column_keyword .post-list,
 .tax-money_column .post-list {
     --cols: 2;
 }
 
 .post-type-archive-column .post-title,
 .tax-column_category .post-title,
+.tax-column_keyword .post-title,
 .tax-money_column .post-title,
 .post-type-archive-column .post-excerpt,
 .tax-column_category .post-excerpt,
+.tax-column_keyword .post-excerpt,
 .tax-money_column .post-excerpt {
     word-break: break-word;
     overflow-wrap: anywhere;
@@ -1331,18 +1379,26 @@ body {
     color: #2f3b33;
 }
 
-/* リンク */
-/* .single-column .entry-content a {
-    /* color: #4f7f65;
+/* マーカー強調（ブラウザ標準の黄色のままだとサイトの配色と合わないため） */
+.single-column .entry-content mark {
+    background: #edfaf2;
+    color: inherit;
+    padding: 0.1em 0.3em;
+    border-radius: 4px;
+}
+
+/* リンク（記事内に埋め込まれた申込ボタン .apply-btn* ・記事埋め込みカード .post-embed-card__link ・.btn-box内のCTAボタンは対象外にする） */
+.single-column .entry-content a:not([class*="apply-btn"]):not(.post-embed-card__link):not(.btn-box a) {
+    color: #1e7a42;
     text-decoration: underline;
     text-underline-offset: 0.18em;
     text-decoration-thickness: 1px;
 }
 
-.single-column .entry-content a:hover {
-    color: #3e6b53;
+.single-column .entry-content a:not([class*="apply-btn"]):not(.post-embed-card__link):not(.btn-box a):hover {
+    color: #39B167;
 }
-*/
+
 /* 区切り線 */
 .single-column .entry-content hr {
     border: 0;
@@ -1504,6 +1560,7 @@ body {
 @media (max-width: 767px) {
     .post-type-archive-column .layout,
     .tax-column_category .layout,
+    .tax-column_keyword .layout,
     .tax-money_column .layout,
     .single-column .layout {
         grid-template-columns: 1fr;
@@ -1549,6 +1606,49 @@ body {
 
 .text-width p {
     margin-bottom: 20px;
+}
+
+/* ポイントまとめボックス（注意点・チェックリストなどを緑の枠でまとめる用） */
+.single-column .entry-content .column-point-box {
+    margin: 2em 0;
+    padding: 24px;
+    border: 2px solid #39B167;
+    border-radius: 14px;
+    background: #f2faf5;
+}
+
+.single-column .entry-content .column-point-box__title {
+    margin: 0 0 16px;
+    padding: 0;
+    border-bottom: none;
+}
+
+.single-column .entry-content .column-point-box__list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    list-style: none;
+    margin: 0 0 20px;
+    padding: 0;
+}
+
+.single-column .entry-content .column-point-box__list li {
+    margin: 0;
+    padding: 8px 14px;
+    background: #39B167;
+    color: #fff;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 700;
+    line-height: 1.4;
+}
+
+.single-column .entry-content .column-point-box__body p {
+    margin: 0 0 1em;
+}
+
+.single-column .entry-content .column-point-box__body p:last-child {
+    margin-bottom: 0;
 }
 
 .loan-summary-box {
@@ -1598,14 +1698,6 @@ body {
     padding: 2em;
     border-radius: 8px;
     line-height: 1.7;
-}
-
-.loan-heading {
-    font-size: 30px;
-    margin-bottom: 1em;
-    border-left: 5px solid #ffa500;
-    padding-left: 0.5em;
-    font-weight: bold;
 }
 
 .loan-list {
@@ -1694,34 +1786,36 @@ body {
    記事内埋め込みカード [post_embed]
 ================================= */
 .post-embed-card {
-    margin: 2em 0;
+    margin: 2em auto;
+    max-width: 92%;
 }
 
 .post-embed-card__label {
     display: flex;
     align-items: center;
+    justify-content: center;
     gap: 6px;
-    margin: 0 0 6px;
-    font-size: 12px;
+    margin: 0 0 10px;
+    font-size: 16px;
     font-weight: 700;
-    color: #6a897c;
+    color: #33423a;
 }
 
 .post-embed-card__label::before {
-    content: '';
-    display: inline-block;
-    flex-shrink: 0;
-    width: 3px;
-    height: 14px;
-    background: #6a897c;
-    border-radius: 2px;
+    content: '＼';
+    color: #39B167;
+}
+
+.post-embed-card__label::after {
+    content: '／';
+    color: #39B167;
 }
 
 .post-embed-card__link {
     display: flex;
-    gap: 16px;
+    gap: 12px;
     align-items: center;
-    padding: 14px 16px;
+    padding: 8px;
     border: 1px solid #dde7e0;
     border-radius: 14px;
     background: #fff;
@@ -1739,21 +1833,24 @@ body {
     color: #2f3b33;
 }
 
-.post-embed-card__thumb {
+.single-column .entry-content .post-embed-card__thumb {
     flex-shrink: 0;
-    width: 120px;
-    aspect-ratio: 16 / 9;
+    width: 104px;
+    aspect-ratio: 1 / 1;
     margin: 0;
     border-radius: 8px;
     overflow: hidden;
     background: #f0f5f2;
 }
 
-.post-embed-card__thumb img {
+.single-column .entry-content .post-embed-card__thumb img {
     width: 100%;
     height: 100%;
+    max-width: none;
     object-fit: cover;
     display: block;
+    border-radius: 0;
+    margin: 0;
 }
 
 .post-embed-card__body {
@@ -1761,14 +1858,37 @@ body {
     min-width: 0;
     display: flex;
     flex-direction: column;
+    gap: 5px;
+}
+
+.post-embed-card__meta {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
     gap: 6px;
+}
+
+.post-embed-card__cat {
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: #2ea05a;
+    background: #edfaf2;
+    border-radius: 3px;
+    padding: 2px 7px;
+    line-height: 1.5;
+    white-space: nowrap;
+}
+
+.post-embed-card__date {
+    font-size: 0.7rem;
+    color: #93a49c;
 }
 
 .post-embed-card__title {
     display: block;
-    font-size: 15px;
-    font-weight: 700;
-    line-height: 1.6;
+    font-size: 17px;
+    font-weight: 800;
+    line-height: 1.5;
     color: #2f3b33;
     word-break: break-word;
     overflow-wrap: anywhere;
@@ -1779,17 +1899,139 @@ body {
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 2;
     overflow: hidden;
-    font-size: 13px;
+    font-size: 12px;
     line-height: 1.6;
-    color: #6a7a70;
+    color: #8a988f;
 }
 
 @media (max-width: 600px) {
-    .post-embed-card__thumb {
-        width: 90px;
+    .single-column .entry-content .post-embed-card__thumb {
+        width: 84px;
     }
 
     .post-embed-card__title {
-        font-size: 14px;
+        font-size: 15px;
+    }
+
+    .post-embed-card__excerpt {
+        display: none;
+    }
+}
+
+/*////////STEPガイド（手順テンプレート）////////*/
+.single-column .entry-content .step-guide {
+    list-style: none;
+    margin: 32px 0;
+    padding: 0;
+}
+
+.single-column .entry-content .step-guide__item {
+    position: relative;
+    display: grid;
+    grid-template-columns: 64px 1fr;
+    column-gap: 24px;
+    padding-bottom: 40px;
+}
+
+.single-column .entry-content .step-guide__item:last-child {
+    padding-bottom: 0;
+}
+
+.single-column .entry-content .step-guide__marker {
+    position: relative;
+    display: flex;
+    justify-content: center;
+}
+
+.single-column .entry-content .step-guide__circle {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background-color: #39B167;
+    color: #fff;
+    position: relative;
+    z-index: 1;
+}
+
+.single-column .entry-content .step-guide__label {
+    font-size: 10px;
+    letter-spacing: .05em;
+    line-height: 1.2;
+}
+
+.single-column .entry-content .step-guide__num {
+    font-size: 22px;
+    font-weight: 700;
+    line-height: 1.2;
+}
+
+.single-column .entry-content .step-guide__item:not(:last-child) .step-guide__marker::after {
+    content: "";
+    position: absolute;
+    top: 64px;
+    bottom: -40px;
+    left: 50%;
+    width: 0;
+    border-left: 2px dashed #cfd8d2;
+    transform: translateX(-50%);
+}
+
+.single-column .entry-content .step-guide__body {
+    padding-top: 10px;
+}
+
+.single-column .entry-content .step-guide__title {
+    margin: 0 0 10px;
+    padding-left: 0;
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: #1a1a1a;
+}
+
+.single-column .entry-content .step-guide__title::before {
+    content: none;
+}
+
+.single-column .entry-content .step-guide__text {
+    margin: 0;
+    color: #444;
+    line-height: 1.8;
+}
+
+@media (max-width: 600px) {
+    .single-column .entry-content .step-guide__item {
+        grid-template-columns: 48px 1fr;
+        column-gap: 14px;
+        padding-bottom: 28px;
+    }
+
+    .single-column .entry-content .step-guide__circle {
+        width: 48px;
+        height: 48px;
+    }
+
+    .single-column .entry-content .step-guide__label {
+        font-size: 8px;
+    }
+
+    .single-column .entry-content .step-guide__num {
+        font-size: 17px;
+    }
+
+    .single-column .entry-content .step-guide__item:not(:last-child) .step-guide__marker::after {
+        top: 48px;
+        bottom: -28px;
+    }
+
+    .single-column .entry-content .step-guide__body {
+        padding-top: 2px;
+    }
+
+    .single-column .entry-content .step-guide__title {
+        font-size: 1.02rem;
     }
 }

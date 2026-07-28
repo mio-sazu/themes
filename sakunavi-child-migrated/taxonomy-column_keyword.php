@@ -1,8 +1,7 @@
 <?php
 /**
- * Template: コラム アーカイブ
- * CPT: column
- * CSS: style.css（グローバル）, assets/css/support.css, assets/css/column.css
+ * Template: コラム キーワードアーカイブ（column_keyword タクソノミー）
+ * CSS: style.css（グローバル）, assets/css/support.css, assets/css/column.css, assets/css/archives.css
  */
 get_header();
 ?>
@@ -15,30 +14,9 @@ get_header();
 
             <main>
                 <header class="page-header">
-                    <h1 class="page-title">コラム</h1>
-                    <p class="lead">お金に関する基礎知識から実践まで、金融ジャンル別に解説。</p>
+                    <h1 class="page-title">「<?php echo esc_html(single_term_title('', false)); ?>」の記事一覧</h1>
+                    <p class="lead">キーワード「<?php echo esc_html(single_term_title('', false)); ?>」に関するコラムをまとめています。</p>
                 </header>
-
-                <?php
-                $column_sort     = isset($_GET['sort']) ? sanitize_key($_GET['sort']) : 'new';
-                $column_base_url = get_post_type_archive_link('column');
-                $column_sort_tabs = [
-                    'new'      => '新着順',
-                    'popular'  => '人気順',
-                    'featured' => '注目記事',
-                ];
-                ?>
-                <ul class="column-sort-tabs">
-                    <?php foreach ($column_sort_tabs as $key => $label) :
-                        $tab_url = $key === 'new' ? $column_base_url : add_query_arg('sort', $key, $column_base_url);
-                    ?>
-                        <li>
-                            <a href="<?php echo esc_url($tab_url); ?>" class="column-sort-tabs__item<?php echo $column_sort === $key ? ' is-active' : ''; ?>">
-                                <?php echo esc_html($label); ?>
-                            </a>
-                        </li>
-                    <?php endforeach; ?>
-                </ul>
 
                 <?php if (have_posts()) : ?>
                     <ul class="post-list">
@@ -95,7 +73,7 @@ get_header();
 
                     <?php get_template_part('template-parts/pagination'); ?>
                 <?php else : ?>
-                    <p>記事がありません。</p>
+                    <p>該当する記事がありません。</p>
                 <?php endif; ?>
             </main>
         </div>

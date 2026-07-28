@@ -45,8 +45,21 @@
     state.interestFree = c.freeDays > 0;
   }
 
-  function fmt(n) { return Math.round(n).toLocaleString('ja-JP'); }
+  function round2(n) { return Math.round(n * 100) / 100; }
+  function fmt(n) { return round2(n).toLocaleString('ja-JP', { maximumFractionDigits: 2 }); }
   function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+  // カタカナをひらがなに寄せて比較する（会社名検索用）。
+  // 「あこむ」のようなひらがな入力でも「アコム」がヒットするようにするための正規化。
+  function toHiragana(s) {
+    return String(s || '').replace(/[ァ-ヶ]/g, function (c) { return String.fromCharCode(c.charCodeAt(0) - 0x60); });
+  }
+  function normalizeForSearch(s) { return toHiragana(String(s || '')).toLowerCase(); }
+  function companyMatchesQuery(c, normalizedQuery) {
+    if (!normalizedQuery) return true;
+    if (normalizeForSearch(c.name).indexOf(normalizedQuery) >= 0) return true;
+    if (c.kana && normalizeForSearch(c.kana).indexOf(normalizedQuery) >= 0) return true;
+    return false;
+  }
   // type="number" はブラウザによって setSelectionRange が使えず、再描画のたびに
   // 入力キャレットが末尾へ飛んでしまう。text + inputmode で扱い、文字種だけ絞り込む。
   function sanitizeInt(v) { return String(v == null ? '' : v).replace(/[^0-9]/g, ''); }
@@ -67,9 +80,9 @@
       var pay = monthly;
       if (principalApplied >= bal) { principalApplied = bal; pay = bal + interest; }
       bal -= principalApplied;
-      var iR = Math.round(interest), pR = Math.round(pay), paR = Math.round(principalApplied);
+      var iR = round2(interest), pR = round2(pay), paR = round2(principalApplied);
       totalInterest += iR; totalPaid += pR;
-      sched.push({ n: m, payment: pR, principalApplied: paR, interest: iR, balance: Math.max(0, Math.round(bal)) });
+      sched.push({ n: m, payment: pR, principalApplied: paR, interest: iR, balance: Math.max(0, round2(bal)) });
     }
     if (bal > 0.5) {
       // 600ヶ月（50年）経っても残高が残る＝実質的に完済不可能な返済額
@@ -169,7 +182,7 @@
   function rateHint() {
     var c = currentCompany();
     if (!c) return '<p style="margin:0 0 20px; font-size:12px; color:#8a9187;">会社を選択すると、実質年率の目安が自動で表示されます。</p>';
-    return '<p style="margin:0 0 20px; font-size:12px; color:#8a9187;">' + esc(c.name) + 'の実質年率：' + c.minRate + '％〜' + c.maxRate + '％（上限を自動セット・手動で変更可）</p>';
+    return '<p style="margin:0 0 20px; font-size:12px; color:#8a9187;">' + esc(c.name) + 'の実質年率：' + esc(c.minRateLabel) + '％〜' + esc(c.maxRateLabel) + '％（上限を自動セット・手動で変更可）</p>';
   }
   function freeToggle() {
     var c = currentCompany();
@@ -177,7 +190,8 @@
       var label = c ? esc(c.name) + 'には無利息期間はありません' : '会社を選択すると無利息期間の有無が表示されます';
       return '<label style="display:flex; align-items:center; gap:12px; padding:14px; border-radius:12px; background:#E5E9EF; border:1px solid #DDE9E2; cursor:not-allowed; opacity:.75;"><input type="checkbox" disabled style="width:20px; height:20px; accent-color:#8a9187;"><span style="font-size:13px; font-weight:600; color:#8a9187;">' + label + '</span></label>';
     }
-    return '<label style="display:flex; align-items:center; gap:12px; padding:14px; border-radius:12px; background:#EDFAF2; border:1px solid #C5E8D0; cursor:pointer;"><input type="checkbox" data-action="free" ' + (state.interestFree ? 'checked' : '') + ' style="width:20px; height:20px; accent-color:#39B167;"><span style="font-size:13px; font-weight:600; color:#1a5e34;">初回 ' + c.freeDays + '日間 の無利息サービスを適用</span></label>';
+    var freeLabel = c.freeLabel || ('無利息 ' + c.freeDays + '日間');
+    return '<label style="display:flex; align-items:center; gap:12px; padding:14px; border-radius:12px; background:#EDFAF2; border:1px solid #C5E8D0; cursor:pointer;"><input type="checkbox" data-action="free" ' + (state.interestFree ? 'checked' : '') + ' style="width:20px; height:20px; accent-color:#39B167;"><span style="font-size:13px; font-weight:600; color:#1a5e34;">' + esc(freeLabel) + ' のサービスを適用</span></label>';
   }
   function companyNote() {
     var c = currentCompany();
@@ -302,7 +316,7 @@
   // ---- 会社セレクター（検索付きドロップダウン、複数社対応） ----
   function companyPill(c) {
     var on = c.freeDays > 0;
-    return '<span style="font-size:11px; font-weight:600; white-space:nowrap; color:' + (on ? '#1a5e34' : '#8a9187') + '; background:' + (on ? '#EDFAF2' : '#E5E9EF') + '; padding:3px 9px; border-radius:999px;">' + (on ? '無利息' + c.freeDays + '日' : '無利息なし') + '</span>';
+    return '<span style="font-size:11px; font-weight:600; white-space:nowrap; color:' + (on ? '#1a5e34' : '#8a9187') + '; background:' + (on ? '#EDFAF2' : '#E5E9EF') + '; padding:3px 9px; border-radius:999px;">' + (on ? esc(c.freeLabel || ('無利息' + c.freeDays + '日')) : '無利息なし') + '</span>';
   }
   function renderCompanies() {
     if (!COMPANIES.length) {
@@ -322,7 +336,7 @@
         return '<button data-action="company" data-id="' + c.id + '" style="text-align:left; cursor:pointer; padding:16px; border-radius:16px; border:2px solid ' + (on ? '#39B167' : '#E5E9EF') + '; background:' + (on ? 'rgba(57,177,103,0.06)' : '#fff') + '; transition:all .15s; font-family:inherit; display:flex; flex-direction:column; gap:6px; position:relative;">' +
           (on ? '<span class="msr fill" style="position:absolute; top:12px; right:12px; color:#39B167; font-size:20px;">check_circle</span>' : '') +
           '<span style="font-weight:800; font-size:16px; color:' + (on ? '#1e7a42' : '#1a1c1c') + ';">' + esc(c.name) + '</span>' +
-          '<span style="font-size:13px; font-weight:700; color:#39B167;">実質年率 ' + c.minRate + '〜' + c.maxRate + '％</span>' +
+          '<span style="font-size:13px; font-weight:700; color:#39B167;">実質年率 ' + esc(c.minRateLabel) + '〜' + esc(c.maxRateLabel) + '％</span>' +
           '<div style="display:flex; gap:6px; flex-wrap:wrap; margin-top:2px;">' + companyPill(c) + '<span style="font-size:11px; font-weight:600; color:#5b6459; background:#EDFAF2; padding:2px 8px; border-radius:999px;">' + esc(c.limit) + '</span></div>' +
           '</button>';
       }).join('') + customCard + '</div>';
@@ -333,12 +347,12 @@
       '<span class="msr" style="color:#8a9187; font-size:22px;">' + (state.companyOpen ? 'expand_less' : 'expand_more') + '</span></button>';
     var dropdown = '<div style="position:relative; max-width:560px;">' + trigger;
     if (state.companyOpen) {
-      var q = (state.companyQuery || '').trim();
-      var list = COMPANIES.filter(function (c) { return !q || c.name.indexOf(q) >= 0; });
+      var q = normalizeForSearch((state.companyQuery || '').trim());
+      var list = COMPANIES.filter(function (c) { return companyMatchesQuery(c, q); });
       var rows = list.map(function (c) {
         var on = c.id === state.companyId;
         return '<button data-action="company" data-id="' + c.id + '" style="width:100%; text-align:left; cursor:pointer; padding:12px 14px; border:none; border-bottom:1px solid #E5E9EF; background:' + (on ? 'rgba(57,177,103,0.06)' : '#fff') + '; display:flex; align-items:center; justify-content:space-between; gap:10px; font-family:inherit;">' +
-          '<span style="display:flex; flex-direction:column; gap:3px;"><span style="font-weight:800; font-size:15px; color:' + (on ? '#1e7a42' : '#1a1c1c') + ';">' + esc(c.name) + '</span><span style="font-size:12px; color:#5b6459;">実質年率 ' + c.minRate + '〜' + c.maxRate + '％ ・ ' + esc(c.limit) + '</span></span>' + companyPill(c) + '</button>';
+          '<span style="display:flex; flex-direction:column; gap:3px;"><span style="font-weight:800; font-size:15px; color:' + (on ? '#1e7a42' : '#1a1c1c') + ';">' + esc(c.name) + '</span><span style="font-size:12px; color:#5b6459;">実質年率 ' + esc(c.minRateLabel) + '〜' + esc(c.maxRateLabel) + '％ ・ ' + esc(c.limit) + '</span></span>' + companyPill(c) + '</button>';
       }).join('') || '<p style="padding:18px; margin:0; text-align:center; color:#8a9187; font-size:13px;">該当する会社がありません。</p>';
       dropdown += '<div style="position:absolute; z-index:30; top:calc(100% + 8px); left:0; width:100%; background:#fff; border:1px solid #E5E9EF; border-radius:14px; box-shadow:0 12px 32px rgba(60,50,20,0.16); overflow:hidden;">' +
         '<div style="padding:10px; border-bottom:1px solid #E5E9EF; position:relative;"><span class="msr" style="position:absolute; left:20px; top:50%; transform:translateY(-50%); color:#8a9187; font-size:20px;">search</span><input data-action="companyQuery" data-focus="companyQuery" value="' + esc(state.companyQuery || '') + '" placeholder="会社名で検索…" style="width:100%; border:1.5px solid #DDE9E2; border-radius:10px; padding:10px 12px 10px 40px; font-size:14px; outline:none; background:#F8FAF8; font-family:inherit;"></div>' +
@@ -386,7 +400,7 @@
     var v = compute(), c = currentCompany();
     if (v.base.impossible) { alert('この条件では完済できないため、CSVを出力できません。'); return; }
     var rows = [];
-    rows.push(['カードローン返済シミュレーション']);
+    rows.push(['返済シミュレーター']);
     rows.push(['会社', c ? c.name : '(未選択)']);
     rows.push(['借入額(円)', v.P]);
     rows.push(['毎月返済額(円)', v.M]);
@@ -455,14 +469,14 @@
   }
   function paintHero() {
     var c = currentCompany();
-    document.getElementById('snv-company').textContent = c ? c.name : 'カードローン返済シミュレーション';
+    document.getElementById('snv-company').textContent = c ? c.name : '返済シミュレーター';
 
     var maxRateEl = document.getElementById('snv-maxrate');
-    if (c) { maxRateEl.style.display = ''; maxRateEl.textContent = '実質年率上限 ' + c.maxRate + '%'; }
+    if (c) { maxRateEl.style.display = ''; maxRateEl.textContent = '実質年率上限 ' + c.maxRateLabel + '%'; }
     else { maxRateEl.style.display = 'none'; }
 
     var freeEl = document.getElementById('snv-freedays');
-    if (c && c.freeDays > 0) { freeEl.style.display = ''; freeEl.textContent = '無利息 ' + c.freeDays + '日間'; }
+    if (c && c.freeDays > 0) { freeEl.style.display = ''; freeEl.textContent = c.freeLabel || ('無利息 ' + c.freeDays + '日間'); }
     else { freeEl.style.display = 'none'; }
 
     var ctaBtn = document.getElementById('snv-cta-apply');
@@ -500,12 +514,19 @@
     if (a === 'principal') { state.principal = sanitizeInt(e.target.value); paintResults(); }
     else if (a === 'monthly') { state.monthly = sanitizeInt(e.target.value); paintResults(); }
     else if (a === 'rate') { state.rate = sanitizeDecimal(e.target.value); paintResults(); }
-    else if (a === 'companyQuery') { state.companyQuery = e.target.value; paintCompanies(); }
+    else if (a === 'companyQuery') { state.companyQuery = e.target.value; if (!e.isComposing) paintCompanies(); }
     else if (a === 'start') {
       var v = (e.target.value || (state.startY + '-' + pad2(state.startM))).split('-');
       state.startY = Number(v[0]); state.startM = Number(v[1]);
       paintResults();
     }
+  });
+  // IME変換確定時（日本語入力の変換確定など）に検索結果を反映する。
+  // input中の再描画はcompositionstart〜compositionendの間スキップしているため、
+  // 確定タイミングでここから明示的に再描画する。
+  root.addEventListener('compositionend', function (e) {
+    var a = e.target.getAttribute && e.target.getAttribute('data-action');
+    if (a === 'companyQuery') { state.companyQuery = e.target.value; paintCompanies(); }
   });
   root.addEventListener('change', function (e) {
     var a = e.target.getAttribute && e.target.getAttribute('data-action');

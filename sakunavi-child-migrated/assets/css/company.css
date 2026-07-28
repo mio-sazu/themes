@@ -4,6 +4,42 @@
     font-weight: bold;
     padding-left: 15px;
 }
+/* 本文（.company-points内の the_content）の見出し・段落・リストの余白。
+   サイト全体のreset.cssで margin:0 になっているため、ここで個別に付け直す
+   （コラム記事側の .entry-content と同じ考え方。基本情報テーブルなど、
+   他のUI部品の見出しに影響しないよう .entry-content の中だけに絞る） */
+.company-content .entry-content h2 {
+    margin: 1.75em 0 1.1em;
+    font-size: 22px;
+    font-weight: bold;
+    padding-left: 15px;
+}
+.company-content .entry-content h3 {
+    margin: 1.8em 0 0.8em;
+    font-size: 19px;
+    font-weight: bold;
+    padding-left: 15px;
+}
+.company-content .entry-content h4 {
+    margin: 1.6em 0 0.6em;
+    font-size: 17px;
+    font-weight: bold;
+}
+.company-content .entry-content p {
+    margin: 0 0 1.5em;
+    line-height: 1.9;
+}
+.company-content .entry-content ul,
+.company-content .entry-content ol {
+    margin: 0 0 1.6em 1.4em;
+}
+.company-content .entry-content li {
+    margin-bottom: 0.5em;
+    line-height: 1.9;
+}
+.company-content .entry-content > *:first-child {
+    margin-top: 0;
+}
 .loan-title{
     margin-bottom: 20px;
     font-weight: bold;
@@ -17,9 +53,11 @@
     margin-bottom: 24px;
 }
 .loan-image img {
+    width: 100%;
     max-width: 100%;
+    height: auto;
+    display: block;
     margin: 0 auto;
-    height: 0 auto;
 }
 /*--- 基本情報のテーブル（AFCフィールで生成） ---*/
 .info-table {

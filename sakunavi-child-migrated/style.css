@@ -206,6 +206,68 @@ small,
     color: #1e7a42;
 }
 
+/* ============================
+   人気のキーワード（column_keyword）
+   サイドバー・トップページ両方から呼び出される共通パーツ
+============================ */
+.popular-keywords__title {
+    margin: 0 0 12px;
+    font-size: 1rem;
+    font-weight: 700;
+    color: #2d5a38;
+}
+
+.popular-keywords__list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.popular-keywords__list li {
+    margin: 0;
+    padding: 0;
+}
+
+/* .column-sidebar ul li a の矢印装飾（▶）や padding を打ち消して、独立したピルとして描画する */
+.popular-keywords .popular-keywords__pill {
+    position: static;
+    display: inline-flex;
+    align-items: center;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #2ea05a;
+    background: #edfaf2;
+    border: 1px solid #c5e8d0;
+    border-radius: 999px;
+    padding: 6px 14px;
+    text-decoration: none;
+    line-height: 1.4;
+    transition: background .15s ease, color .15s ease, border-color .15s ease;
+}
+
+.popular-keywords .popular-keywords__pill::after {
+    content: none !important;
+}
+
+.popular-keywords .popular-keywords__pill:hover {
+    background: #d0f0e0;
+    color: #1e7a42;
+    border-color: #a9d9b8;
+}
+
+.popular-keywords .popular-keywords__pill.is-active {
+    background: #2ea05a;
+    border-color: #2ea05a;
+    color: #fff;
+}
+
+.popular-keywords-section {
+    margin-top: 32px;
+}
+
 .hero-global__title {
     font-size: clamp(20px, 4vw, 32px);
     font-weight: 700;

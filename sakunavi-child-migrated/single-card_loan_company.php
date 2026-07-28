@@ -67,6 +67,7 @@ $limit_min = function_exists('get_field') ? get_field('limit_amount_min') : get_
 $limit_max = function_exists('get_field') ? get_field('limit_amount_max') : get_post_meta(get_the_ID(), 'limit_amount_max', true);
 $exam_fast = function_exists('get_field') ? get_field('exam_fast') : get_post_meta(get_the_ID(), 'exam_fast', true);
 $no_interest_days = function_exists('get_field') ? get_field('no_interest_days') : get_post_meta(get_the_ID(), 'no_interest_days', true);
+$no_interest_label = function_exists('get_field') ? get_field('no_interest_label') : get_post_meta(get_the_ID(), 'no_interest_label', true);
 $web_only  = function_exists('get_field') ? get_field('web_only') : get_post_meta(get_the_ID(), 'web_only', true);
 
 $cta_label = function_exists('get_field') ? get_field('cta_label') : get_post_meta(get_the_ID(), 'cta_label', true);
@@ -114,6 +115,7 @@ if (!function_exists('sakunavi_star')) {
             $rate_max  = function_exists('get_field') ? get_field('rate_max') : get_post_meta(get_the_ID(), 'rate_max', true);
             $exam_fast = function_exists('get_field') ? get_field('exam_fast') : get_post_meta(get_the_ID(), 'exam_fast', true);
             $no_interest_days = function_exists('get_field') ? get_field('no_interest_days') : get_post_meta(get_the_ID(), 'no_interest_days', true);
+            $no_interest_label = function_exists('get_field') ? get_field('no_interest_label') : get_post_meta(get_the_ID(), 'no_interest_label', true);
             $web_only  = function_exists('get_field') ? get_field('web_only') : get_post_meta(get_the_ID(), 'web_only', true);
             // ... 他の既存変数たち
 
@@ -228,11 +230,11 @@ if (!function_exists('sakunavi_star')) {
                 </tr>
               <?php endif; ?>
 
-              <?php if ($no_interest_days !== ''): ?>
+              <?php if ($no_interest_days !== '' || $no_interest_label): ?>
                 <tr>
                   <th>無利息期間</th>
                   <td>
-                    <?php echo esc_html($no_interest_days); ?>日
+                    <?php echo $no_interest_label ? esc_html($no_interest_label) : (esc_html($no_interest_days) . '日間'); ?>
                     <?php echo sakunavi_note_mark('no_interest', $notes, $note_index, $total_notes); ?>
                   </td>
                 </tr>

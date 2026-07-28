@@ -13,6 +13,7 @@ $rate_max        = function_exists('get_field') ? get_field('rate_max', $post_id
 $limit_amount    = function_exists('get_field') ? get_field('limit_amount', $post_id) : '';
 $exam_fast       = function_exists('get_field') ? get_field('exam_fast', $post_id) : '';
 $no_interest     = function_exists('get_field') ? get_field('no_interest_days', $post_id) : '';
+$no_interest_label = function_exists('get_field') ? get_field('no_interest_label', $post_id) : '';
 $web_only        = function_exists('get_field') ? get_field('web_only', $post_id) : 0;
 $cta_label       = function_exists('get_field') ? get_field('cta_label', $post_id) : '';
 $cta_url         = function_exists('get_field') ? get_field('cta_url', $post_id) : '';
@@ -51,7 +52,7 @@ $limit_txt = $limit_amount !== '' ? esc_html(number_format_i18n((float)$limit_am
         <?php if ($rate_txt): ?><li><span>金利</span><strong><?php echo $rate_txt; ?></strong></li><?php endif; ?>
         <?php if ($limit_txt): ?><li><span>限度額</span><strong><?php echo $limit_txt; ?></strong></li><?php endif; ?>
         <?php if ($exam_fast): ?><li><span>審査</span><strong><?php echo esc_html($exam_fast); ?></strong></li><?php endif; ?>
-        <?php if ($no_interest !== ''): ?><li><span>無利息</span><strong><?php echo esc_html($no_interest); ?>日</strong></li><?php endif; ?>
+        <?php if ($no_interest !== '' || $no_interest_label): ?><li><span>無利息</span><strong><?php echo $no_interest_label ? esc_html($no_interest_label) : (esc_html($no_interest) . '日間'); ?></strong></li><?php endif; ?>
       </ul>
       <div class="loan-card__badges">
         <?php if ($web_only): ?><span class="badge">Web完結</span><?php endif; ?>

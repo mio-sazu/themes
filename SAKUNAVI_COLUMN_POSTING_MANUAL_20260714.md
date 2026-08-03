@@ -44,7 +44,7 @@
 
 ### 本文中で使える「STEPガイド」テンプレート（手順・流れの解説）
 
-「①カウンセリング→②施術→③アフターケア」のような、番号付きの手順を点線でつないで見せるテンプレートです。ショートコードではなく、以下のHTMLを本文中の使いたい位置に**「カスタムHTML」ブロック**として貼り付けて使います（見出し・本文はブロック内の日本語部分を書き換えるだけでOK）。STEPの数は`.step-guide__item`ごと自由に増減できます。
+「①公式サイトにアクセス→②必要書類をアップロード→③申込完了」のような、番号付きの手順を点線でつないで見せるテンプレートです。ショートコードではなく、以下のHTMLを本文中の使いたい位置に**「カスタムHTML」ブロック**として貼り付けて使います（見出し・本文はブロック内の日本語部分を書き換えるだけでOK）。STEPの数は`.step-guide__item`ごと自由に増減できます。お金コラム（`single-column`）・カードローン企業記事（`company-content`）のどちらのテンプレートでも使えます。
 
 ```html
 <ul class="step-guide">
@@ -87,10 +87,37 @@
 </ul>
 ```
 
-- スタイルは`assets/css/column.css`の`.step-guide`系クラスで定義済みです（コラム記事＝`single-column`テンプレート内でのみ有効）
+- スタイルは`assets/css/column.css`（お金コラム）と`assets/css/company.css`（カードローン企業記事）の両方に`.step-guide`系クラスとして定義済みです（`single-column`／`company-content`テンプレート内でのみ有効。それ以外のページに貼っても装飾は当たりません）
 - 丸バッジの色はサイトのブランドカラー（緑）に統一しています
 - STEPを増やす場合は`<li class="step-guide__item">`ブロックごと複製し、`step-guide__num`の数字を振り直してください
 - 見出しレベルは**「h2セクションの中に、h3で『ご利用の流れ』などの小見出しを立て、その直下にSTEP一覧を置く」構成を前提にh4にしています**。h3見出しを立てずにh2の直下へ直接STEP一覧を置く場合は、各`step-guide__title`をh3に変更してください（見た目はどちらのタグでも同じになるよう`.step-guide__title`側でスタイルを固定しています）
+
+#### STEPに補足の吹き出し（`.step-guide__callout`）を付ける
+
+特定のSTEPに「郵送不要」「最短即日」のような一言メモを吹き出しで添えたい場合は、そのSTEPの`.step-guide__body`内、`step-guide__text`の直後に`.step-guide__callout`を追加します。吹き出しは付けたいSTEPだけに入れればよく、全STEPに揃える必要はありません。
+
+```html
+<li class="step-guide__item">
+    <div class="step-guide__marker">
+        <div class="step-guide__circle">
+            <span class="step-guide__label">STEP</span>
+            <span class="step-guide__num">3</span>
+        </div>
+    </div>
+    <div class="step-guide__body">
+        <h4 class="step-guide__title">必要書類をアップロード</h4>
+        <p class="step-guide__text">本人確認書類などをスマホで撮影してアップロードします。</p>
+        <div class="step-guide__callout">
+            <span class="step-guide__callout-icon">💡</span>
+            <p class="step-guide__callout-text">郵送や店頭に行く必要がなく<br>すぐに提出可能</p>
+        </div>
+    </div>
+</li>
+```
+
+- `step-guide__callout-icon`の中身（`💡`）は絵文字なので、内容に合わせて`📌`「⚡」などに差し替えてもOKです
+- `step-guide__callout-text`内で改行したい場合は`<br>`を使ってください
+- 吹き出しはSTEP本文の下に流し込みで表示されるため、スマホ幅でも崩れません
 
 ---
 

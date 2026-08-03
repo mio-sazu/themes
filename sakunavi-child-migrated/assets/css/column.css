@@ -1785,50 +1785,44 @@ body {
 /* =================================
    記事内埋め込みカード [post_embed]
 ================================= */
-.post-embed-card {
+.single-column .entry-content .post-embed-card {
+    --pec-color: #333333;
+    position: relative;
     margin: 2em auto;
-    max-width: 92%;
+    max-width: 800px;
+    border: 1px solid var(--pec-color);
+    border-radius: 3px;
 }
 
-.post-embed-card__label {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 6px;
-    margin: 0 0 10px;
-    font-size: 16px;
-    font-weight: 700;
-    color: #33423a;
+.single-column .entry-content .post-embed-card__label {
+    position: absolute;
+    top: -0.7em;
+    left: 0.7em;
+    z-index: 1;
+    display: inline-block;
+    margin: 0;
+    padding: 0.2em 1em;
+    max-width: calc(100% - 2em);
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    background: var(--pec-color);
+    color: #fff;
+    font-size: 0.9em;
+    font-weight: bold;
+    border-radius: 3px;
 }
 
-.post-embed-card__label::before {
-    content: '＼';
-    color: #39B167;
-}
-
-.post-embed-card__label::after {
-    content: '／';
-    color: #39B167;
-}
-
-.post-embed-card__link {
+.single-column .entry-content .post-embed-card__link {
     display: flex;
     gap: 12px;
     align-items: center;
-    padding: 8px;
-    border: 1px solid #dde7e0;
-    border-radius: 14px;
-    background: #fff;
+    padding: 2.2em 1.2em 1.2em;
     color: #2f3b33;
     text-decoration: none;
-    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.04);
-    transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
 }
 
-.post-embed-card__link:hover {
-    transform: translateY(-2px);
-    border-color: #bfcfc5;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
+.single-column .entry-content .post-embed-card__link:hover {
     text-decoration: none;
     color: #2f3b33;
 }
@@ -2034,4 +2028,327 @@ body {
     .single-column .entry-content .step-guide__title {
         font-size: 1.02rem;
     }
+}
+
+/* STEPガイド内の補足ふきだし（任意・.step-guide__callout） */
+.single-column .entry-content .step-guide__callout {
+    position: relative;
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin-top: 14px;
+    padding: 14px 18px;
+    background-color: #fdecc8;
+    border-radius: 10px;
+}
+
+.single-column .entry-content .step-guide__callout::before {
+    content: "";
+    position: absolute;
+    top: -9px;
+    left: 24px;
+    border: 9px solid transparent;
+    border-bottom-color: #fdecc8;
+}
+
+.single-column .entry-content .step-guide__callout-icon {
+    flex-shrink: 0;
+    font-size: 1.1em;
+    line-height: 1.6;
+}
+
+.single-column .entry-content .step-guide__callout-text {
+    margin: 0;
+    color: #6b4a10;
+    font-size: 0.95rem;
+    line-height: 1.7;
+}
+
+@media (max-width: 600px) {
+    .single-column .entry-content .step-guide__callout {
+        margin-top: 10px;
+        padding: 12px 14px;
+    }
+
+    .single-column .entry-content .step-guide__callout-text {
+        font-size: 0.88rem;
+    }
+}
+
+/* POINTボックス（記事本文に差し込む汎用の注目ポイント枠） */
+.single-column .entry-content .sakunavi_point_box {
+    position: relative;
+    margin: 2em 0;
+    padding: 0.5em 1em;
+    border: solid 3px #95ccff;
+    border-radius: 8px;
+}
+
+.single-column .entry-content .sakunavi_point_box .sakunavi_point_box_title {
+    position: absolute;
+    display: inline-block;
+    top: -13px;
+    left: 10px;
+    padding: 0 9px;
+    line-height: 1;
+    font-size: 19px;
+    background: #fff;
+    color: #95ccff;
+    font-weight: bold;
+}
+
+.single-column .entry-content .sakunavi_point_box p {
+    margin: 0;
+    padding: 0;
+}
+
+/* 注意書きボックス（記事本文に差し込む汎用のALERT枠） */
+.single-column .entry-content .sakunavi_alert_box {
+    margin: 2em auto;
+    padding: 1.2em 1.5em;
+    background-color: #f7e6e6;
+    border-radius: 7px;
+    max-width: 800px;
+    border: 1px solid rgba(226, 114, 106, 0.25);
+}
+
+.single-column .entry-content .sakunavi_alert_box .sakunavi_alert_box_title {
+    display: flex;
+    align-items: center;
+    color: #e2726a;
+    font-size: 1.1em;
+    font-weight: bold;
+    line-height: 1.5;
+    margin-bottom: 0.5em;
+}
+
+.single-column .entry-content .sakunavi_alert_box .sakunavi_alert_box_title::before {
+    font-family: "Font Awesome 5 Free";
+    content: "\f06a";
+    font-weight: 900;
+    margin-right: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.single-column .entry-content .sakunavi_alert_box p {
+    margin: 0;
+}
+
+/* メリットBOX（青） */
+.single-column .entry-content .sakunavi_merit_box_title {
+    margin: 2em 0 0;
+    padding: 0.5em 0.5em 0.4em;
+    text-align: center;
+    font-size: 1.3em;
+    background: #7fb1e0;
+    border-bottom: 3px solid #5f95cc;
+    color: #fff;
+    font-weight: bold;
+    letter-spacing: 0.05em;
+}
+
+.single-column .entry-content .sakunavi_merit_box_title p {
+    margin: 0;
+}
+
+.single-column .entry-content .sakunavi_merit_box {
+    margin: 0 0 2em;
+    padding: 1em 1.5em;
+    background: #f0f6fc;
+    color: #000;
+}
+
+/* デメリットBOX（赤） */
+.single-column .entry-content .sakunavi_demerit_box_title {
+    margin: 2em 0 0;
+    padding: 0.5em 0.5em 0.4em;
+    text-align: center;
+    font-size: 1.3em;
+    background: #e79892;
+    border-bottom: 3px solid #d67e77;
+    color: #fff;
+    font-weight: bold;
+    letter-spacing: 0.05em;
+}
+
+.single-column .entry-content .sakunavi_demerit_box_title p {
+    margin: 0;
+}
+
+.single-column .entry-content .sakunavi_demerit_box {
+    margin: 0 0 2em;
+    padding: 1em 1.5em;
+    background: #fbeeee;
+    color: #000;
+}
+
+/* メリット・デメリットを横並びにしたい時に使う囲み（任意） */
+.single-column .entry-content .sakunavi_meritdemerit_row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5em;
+    margin: 2em 0;
+}
+
+.single-column .entry-content .sakunavi_meritdemerit_row .sakunavi_meritdemerit_col {
+    flex: 1 1 260px;
+    min-width: 0;
+}
+
+.single-column .entry-content .sakunavi_meritdemerit_row .sakunavi_merit_box_title,
+.single-column .entry-content .sakunavi_meritdemerit_row .sakunavi_demerit_box_title {
+    margin-top: 0;
+}
+
+.single-column .entry-content .sakunavi_meritdemerit_row .sakunavi_merit_box,
+.single-column .entry-content .sakunavi_meritdemerit_row .sakunavi_demerit_box {
+    margin-bottom: 0;
+    height: 100%;
+    box-sizing: border-box;
+}
+
+/* TIP・豆知識BOX（緑、ALERTの対になる前向き情報用） */
+.single-column .entry-content .sakunavi_tip_box {
+    position: relative;
+    margin: 2em auto;
+    padding: 1.2em 1.5em;
+    background-color: #eaf7ee;
+    border-radius: 7px;
+    max-width: 800px;
+    border: 1px solid rgba(57, 177, 103, 0.25);
+}
+
+.single-column .entry-content .sakunavi_tip_box .sakunavi_tip_box_title {
+    display: flex;
+    align-items: center;
+    color: #1d8f48;
+    font-size: 1.1em;
+    font-weight: bold;
+    line-height: 1.5;
+    margin-bottom: 0.5em;
+}
+
+.single-column .entry-content .sakunavi_tip_box .sakunavi_tip_box_title::before {
+    font-family: "Font Awesome 5 Free";
+    content: "\f0eb";
+    font-weight: 900;
+    margin-right: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.single-column .entry-content .sakunavi_tip_box p {
+    margin: 0;
+}
+
+/* 引用ブロック（アイコン付き / .snv-c-quote） */
+.single-column .entry-content .snv-c-quote {
+    position: relative;
+    margin: 2em 0;
+    padding: 5px 15px 5px 75px;
+    box-sizing: border-box;
+    font-style: italic;
+    color: #464646;
+    background: #f5f5f5;
+    border: none;
+    border-radius: 3px;
+}
+
+.single-column .entry-content .snv-c-quote::before {
+    display: inline-block;
+    position: absolute;
+    top: 0;
+    left: 18px;
+    width: 38px;
+    height: 30px;
+    text-align: center;
+    content: "\f10d";
+    font-family: "Font Awesome 5 Free";
+    color: #fff;
+    font-size: 18px;
+    line-height: 30px;
+    background: #39B167;
+    font-weight: 900;
+}
+
+.single-column .entry-content .snv-c-quote::after {
+    content: '';
+    position: absolute;
+    left: 18px;
+    top: 30px;
+    height: 0;
+    width: 0;
+    border-left: 19px solid #39B167;
+    border-right: 19px solid #39B167;
+    border-bottom: 10px solid transparent;
+}
+
+.single-column .entry-content .snv-c-quote__text {
+    position: relative;
+    z-index: 3;
+    margin: 10px 0;
+    padding: 0;
+    line-height: 1.7;
+}
+
+.single-column .entry-content .snv-c-quote__cite {
+    display: block;
+    text-align: right;
+    color: #888888;
+    font-size: 0.9em;
+    font-style: normal;
+}
+
+/* まとめBOX（四隅の角カッコ囲み＋アイコン付き） */
+.single-column .entry-content .sakunavi_summary_box {
+    position: relative;
+    margin: 2em 0;
+    padding: 1.2em 1.5em;
+}
+
+.single-column .entry-content .sakunavi_summary_box::before,
+.single-column .entry-content .sakunavi_summary_box::after {
+    content: '';
+    width: 20px;
+    height: 30px;
+    position: absolute;
+    display: inline-block;
+}
+
+.single-column .entry-content .sakunavi_summary_box::before {
+    border-left: solid 1px #39B167;
+    border-top: solid 1px #39B167;
+    top: 0;
+    left: 0;
+}
+
+.single-column .entry-content .sakunavi_summary_box::after {
+    border-right: solid 1px #39B167;
+    border-bottom: solid 1px #39B167;
+    bottom: 0;
+    right: 0;
+}
+
+.single-column .entry-content .sakunavi_summary_box_title {
+    display: flex;
+    align-items: center;
+    margin: 0 0 0.5em;
+    font-size: 1.15em;
+    font-weight: bold;
+    color: #1d8f48;
+}
+
+.single-column .entry-content .sakunavi_summary_box_title::before {
+    font-family: "Font Awesome 5 Free";
+    content: "\f0ae";
+    font-weight: 900;
+    margin-right: 8px;
+}
+
+.single-column .entry-content .sakunavi_summary_box p {
+    margin: 0;
+    color: #333;
 }

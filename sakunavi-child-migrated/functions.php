@@ -351,6 +351,39 @@ function sakunavi_column_faq_shortcode($atts)
 }
 add_shortcode('column_faq', 'sakunavi_column_faq_shortcode');
 
+// ============================
+// ショートコード：カードローン会社FAQ（本文に直接書くタイプ）
+// 使い方: [company_faq q="質問文"]回答文[/company_faq] を本文中に必要な数だけ並べる。
+// 生のHTML（<div class="company_faq_box">...）を直接本文に貼ると、wpautopが
+// 空行と組み合わさって構造を壊す（孤立した</p>が入る等）ため、ショートコードで
+// HTMLをPHP側で組み立てて出力する（wpautopの処理後に展開されるため壊れない）。
+// ============================
+function sakunavi_company_faq_shortcode($atts, $content = null)
+{
+  if (! is_singular('card_loan_company')) {
+    return '';
+  }
+
+  $atts = shortcode_atts(['q' => ''], $atts, 'company_faq');
+
+  $question = trim($atts['q']);
+  $answer   = trim(do_shortcode((string) $content));
+
+  if ($question === '' || $answer === '') {
+    return '';
+  }
+
+  ob_start();
+?>
+  <div class="company_faq_box">
+    <button class="company_faq_question" type="button" aria-expanded="false"><?php echo esc_html($question); ?></button>
+    <div class="company_faq_answer" hidden><?php echo wp_kses_post(wpautop($answer)); ?></div>
+  </div>
+<?php
+  return ob_get_clean();
+}
+add_shortcode('company_faq', 'sakunavi_company_faq_shortcode');
+
 
 // ============================
 // 05. サイドバー・ウィジェット・メニュー
@@ -441,6 +474,18 @@ add_action('wp_enqueue_scripts', function () {
     );
   }
 }, 30);
+
+// Font Awesome 5（本文内の注意書きボックス等のアイコン表示用）
+add_action('wp_enqueue_scripts', function () {
+  if (is_singular('column') || is_singular('card_loan_company')) {
+    wp_enqueue_style(
+      'font-awesome-5',
+      'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css',
+      [],
+      '5.15.4'
+    );
+  }
+});
 
 // FAQ用JS（コラム）
 add_action('wp_enqueue_scripts', function () {
@@ -1992,6 +2037,34 @@ function md_coming_soon_single_redirect()
 }
 add_action('template_redirect', 'md_coming_soon_single_redirect');
 
+// ============================
+// 旧カードローン診断（condition タクソノミー）の廃止に伴う301リダイレクト
+// テンプレートが存在せず空白ページ化していたため、新しいコラムカテゴリへ恒久転送する
+// ============================
+function sakunavi_redirect_legacy_condition_pages()
+{
+  if (is_admin() || ! is_tax('condition')) {
+    return;
+  }
+
+  $term = get_queried_object();
+  if (! $term || is_wp_error($term)) {
+    return;
+  }
+
+  $redirect_map = [
+    'student'       => '/column-category/students/',
+    'part_timer'    => '/column-category/part-housewife/',
+    'office_worker' => '/column-category/salaryman/',
+  ];
+
+  if (isset($redirect_map[$term->slug])) {
+    wp_redirect(home_url($redirect_map[$term->slug]), 301);
+    exit;
+  }
+}
+add_action('template_redirect', 'sakunavi_redirect_legacy_condition_pages');
+
 // 投稿一覧にカミングスーン列を追加（通常投稿）
 function md_coming_soon_columns($columns)
 {
@@ -2165,6 +2238,73 @@ add_action('customize_register', function ($wp_customize) {
             'original' => '既存のヒーロー（現在の画像ビュー）',
             'column'   => '新ヒーロー（コラムビュー）',
         ],
+    ]);
+});
+
+// ============================
+// 15. トップページ ポップアップバナー設定（Customizer）
+// ============================
+
+/**
+ * 外観 > カスタマイズ > ポップアップバナー設定
+ * トップページをスクロール50%まで読み進めたタイミングで一度だけ表示される
+ * お知らせ・キャンペーン用ポップアップの文言・画像・リンク先・表示ON/OFFを管理画面から編集可能にする。
+ */
+add_action('customize_register', function ($wp_customize) {
+    $wp_customize->add_section('sakunavi_popup_section', [
+        'title'    => 'ポップアップバナー設定',
+        'priority' => 31,
+    ]);
+
+    $wp_customize->add_setting('sakunavi_popup_enabled', [
+        'default'           => true,
+        'sanitize_callback' => function ($val) {
+            return (bool) $val;
+        },
+    ]);
+    $wp_customize->add_control('sakunavi_popup_enabled', [
+        'label'   => '表示する',
+        'section' => 'sakunavi_popup_section',
+        'type'    => 'checkbox',
+    ]);
+
+    $wp_customize->add_setting('sakunavi_popup_image', [
+        'default'           => '',
+        'sanitize_callback' => 'esc_url_raw',
+    ]);
+    $wp_customize->add_control(new WP_Customize_Image_Control($wp_customize, 'sakunavi_popup_image', [
+        'label'   => 'バナー画像（任意・未設定なら画像なしで文言のみ表示）',
+        'section' => 'sakunavi_popup_section',
+    ]));
+
+    $wp_customize->add_setting('sakunavi_popup_text', [
+        'default'           => 'ここにお知らせ・キャンペーン文言が入ります',
+        'sanitize_callback' => 'sanitize_textarea_field',
+    ]);
+    $wp_customize->add_control('sakunavi_popup_text', [
+        'label'   => '訴求文言',
+        'section' => 'sakunavi_popup_section',
+        'type'    => 'textarea',
+    ]);
+
+    $wp_customize->add_setting('sakunavi_popup_btn_label', [
+        'default'           => '詳しく見る',
+        'sanitize_callback' => 'sanitize_text_field',
+    ]);
+    $wp_customize->add_control('sakunavi_popup_btn_label', [
+        'label'   => 'ボタン文言',
+        'section' => 'sakunavi_popup_section',
+        'type'    => 'text',
+    ]);
+
+    $wp_customize->add_setting('sakunavi_popup_btn_url', [
+        'default'           => '',
+        'sanitize_callback' => 'esc_url_raw',
+    ]);
+    $wp_customize->add_control('sakunavi_popup_btn_url', [
+        'label'   => 'ボタンのリンク先URL',
+        'section' => 'sakunavi_popup_section',
+        'type'    => 'url',
     ]);
 });
 

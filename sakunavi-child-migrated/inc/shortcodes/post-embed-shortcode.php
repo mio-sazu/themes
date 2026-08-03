@@ -20,7 +20,7 @@ add_shortcode('post_embed', function ($atts) {
     $post = get_post($post_id);
     if (!$post || $post->post_status !== 'publish') return '';
 
-    $allowed = ['column', 'ranking'];
+    $allowed = ['column', 'ranking', 'card_loan_company'];
     if (!in_array($post->post_type, $allowed, true)) return '';
 
     ob_start();

@@ -659,3 +659,554 @@
 .company_faq_box.active .company_faq_answer {
     display: block;
 }
+
+/*////////STEPガイド（手順テンプレート）////////*/
+.company-content .entry-content .step-guide {
+    list-style: none;
+    margin: 32px 0;
+    padding: 0;
+}
+
+.company-content .entry-content .step-guide__item {
+    position: relative;
+    display: grid;
+    grid-template-columns: 64px 1fr;
+    column-gap: 24px;
+    padding-bottom: 40px;
+}
+
+.company-content .entry-content .step-guide__item:last-child {
+    padding-bottom: 0;
+}
+
+.company-content .entry-content .step-guide__marker {
+    position: relative;
+    display: flex;
+    justify-content: center;
+}
+
+.company-content .entry-content .step-guide__circle {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background-color: #39B167;
+    color: #fff;
+    position: relative;
+    z-index: 1;
+}
+
+.company-content .entry-content .step-guide__label {
+    font-size: 10px;
+    letter-spacing: .05em;
+    line-height: 1.2;
+}
+
+.company-content .entry-content .step-guide__num {
+    font-size: 22px;
+    font-weight: 700;
+    line-height: 1.2;
+}
+
+.company-content .entry-content .step-guide__item:not(:last-child) .step-guide__marker::after {
+    content: "";
+    position: absolute;
+    top: 64px;
+    bottom: -40px;
+    left: 50%;
+    width: 0;
+    border-left: 2px dashed #cfd8d2;
+    transform: translateX(-50%);
+}
+
+.company-content .entry-content .step-guide__body {
+    padding-top: 10px;
+}
+
+.company-content .entry-content .step-guide__title {
+    margin: 0 0 10px;
+    padding-left: 0;
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: #1a1a1a;
+}
+
+.company-content .entry-content .step-guide__title::before {
+    content: none;
+}
+
+.company-content .entry-content .step-guide__text {
+    margin: 0;
+    color: #444;
+    line-height: 1.8;
+}
+
+/* STEPガイド内の補足ふきだし（任意・.step-guide__callout） */
+.company-content .entry-content .step-guide__callout {
+    position: relative;
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin-top: 14px;
+    padding: 14px 18px;
+    background-color: #fdecc8;
+    border-radius: 10px;
+}
+
+.company-content .entry-content .step-guide__callout::before {
+    content: "";
+    position: absolute;
+    top: -9px;
+    left: 24px;
+    border: 9px solid transparent;
+    border-bottom-color: #fdecc8;
+}
+
+.company-content .entry-content .step-guide__callout-icon {
+    flex-shrink: 0;
+    font-size: 1.1em;
+    line-height: 1.6;
+}
+
+.company-content .entry-content .step-guide__callout-text {
+    margin: 0;
+    color: #6b4a10;
+    font-size: 0.95rem;
+    line-height: 1.7;
+}
+
+@media (max-width: 600px) {
+    .company-content .entry-content .step-guide__item {
+        grid-template-columns: 48px 1fr;
+        column-gap: 14px;
+        padding-bottom: 28px;
+    }
+
+    .company-content .entry-content .step-guide__circle {
+        width: 48px;
+        height: 48px;
+    }
+
+    .company-content .entry-content .step-guide__label {
+        font-size: 8px;
+    }
+
+    .company-content .entry-content .step-guide__num {
+        font-size: 17px;
+    }
+
+    .company-content .entry-content .step-guide__item:not(:last-child) .step-guide__marker::after {
+        top: 48px;
+        bottom: -28px;
+    }
+
+    .company-content .entry-content .step-guide__body {
+        padding-top: 2px;
+    }
+
+    .company-content .entry-content .step-guide__title {
+        font-size: 1.02rem;
+    }
+
+    .company-content .entry-content .step-guide__callout {
+        margin-top: 10px;
+        padding: 12px 14px;
+    }
+
+    .company-content .entry-content .step-guide__callout-text {
+        font-size: 0.88rem;
+    }
+}
+
+/* POINTボックス（記事本文に差し込む汎用の注目ポイント枠） */
+.company-content .entry-content .sakunavi_point_box {
+    position: relative;
+    margin: 2em 0;
+    padding: 0.5em 1em;
+    border: solid 3px #95ccff;
+    border-radius: 8px;
+}
+
+.company-content .entry-content .sakunavi_point_box .sakunavi_point_box_title {
+    position: absolute;
+    display: inline-block;
+    top: -13px;
+    left: 10px;
+    padding: 0 9px;
+    line-height: 1;
+    font-size: 19px;
+    background: #fff;
+    color: #95ccff;
+    font-weight: bold;
+}
+
+.company-content .entry-content .sakunavi_point_box p {
+    margin: 0;
+    padding: 0;
+}
+
+/* 注意書きボックス（記事本文に差し込む汎用のALERT枠） */
+.company-content .entry-content .sakunavi_alert_box {
+    margin: 2em auto;
+    padding: 1.2em 1.5em;
+    background-color: #f7e6e6;
+    border-radius: 7px;
+    max-width: 800px;
+    border: 1px solid rgba(226, 114, 106, 0.25);
+}
+
+.company-content .entry-content .sakunavi_alert_box .sakunavi_alert_box_title {
+    display: flex;
+    align-items: center;
+    color: #e2726a;
+    font-size: 1.1em;
+    font-weight: bold;
+    line-height: 1.5;
+    margin-bottom: 0.5em;
+}
+
+.company-content .entry-content .sakunavi_alert_box .sakunavi_alert_box_title::before {
+    font-family: "Font Awesome 5 Free";
+    content: "\f06a";
+    font-weight: 900;
+    margin-right: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.company-content .entry-content .sakunavi_alert_box p {
+    margin: 0;
+}
+
+/* メリットBOX（青） */
+.company-content .entry-content .sakunavi_merit_box_title {
+    margin: 2em 0 0;
+    padding: 0.5em 0.5em 0.4em;
+    text-align: center;
+    font-size: 1.3em;
+    background: #7fb1e0;
+    border-bottom: 3px solid #5f95cc;
+    color: #fff;
+    font-weight: bold;
+    letter-spacing: 0.05em;
+}
+
+.company-content .entry-content .sakunavi_merit_box_title p {
+    margin: 0;
+}
+
+.company-content .entry-content .sakunavi_merit_box {
+    margin: 0 0 2em;
+    padding: 1em 1.5em;
+    background: #f0f6fc;
+    color: #000;
+}
+
+/* デメリットBOX（赤） */
+.company-content .entry-content .sakunavi_demerit_box_title {
+    margin: 2em 0 0;
+    padding: 0.5em 0.5em 0.4em;
+    text-align: center;
+    font-size: 1.3em;
+    background: #e79892;
+    border-bottom: 3px solid #d67e77;
+    color: #fff;
+    font-weight: bold;
+    letter-spacing: 0.05em;
+}
+
+.company-content .entry-content .sakunavi_demerit_box_title p {
+    margin: 0;
+}
+
+.company-content .entry-content .sakunavi_demerit_box {
+    margin: 0 0 2em;
+    padding: 1em 1.5em;
+    background: #fbeeee;
+    color: #000;
+}
+
+/* メリット・デメリットを横並びにしたい時に使う囲み（任意） */
+.company-content .entry-content .sakunavi_meritdemerit_row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5em;
+    margin: 2em 0;
+}
+
+.company-content .entry-content .sakunavi_meritdemerit_row .sakunavi_meritdemerit_col {
+    flex: 1 1 260px;
+    min-width: 0;
+}
+
+.company-content .entry-content .sakunavi_meritdemerit_row .sakunavi_merit_box_title,
+.company-content .entry-content .sakunavi_meritdemerit_row .sakunavi_demerit_box_title {
+    margin-top: 0;
+}
+
+.company-content .entry-content .sakunavi_meritdemerit_row .sakunavi_merit_box,
+.company-content .entry-content .sakunavi_meritdemerit_row .sakunavi_demerit_box {
+    margin-bottom: 0;
+    height: 100%;
+    box-sizing: border-box;
+}
+
+/* TIP・豆知識BOX（緑、ALERTの対になる前向き情報用） */
+.company-content .entry-content .sakunavi_tip_box {
+    position: relative;
+    margin: 2em auto;
+    padding: 1.2em 1.5em;
+    background-color: #eaf7ee;
+    border-radius: 7px;
+    max-width: 800px;
+    border: 1px solid rgba(57, 177, 103, 0.25);
+}
+
+.company-content .entry-content .sakunavi_tip_box .sakunavi_tip_box_title {
+    display: flex;
+    align-items: center;
+    color: #1d8f48;
+    font-size: 1.1em;
+    font-weight: bold;
+    line-height: 1.5;
+    margin-bottom: 0.5em;
+}
+
+.company-content .entry-content .sakunavi_tip_box .sakunavi_tip_box_title::before {
+    font-family: "Font Awesome 5 Free";
+    content: "\f0eb";
+    font-weight: 900;
+    margin-right: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.company-content .entry-content .sakunavi_tip_box p {
+    margin: 0;
+}
+
+/* 引用ブロック（アイコン付き / .snv-c-quote） */
+.company-content .entry-content .snv-c-quote {
+    position: relative;
+    margin: 2em 0;
+    padding: 5px 15px 5px 75px;
+    box-sizing: border-box;
+    font-style: italic;
+    color: #464646;
+    background: #f5f5f5;
+    border: none;
+    border-radius: 3px;
+}
+
+.company-content .entry-content .snv-c-quote::before {
+    display: inline-block;
+    position: absolute;
+    top: 0;
+    left: 18px;
+    width: 38px;
+    height: 30px;
+    text-align: center;
+    content: "\f10d";
+    font-family: "Font Awesome 5 Free";
+    color: #fff;
+    font-size: 18px;
+    line-height: 30px;
+    background: #39B167;
+    font-weight: 900;
+}
+
+.company-content .entry-content .snv-c-quote::after {
+    content: '';
+    position: absolute;
+    left: 18px;
+    top: 30px;
+    height: 0;
+    width: 0;
+    border-left: 19px solid #39B167;
+    border-right: 19px solid #39B167;
+    border-bottom: 10px solid transparent;
+}
+
+.company-content .entry-content .snv-c-quote__text {
+    position: relative;
+    z-index: 3;
+    margin: 10px 0;
+    padding: 0;
+    line-height: 1.7;
+}
+
+.company-content .entry-content .snv-c-quote__cite {
+    display: block;
+    text-align: right;
+    color: #888888;
+    font-size: 0.9em;
+    font-style: normal;
+}
+
+/* まとめBOX（四隅の角カッコ囲み＋アイコン付き） */
+.company-content .entry-content .sakunavi_summary_box {
+    position: relative;
+    margin: 2em 0;
+    padding: 1.2em 1.5em;
+}
+
+.company-content .entry-content .sakunavi_summary_box::before,
+.company-content .entry-content .sakunavi_summary_box::after {
+    content: '';
+    width: 20px;
+    height: 30px;
+    position: absolute;
+    display: inline-block;
+}
+
+.company-content .entry-content .sakunavi_summary_box::before {
+    border-left: solid 1px #39B167;
+    border-top: solid 1px #39B167;
+    top: 0;
+    left: 0;
+}
+
+.company-content .entry-content .sakunavi_summary_box::after {
+    border-right: solid 1px #39B167;
+    border-bottom: solid 1px #39B167;
+    bottom: 0;
+    right: 0;
+}
+
+.company-content .entry-content .sakunavi_summary_box_title {
+    display: flex;
+    align-items: center;
+    margin: 0 0 0.5em;
+    font-size: 1.15em;
+    font-weight: bold;
+    color: #1d8f48;
+}
+
+.company-content .entry-content .sakunavi_summary_box_title::before {
+    font-family: "Font Awesome 5 Free";
+    content: "\f0ae";
+    font-weight: 900;
+    margin-right: 8px;
+}
+
+.company-content .entry-content .sakunavi_summary_box p {
+    margin: 0;
+    color: #333;
+}
+
+/* 記事内埋め込みカード（あわせて読みたい・[post_embed]ショートコード用） */
+.company-content .entry-content .post-embed-card {
+    --pec-color: #333333;
+    position: relative;
+    margin: 2em auto;
+    max-width: 800px;
+    border: 1px solid var(--pec-color);
+    border-radius: 3px;
+}
+
+.company-content .entry-content .post-embed-card__label {
+    position: absolute;
+    top: -0.7em;
+    left: 0.7em;
+    z-index: 1;
+    display: inline-block;
+    margin: 0;
+    padding: 0.2em 1em;
+    max-width: calc(100% - 2em);
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    background: var(--pec-color);
+    color: #fff;
+    font-size: 0.9em;
+    font-weight: bold;
+    border-radius: 3px;
+}
+
+.company-content .entry-content .post-embed-card__link {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+    padding: 2.2em 1.2em 1.2em;
+    color: #2f3b33;
+    text-decoration: none;
+}
+
+.company-content .entry-content .post-embed-card__link:hover {
+    text-decoration: none;
+    color: #2f3b33;
+}
+
+.company-content .entry-content .post-embed-card__thumb {
+    flex-shrink: 0;
+    width: 140px;
+    margin: 0;
+}
+
+.company-content .entry-content .post-embed-card__thumb img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 3px;
+}
+
+.company-content .entry-content .post-embed-card__body {
+    flex: 1;
+    min-width: 0;
+}
+
+.company-content .entry-content .post-embed-card__meta {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    margin-bottom: 4px;
+}
+
+.company-content .entry-content .post-embed-card__cat {
+    font-size: 12px;
+    font-weight: 700;
+    color: #39B167;
+}
+
+.company-content .entry-content .post-embed-card__date {
+    font-size: 0.7rem;
+    color: #93a49c;
+}
+
+.company-content .entry-content .post-embed-card__title {
+    display: block;
+    margin-bottom: 4px;
+    font-size: 17px;
+    font-weight: 800;
+    line-height: 1.5;
+    color: #1a1a1a;
+}
+
+.company-content .entry-content .post-embed-card__excerpt {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+    font-size: 13px;
+    line-height: 1.6;
+    color: #666;
+}
+
+@media (max-width: 600px) {
+    .company-content .entry-content .post-embed-card__thumb {
+        width: 96px;
+    }
+
+    .company-content .entry-content .post-embed-card__title {
+        font-size: 15px;
+    }
+
+    .company-content .entry-content .post-embed-card__excerpt {
+        display: none;
+    }
+}

@@ -80,7 +80,7 @@ if (is_post_type_archive('column')) {
   $faq_label = $faq_pages ? get_the_title($faq_pages[0]->ID) : 'よくある質問';
   $push($faq_label, $faq_url);
   $cats = get_the_terms(get_the_ID(), 'knowledge_category');
-  if ($cats && !is_wp_error($cats)) $push($cats[0]->name);
+  if ($cats && !is_wp_error($cats)) $push($cats[0]->name, get_term_link($cats[0]));
   $push(get_the_title());
 
   // その他
@@ -118,12 +118,19 @@ if ($p = get_query_var('paged')) $push('ページ ' . intval($p));
 
 // 出力
 echo '<ol itemscope itemtype="https://schema.org/BreadcrumbList">';
+$total = count($crumbs);
+$current_url = (is_ssl() ? 'https://' : 'http://') . ($_SERVER['HTTP_HOST'] ?? '') . ($_SERVER['REQUEST_URI'] ?? '');
 foreach ($crumbs as $i => $c) {
   $pos = $i + 1;
+  $is_last = ($pos === $total);
   echo '<li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">';
-  if (!empty($c['url']) && $pos < count($crumbs)) {
+  if (!empty($c['url']) && !$is_last) {
     echo '<a itemprop="item" href="' . esc_url($c['url']) . '"><span itemprop="name">' . esc_html($c['label']) . '</span></a>';
   } else {
+    // 最後の項目（＝現在ページ）は見た目上リンクにしないが、構造化データの item には
+    // ページ自身のURLを（<link>で非表示に）入れておく。Googleの「item がありません」エラー対策
+    $item_url = !empty($c['url']) ? $c['url'] : $current_url;
+    echo '<link itemprop="item" href="' . esc_url($item_url) . '">';
     echo '<span itemprop="name">' . esc_html($c['label']) . '</span>';
   }
   echo '<meta itemprop="position" content="' . $pos . '"></li>';

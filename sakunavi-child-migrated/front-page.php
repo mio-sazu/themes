@@ -159,16 +159,28 @@ get_template_part('template-parts/slider');
                     <?php echo do_shortcode('[repayment_simulator_mini]'); ?>
                 </section><!-- /.sim-section -->
 
-                <!-- ▼▼ 【仮】ポップアップバナー：中身（訴求文・画像・リンク先）は差し替え予定のプレースホルダーです ▼▼ -->
+                <!-- ▼▼ ポップアップバナー：外観 > カスタマイズ > ポップアップバナー設定 から編集できます ▼▼ -->
+                <?php if (get_theme_mod('sakunavi_popup_enabled', true)):
+                    $popup_image     = get_theme_mod('sakunavi_popup_image', '');
+                    $popup_text      = get_theme_mod('sakunavi_popup_text', 'ここにお知らせ・キャンペーン文言が入ります');
+                    $popup_btn_label = get_theme_mod('sakunavi_popup_btn_label', '詳しく見る');
+                    $popup_btn_url   = get_theme_mod('sakunavi_popup_btn_url', '');
+                ?>
                 <div id="popupOverlay" class="popup-overlay"></div>
                 <div id="popupBanner" class="popup-banner" role="dialog" aria-modal="true" aria-labelledby="popupBannerTitle" aria-hidden="true">
                     <button type="button" class="popup-close" aria-label="閉じる">&times;</button>
                     <div class="popup-content">
-                        <p id="popupBannerTitle">【仮】ここにお知らせ・キャンペーン文言が入ります</p>
-                        <a href="#" class="popup-btn">【仮】詳しく見る</a>
+                        <?php if ($popup_image): ?>
+                            <img src="<?php echo esc_url($popup_image); ?>" alt="">
+                        <?php endif; ?>
+                        <p id="popupBannerTitle"><?php echo nl2br(esc_html($popup_text)); ?></p>
+                        <?php if ($popup_btn_url): ?>
+                            <a href="<?php echo esc_url($popup_btn_url); ?>" class="popup-btn"><?php echo esc_html($popup_btn_label); ?></a>
+                        <?php endif; ?>
                     </div>
                 </div>
-                <!-- ▲▲ 【仮】ポップアップバナー ▲▲ -->
+                <?php endif; ?>
+                <!-- ▲▲ ポップアップバナー ▲▲ -->
 
                 <script>
                     document.addEventListener("DOMContentLoaded", () => {
